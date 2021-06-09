@@ -1,4 +1,4 @@
-<template>
+ <template>
   <article>
     <!--banner begin-->
     <div class="picsbox">
@@ -153,6 +153,7 @@ export default {
     this.loading = false
   },
   created () {
+    // 接口：二级推荐博客
     var secondParams = new URLSearchParams()
     secondParams.append('level', 2)
     // 是否排序
@@ -222,7 +223,7 @@ export default {
         text: '正在努力加载中……',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-
+      // 接口：博客列表
       var params = new URLSearchParams()
       params.append('currentPage', this.currentPage)
       params.append('pageSize', this.pageSize)
@@ -248,6 +249,7 @@ export default {
       that.loading = false
       that.currentPage = that.currentPage + 1
       var params = new URLSearchParams()
+      // 接口：博客列表
       params.append('currentPage', that.currentPage)
       params.append('pageSize', that.pageSize)
       getNewBlog(params).then(response => {

@@ -468,6 +468,7 @@
 </template>
 
 <script>
+// 接口：一堆接口引用
 import AvatarCropper from '@/components/AvatarCropper'
 import {getWebConfig} from '../api/index'
 import {delCookie, getCookie, setCookie} from '@/utils/cookieUtils'
@@ -582,6 +583,7 @@ export default {
     var after = 0
     window.addEventListener('scroll', function () {
       let scrollTop = document.documentElement.scrollTop // 当前的的位置
+      // eslint-disable-next-line no-unused-vars
       let scrollHeight = document.documentElement.scrollHeight // 最高的位置
 
       if (scrollTop > offset) {
@@ -719,6 +721,7 @@ export default {
       })
     },
     getCollect: function () {
+      // 接口：获取用户收藏信息
       var params = new URLSearchParams()
       params.append('uid', this.userInfo.uid)
       getCollectListByUser(params).then(response => {
@@ -728,6 +731,7 @@ export default {
       })
     },
     getFollow: function () {
+      // 接口：获取用户关注信息
       var params = new URLSearchParams()
       params.append('uid', this.userInfo.uid)
       getFollowListByUser(params).then(response => {
@@ -842,6 +846,7 @@ export default {
 
     submitForm: function (type) {
       switch (type) {
+        // 接口：修改用户信息
         case 'editUser': {
           this.$refs.userInfo.validate((valid) => {
             if (!valid) {
@@ -937,6 +942,7 @@ export default {
             })
             return
           }
+          // 接口：更新密码
           let params = new URLSearchParams()
           params.append('oldPwd', oldPwd)
           params.append('newPwd', newPwd)
@@ -1049,6 +1055,7 @@ export default {
         this.openComment = webConfigData.openComment
       } else {
         getWebConfig().then(response => {
+          // eslint-disable-next-line eqeqeq
           if (response.code == this.$ECode.SUCCESS) {
             this.info = response.data
             // 存储在Vuex中
@@ -1064,6 +1071,7 @@ export default {
      */
     getUrlVars: function () {
       var vars = {}
+      // eslint-disable-next-line no-unused-vars
       var parts = window.location.href.replace(
         /[?&]+([^=&]+)=([^&#]*)/gi,
         function (m, key, value) {
