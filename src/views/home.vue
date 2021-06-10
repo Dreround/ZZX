@@ -219,6 +219,10 @@
                     </div>
 
                   <div class="rightCenter" v-html="$xss(comment.user.content, options)"></div>
+                    <div class="rightCenter">
+                      <el-tag style="cursor: pointer;"
+                              @click="deleteCommentById(comment)">删除</el-tag>
+                    </div>
                 </span>
                 </div>
               </el-card>
@@ -374,6 +378,7 @@
                 <el-tag type="warning" style="cursor: pointer" v-if="collect.name"
                         @click.native="goToInfo(collect.blog_id)">{{ collect.name }}
                 </el-tag>
+                <el-tag style="cursor: pointer;" >取消收藏</el-tag>
               </el-card>
             </el-timeline-item>
 
@@ -396,6 +401,7 @@
                 <el-tag type="warning" style="cursor: pointer" v-if="follow.nickName"
                         @click.native="goToInfo(follow.follower_id)">{{ follow.nickName }}
                 </el-tag>
+                <el-tag style="cursor: pointer;" >取消关注</el-tag>
               </el-card>
             </el-timeline-item>
 
@@ -487,7 +493,7 @@ import {getListByDictTypeList} from '@/api/sysDictData'
 // vuex中有mapState方法，相当于我们能够使用它的getset方法
 import {mapMutations} from 'vuex'
 import {timeAgo} from '../utils/webUtils'
-
+import {deleteComment} from '../api/comment'
 export default {
   name: 'index',
   components: {
@@ -686,6 +692,22 @@ export default {
           this.replyList = response.data.replyList
         }
       })
+    },
+
+    //删除评论
+    deleteCommentById: function(comment) {
+      let params = {}
+      params.CommentId = comment.uid
+      deleteComment(params).then(response => {
+        if (response.data.code === this.$ECode.SUCCESS) {
+          this.$commonUtil.message.info('已删除')
+          // this.commentList = response.data.commentList
+          // this.replyList = response.data.replyList
+        }
+      })
+        .catch(() => {
+          this.$commonUtil.message.info('删除失败')
+        })
     },
 
     // 获取反馈列表
