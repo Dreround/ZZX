@@ -651,7 +651,7 @@ export default {
 
     // 跳转到资源详情
     goSource: function (comment) {
-      let source = comment.source
+      let source = comment.user.source
       switch (source) {
         case 'MESSAGE_BOARD': {
           let routeData = this.$router.resolve({
