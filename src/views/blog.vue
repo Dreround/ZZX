@@ -176,7 +176,7 @@ export default {
       tagData: [], // 标签数据
       tagValue: [], // 保存选中标签id(编辑时)
       blogSortData: [{uid: 1, name: '技术'}, {uid: 2, name: '大数据'}],
-      title: '增加博客',
+      title: '增加菜谱',
       dialogFormVisible: true, // 控制弹出框
       subjectVisible: false, // 是否显示专题
       isFirstSubjectVisible: true, // 专题选择器是否首次显示【用于懒加载】
