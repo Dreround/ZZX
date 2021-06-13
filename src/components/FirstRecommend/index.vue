@@ -44,8 +44,8 @@ export default {
       console.log(err)
       for (let i = 0; i < 5; ++i) {
         this.slideList.push({
-          title: 'Bytedance',
-          photoList: [require('../../assets/logo.png')]
+          title: '新疆大盘鸡',
+          photoList: [require('../../../static/images/dapanji.jpeg')]
           // photoList: ['http://nacospicture.moguit.cn//blog/admin/jfif/2020/8/22/1598099950516.jfif']
         })
       }
