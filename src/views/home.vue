@@ -219,6 +219,10 @@
                     </div>
 
                   <div class="rightCenter" v-html="$xss(comment.user.content, options)"></div>
+                    <div class="rightCenter">
+                      <el-tag style="cursor: pointer;"
+                              @click="deleteCommentById(comment)">删除</el-tag>
+                    </div>
                 </span>
                 </div>
               </el-card>
@@ -374,6 +378,7 @@
                 <el-tag type="warning" style="cursor: pointer" v-if="collect.name"
                         @click.native="goToInfo(collect.blog_id)">{{ collect.name }}
                 </el-tag>
+                <el-tag style="cursor: pointer;" >取消收藏</el-tag>
               </el-card>
             </el-timeline-item>
 
@@ -396,6 +401,7 @@
                 <el-tag type="warning" style="cursor: pointer" v-if="follow.nickName"
                         @click.native="goToInfo(follow.follower_id)">{{ follow.nickName }}
                 </el-tag>
+                <el-tag style="cursor: pointer;" >取消关注</el-tag>
               </el-card>
             </el-timeline-item>
 
@@ -468,6 +474,7 @@
 </template>
 
 <script>
+// 接口：一堆接口引用
 import AvatarCropper from '@/components/AvatarCropper'
 import {getWebConfig} from '../api/index'
 import {delCookie, getCookie, setCookie} from '@/utils/cookieUtils'
@@ -486,7 +493,7 @@ import {getListByDictTypeList} from '@/api/sysDictData'
 // vuex中有mapState方法，相当于我们能够使用它的getset方法
 import {mapMutations} from 'vuex'
 import {timeAgo} from '../utils/webUtils'
-
+import {deleteComment} from '../api/comment'
 export default {
   name: 'index',
   components: {
@@ -582,6 +589,7 @@ export default {
     var after = 0
     window.addEventListener('scroll', function () {
       let scrollTop = document.documentElement.scrollTop // 当前的的位置
+      // eslint-disable-next-line no-unused-vars
       let scrollHeight = document.documentElement.scrollHeight // 最高的位置
 
       if (scrollTop > offset) {
@@ -643,7 +651,7 @@ export default {
 
     // 跳转到资源详情
     goSource: function (comment) {
-      let source = comment.source
+      let source = comment.user.source
       switch (source) {
         case 'MESSAGE_BOARD': {
           let routeData = this.$router.resolve({
@@ -686,6 +694,22 @@ export default {
       })
     },
 
+    //删除评论
+    deleteCommentById: function(comment) {
+      let params = {}
+      params.CommentId = comment.uid
+      deleteComment(params).then(response => {
+        if (response.data.code === this.$ECode.SUCCESS) {
+          this.$commonUtil.message.info('已删除')
+          // this.commentList = response.data.commentList
+          // this.replyList = response.data.replyList
+        }
+      })
+        .catch(() => {
+          this.$commonUtil.message.info('删除失败')
+        })
+    },
+
     // 获取反馈列表
     getFeedback: function () {
       getFeedbackList().then(response => {
@@ -719,6 +743,7 @@ export default {
       })
     },
     getCollect: function () {
+      // 接口：获取用户收藏信息
       var params = new URLSearchParams()
       params.append('uid', this.userInfo.uid)
       getCollectListByUser(params).then(response => {
@@ -728,6 +753,7 @@ export default {
       })
     },
     getFollow: function () {
+      // 接口：获取用户关注信息
       var params = new URLSearchParams()
       params.append('uid', this.userInfo.uid)
       getFollowListByUser(params).then(response => {
@@ -842,6 +868,7 @@ export default {
 
     submitForm: function (type) {
       switch (type) {
+        // 接口：修改用户信息
         case 'editUser': {
           this.$refs.userInfo.validate((valid) => {
             if (!valid) {
@@ -937,6 +964,7 @@ export default {
             })
             return
           }
+          // 接口：更新密码
           let params = new URLSearchParams()
           params.append('oldPwd', oldPwd)
           params.append('newPwd', newPwd)
@@ -1049,6 +1077,7 @@ export default {
         this.openComment = webConfigData.openComment
       } else {
         getWebConfig().then(response => {
+          // eslint-disable-next-line eqeqeq
           if (response.code == this.$ECode.SUCCESS) {
             this.info = response.data
             // 存储在Vuex中
@@ -1064,6 +1093,7 @@ export default {
      */
     getUrlVars: function () {
       var vars = {}
+      // eslint-disable-next-line no-unused-vars
       var parts = window.location.href.replace(
         /[?&]+([^=&]+)=([^&#]*)/gi,
         function (m, key, value) {
