@@ -8,10 +8,10 @@ export function getMyRecipe (params) {
   })
 }
 
-// export function getArticleBySort (params) {
-//   return request({
-//     url: process.env.WEB_API + '/sort/getArticleBySort',
-//     method: 'get',
-//     params
-//   })
-// }
+export function deleteMyRecipe (params) {
+  return request({
+    url: process.env.WEB_API + '/sort/deleteRecipe',
+    method: 'get',
+    params
+  })
+}

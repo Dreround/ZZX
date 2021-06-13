@@ -31,6 +31,8 @@
                     v-if="item.summary != null"
                     @click="goToList('blogContent', item.title)"
                   >{{item.summary}}</el-tag>
+                  <el-tag style="cursor: pointer;"
+                          @click="deleteMyRecipe(item.uid)">删除</el-tag>
                 </el-card>
               </el-timeline-item>
             </el-timeline>
@@ -42,7 +44,7 @@
 </template>
 
 <script>
-import { getMyRecipe} from '../api/myRecipe'
+import { getMyRecipe,deleteMyRecipe} from '../api/myRecipe'
 import {mapMutations} from 'vuex'
 
 export default {
@@ -80,19 +82,19 @@ export default {
   },
   methods: {
     ...mapMutations(['getUserInfo', 'setUserInfo']),
-    // clickActivity (id) {
-    //   this.selectContent = id
-    //   var params = new URLSearchParams()
-    //   console.log("this is id")
-    //   console.log(id)
-    //   params.append('id', id)
-    //   getArticleBySort(params).then(response => {
-    //     if (response.data.code == this.$ECode.SUCCESS) {
-    //       this.itemBySort = response.data.records
-    //       console.log(this.itemBySort)
-    //     }
-    //   })
-    // },
+    deleteMyRecipe (id) {
+      var params = new URLSearchParams()
+      params.append('Recipe_id', id)
+      deleteMyRecipe(params).then(response => {
+        if (response.data.code == this.$ECode.SUCCESS) {
+          // this.itemBySort = response.data.records
+          // console.log(this.itemBySort)
+          this.$commonUtil.message.info('删除成功')
+        }
+      }).catch(error => {
+        this.$commonUtil.message.info('删除失败')
+      })
+    },
     // 跳转到搜索详情页
     goToList (type, entity) {
       switch (type) {
