@@ -165,7 +165,7 @@ export default {
     }).catch(error => {
       console.log(error)
       for (let i = 0; i < 2; ++i) {
-        this.secondData.push({title: 'Alibaba', labels: '技术', photoList: ['../../static/images/banner.png']})
+        this.secondData.push({title: '烩面', labels: '豫菜', photoList: ['../../static/images/huimian.jpeg']})
       }
     })
     // 获取最新博客
