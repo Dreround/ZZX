@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getBlogList(params) {
+export function getBlogList (params) {
   return request({
     url: process.env.ADMIN_API + '/blog/getList',
     method: 'post',
@@ -8,7 +8,7 @@ export function getBlogList(params) {
   })
 }
 
-export function addBlog(params) {
+export function addBlog (params) {
   return request({
     url: process.env.WEB_API + '/blog/add',
     method: 'post',
@@ -24,8 +24,7 @@ export function uploadLocalBlog(params) {
   })
 }
 
-
-export function editBlog(params) {
+export function editBlog (params) {
   return request({
     url: process.env.ADMIN_API + '/blog/edit',
     method: 'post',
@@ -33,7 +32,7 @@ export function editBlog(params) {
   })
 }
 
-export function editBatchBlog(params) {
+export function editBatchBlog (params) {
   return request({
     url: process.env.ADMIN_API + '/blog/editBatch',
     method: 'post',
@@ -41,7 +40,7 @@ export function editBatchBlog(params) {
   })
 }
 
-export function deleteBlog(params) {
+export function deleteBlog (params) {
   return request({
     url: process.env.ADMIN_API + '/blog/delete',
     method: 'post',
@@ -49,7 +48,7 @@ export function deleteBlog(params) {
   })
 }
 
-export function deleteBatchBlog(params) {
+export function deleteBatchBlog (params) {
   return request({
     url: process.env.ADMIN_API + '/blog/deleteBatch',
     method: 'post',

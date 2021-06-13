@@ -9,9 +9,9 @@ export function getMe (params) {
 }
 
 export function getContact (params) {
-    return request({
-      url: process.env.WEB_API + '/about/getContact',
-      method: 'get',
-      params
-    })
-  }
+  return request({
+    url: process.env.WEB_API + '/about/getContact',
+    method: 'get',
+    params
+  })
+}
