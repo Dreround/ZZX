@@ -26,9 +26,11 @@ export default {
       }
     }).catch(error => {
       console.log(error)
-      for (let i = 0; i < 5; ++i) {
-        this.hotTagData.push({uid: '1', name: '技术'})
-      }
+      this.hotTagData.push({uid: '1', name: '川菜'})
+      this.hotTagData.push({uid: '2', name: '豫菜'})
+      this.hotTagData.push({uid: '3', name: '湘菜'})
+      this.hotTagData.push({uid: '4', name: '浙菜'})
+      this.hotTagData.push({uid: '5', name: '粤菜'})
     })
   },
   methods: {
