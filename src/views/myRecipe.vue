@@ -3,24 +3,10 @@
     <div class="pagebg sorts"></div>
     <div class="container">
       <h1 class="t_nav">
-        <span>{{activities[selectContent].description}}</span>
         <a href="/" class="n1">网站首页</a>
         <a href="javascript:void(0);" class="n2">我的菜谱</a>
       </h1>
       <div class="sortBox">
-        <div class="time">
-          <div class="block">
-            <el-timeline :reverse="reverse">
-              <el-timeline-item v-for="(activity, index) in activities" hide-timestamp :key="index">
-                <span
-                  @click="clickActivity(activity.id)"
-                  :class="[activity.id == selectContent ? 'sortBoxSpan sortBoxSpanSelect' : 'sortBoxSpan']"
-                >{{activity.content}}</span>
-              </el-timeline-item>
-            </el-timeline>
-          </div>
-        </div>
-
         <div class="article">
           <div class="block">
             <el-timeline>
@@ -33,8 +19,6 @@
                 <el-card>
                   <h4 @click="goToList('blogContent', item)" class="itemTitle">{{item.title}}</h4>
                   <br>
-                  <!--                  <el-tag class="elTag" v-if="item.isOriginal==1" type="danger">原创</el-tag>-->
-                  <!--                  <el-tag class="elTag" v-if="item.isOriginal==0" type="info">转载</el-tag>-->
                   <el-tag
                     class="elTag"
                     v-if="item.author"
@@ -44,17 +28,9 @@
                   <el-tag
                     class="elTag"
                     type="success"
-                    v-if="item.blogSort != null"
-                    @click="goToList('blogSort', item.blogSort)"
-                  >{{item.blogSort.sortName}}</el-tag>
-                  <el-tag
-                    class="elTag"
-                    v-for="tagItem in item.labels"
-                    v-if="tagItem != null"
-                    :key="tagItem.uid"
-                    @click="goToList('tag', tagItem)"
-                    type="warning"
-                  >{{tagItem.content}}</el-tag>
+                    v-if="item.summary != null"
+                    @click="goToList('blogContent', item.title)"
+                  >{{item.summary}}</el-tag>
                 </el-card>
               </el-timeline-item>
             </el-timeline>
@@ -66,7 +42,8 @@
 </template>
 
 <script>
-import { getSortList, getArticleBySort } from '../api/sort'
+import { getMyRecipe} from '../api/myRecipe'
+
 export default {
   data () {
     return {
@@ -83,32 +60,33 @@ export default {
   },
   mounted () {},
   created () {
-    getMyRecipe().then(response => {
-      this.userInfo
+    let uid = 1
+    getMyRecipe(uid).then(response => {
       if (response.data.code == this.$ECode.SUCCESS) {
-        this.activities = response.data.records
-        console.log(this.activities)
-        // this.clickActivity(this.activities[this.activities.length - 1].id)
-        this.selectContent = this.activities.length - 1
+        this.itemBySort = response.data.records
       }
     }).catch(error => {
+      this.$commonUtil.message.info(uid)
+      for (let i = 0; i < 5; ++i) {
+        this.itemBySort.push({title: 'test', author: 'ptss', labels: ['技术', '数据库'], summary: '略略略', clickCount: 100, likeCount: 200, time: '2020-12-2'})
+      }
       console.log("getsortlist failed")
     })
   },
   methods: {
-    clickActivity (id) {
-      this.selectContent = id
-      var params = new URLSearchParams()
-      console.log("this is id")
-      console.log(id)
-      params.append('id', id)
-      getArticleBySort(params).then(response => {
-        if (response.data.code == this.$ECode.SUCCESS) {
-          this.itemBySort = response.data.records
-          console.log(this.itemBySort)
-        }
-      })
-    },
+    // clickActivity (id) {
+    //   this.selectContent = id
+    //   var params = new URLSearchParams()
+    //   console.log("this is id")
+    //   console.log(id)
+    //   params.append('id', id)
+    //   getArticleBySort(params).then(response => {
+    //     if (response.data.code == this.$ECode.SUCCESS) {
+    //       this.itemBySort = response.data.records
+    //       console.log(this.itemBySort)
+    //     }
+    //   })
+    // },
     // 跳转到搜索详情页
     goToList (type, entity) {
       switch (type) {
