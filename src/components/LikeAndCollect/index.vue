@@ -16,7 +16,7 @@
     <div class="shang_box" v-if="showCollect">
       <a class="shang_close" href="javascript:void(0)" @click="collectToggle()" title="关闭">关闭</a>
       <el-form label-position="top" >
-        <el-form-item label="名称" prop="userName">
+        <el-form-item label="名称" prop="user_name">
           <el-input v-model="collectName" placeholder="收藏博客命名"></el-input>
         </el-form-item>
         <el-row class="btn">

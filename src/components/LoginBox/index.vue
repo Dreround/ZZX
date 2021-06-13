@@ -11,8 +11,8 @@
       </div>
       <el-divider></el-divider>
       <el-form :label-position="labelPosition" :rules="loginRules" :model="loginForm" ref="loginForm">
-        <el-form-item label="用户名" prop="userName">
-          <el-input v-model="loginForm.userName" placeholder="请输入用户名或邮箱" :disabled="loginType.password"></el-input>
+        <el-form-item label="用户名" prop="user_name">
+          <el-input v-model="loginForm.user_name" placeholder="请输入用户名或邮箱" :disabled="loginType.password"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" :disabled="loginType.password"></el-input>
@@ -34,12 +34,8 @@
       </div>
       <el-divider></el-divider>
       <el-form :rules="rules" :label-position="labelPosition" :model="registerForm" ref="registerForm">
-        <el-form-item label="用户名" prop="userName">
-          <el-input v-model="registerForm.userName" placeholder="用户名长度在5~20之间" :disabled="loginType.password"></el-input>
-        </el-form-item>
-
-        <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="registerForm.nickName" placeholder="昵称长度在1~20之间" :disabled="loginType.password"></el-input>
+        <el-form-item label="用户名" prop="user_name">
+          <el-input v-model="registerForm.user_name" placeholder="用户名长度在5~20之间" :disabled="loginType.password"></el-input>
         </el-form-item>
 
         <el-form-item label="密码" prop="password">
@@ -88,11 +84,11 @@ export default {
       dialog: false,
       labelPosition: 'right',
       loginForm: {
-        userName: '',
+        user_name: '',
         password: ''
       },
       registerForm: {
-        userName: '',
+        user_name: '',
         password: '',
         password2: '',
         email: ''
@@ -106,14 +102,9 @@ export default {
         wechat: true
       },
       loginRules: {
-        userName: [
+        user_name: [
           {required: true, message: '请输入用户名', trigger: 'blur'},
           { min: 5, message: '用户名长度大于等于 5 个字符', trigger: 'blur' },
-          { max: 20, message: '用户名长度不能大于 20 个字符', trigger: 'blur' }
-        ],
-        nickName: [
-          {required: true, message: '请输入昵称', trigger: 'blur'},
-          { min: 1, message: '用户名长度大于等于 1 个字符', trigger: 'blur' },
           { max: 20, message: '用户名长度不能大于 20 个字符', trigger: 'blur' }
         ],
         password: [
@@ -123,13 +114,10 @@ export default {
         ]
       },
       rules: {
-        userName: [
+        user_name: [
           {required: true, message: '请输入用户名', trigger: 'blur'},
           { min: 5, message: '用户名长度大于等于 5 个字符', trigger: 'blur' },
           { max: 20, message: '用户名长度不能大于 20 个字符', trigger: 'blur' }
-        ],
-        nickName: [
-          {required: true, message: '请输入昵称', trigger: 'blur'}
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -158,7 +146,7 @@ export default {
           console.log('校验失败')
         } else {
           var params = {}
-          params.userName = this.loginForm.userName
+          params.user_name = this.loginForm.user_name
           params.passWord = this.loginForm.password
           // params.isRememberMe = 1
           console.log(params)
@@ -203,10 +191,9 @@ export default {
             return
           }
           var params = {}
-          params.userName = this.registerForm.userName
+          params.user_name = this.registerForm.user_name
           params.passWord = this.registerForm.password
           params.email = this.registerForm.email
-          params.nickName = this.registerForm.nickName
           localRegister(params).then(response => {
             if (response.data.code == this.$ECode.SUCCESS) {
               this.$message({

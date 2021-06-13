@@ -279,7 +279,7 @@ export default {
           }
         }).catch(error => {
           console.log(error)
-          this.comments = [{creatTime: '2020-12-6', user: {nickName: 'ptss'}, content: '我怀疑你在ghs'}]
+          this.comments = [{creatTime: '2020-12-6', user: {user_name: 'ptss'}, content: '我怀疑你在ghs'}]
         })
       }
     })
@@ -419,7 +419,7 @@ export default {
           this.total = response.data.total
         }
       }).catch(error => {
-        this.comments = [{creatTime: '2020-12-6', user: {nickName: 'ptss'},content: '我怀疑你在ghs'}]
+        this.comments = [{creatTime: '2020-12-6', user: {user_name: 'ptss'},content: '我怀疑你在ghs'}]
       })
     },
     // 跳转到文章详情

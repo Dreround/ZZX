@@ -40,7 +40,7 @@
           <p class="avatar" v-if="info.photoList">
             <img :src="info.photoList[0]" alt />
           </p>
-          <p class="abname">{{info.nickName}}</p>
+          <p class="abname">{{info.user_name}}</p>
           <p class="abposition">{{info.occupation}}</p>
           <p class="abtext">{{info.summary}}</p>
         </div>

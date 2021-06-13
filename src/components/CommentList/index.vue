@@ -10,7 +10,7 @@
 
         <span class="right p1">
           <div class="rightTop" v-if="item.user">
-            <el-link class="userName" :underline="false">{{item.user.nickName}}</el-link>
+            <el-link class="user_name" :underline="false">{{item.user.user_name}}</el-link>
 <!--            <el-tag style="height: 30px; margin-left:5px;" v-for="userTag in userTagDictList" :key="userTag.uid" v-if="item.user.userTag == userTag.dictValue && item.user.userTag != 0" :type="userTag.listClass">{{userTag.dictLabel}}</el-tag>-->
             <span class="timeAgo" v-if="item.createTime">{{timeAgo(item.createTime)}}</span>
             <span class="timeAgo" v-else>刚刚</span>
@@ -279,7 +279,7 @@ export default {
     // 校验是否登录
     validLogin () {
       let userInfo = this.$store.state.user.userInfo
-      if (userInfo.userName == undefined) {
+      if (userInfo.user_name == undefined) {
         return false
       } else {
         return true
@@ -358,7 +358,7 @@ export default {
     height: 30px;
     margin-top: 2px;
   }
-  .commentList .rightTop .userName {
+  .commentList .rightTop .user_name {
     color: #303133;
     margin-left: 10px;
     font-size: 16px;

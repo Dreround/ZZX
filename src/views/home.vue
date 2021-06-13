@@ -118,7 +118,7 @@
 
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="login" v-show="!isLogin">登录</el-dropdown-item>
-          <el-dropdown-item command="goUserInfo" v-show="isLogin">个人中心</el-dropdown-item>
+          <el-dropdown-item command="goUserInfo" v-show="!isLogin">个人中心</el-dropdown-item>
           <el-dropdown-item command="logout" v-show="isLogin">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -150,39 +150,13 @@
             </div>
           </el-form-item>
 
+          <el-form-item label="ID" :label-width="labelWidth">
+            <el-input v-model="userInfo.user_name" style="width: 100%"></el-input>
+          </el-form-item>
+
           <el-form-item label="昵称" :label-width="labelWidth">
-            <el-input v-model="userInfo.nickName" style="width: 100%"></el-input>
+            <el-input v-model="userInfo.user_name" style="width: 100%"></el-input>
           </el-form-item>
-          <el-form-item label="信誉积分" :label-width="labelWidth">
-            <el-input v-model="userInfo.reputation" style="width: 100%" :disabled="true"></el-input>
-          </el-form-item>
-          <!--          <el-form-item label="性别" :label-width="labelWidth">-->
-          <!--            <el-radio v-for="gender in genderDictList" :key="gender.uid" v-model="userInfo.gender" :label="gender.dictValue" border size="medium">{{gender.dictLabel}}</el-radio>-->
-          <!--          </el-form-item>-->
-
-          <!--          <el-form-item label="生日" :label-width="labelWidth">-->
-          <!--            <el-date-picker-->
-          <!--              v-model="userInfo.birthday"-->
-          <!--              type="date"-->
-          <!--              placeholder="选择日期">-->
-          <!--            </el-date-picker>-->
-          <!--          </el-form-item>-->
-
-          <el-form-item label="积分" :label-width="labelWidth">
-            <el-input v-model="userInfo.credit" style="width: 100%" :disabled="true"></el-input>
-          </el-form-item>
-
-          <el-form-item label="邮箱" :label-width="labelWidth" prop="email">
-            <el-input v-model="userInfo.email" style="width: 100%"></el-input>
-          </el-form-item>
-
-<!--                    <el-form-item label="QQ号" :label-width="labelWidth" prop="qqNumber">
-                      <el-input v-model="userInfo.qqNumber" style="width: 100%"></el-input>
-                    </el-form-item>-->
-
-          <!--          <el-form-item label="职业" :label-width="labelWidth">-->
-          <!--            <el-input v-model="userInfo.occupation" style="width: 100%"></el-input>-->
-          <!--          </el-form-item>-->
 
           <el-form-item label="简介" :label-width="labelWidth">
             <el-input
@@ -218,7 +192,7 @@
 
                   <span class="right p1">
                     <div class="rightTop">
-                      <el-link class="userName" :underline="false">{{ comment.user.nickName }}</el-link>
+                      <el-link class="user_name" :underline="false">{{ comment.user.user_name }}</el-link>
                       <el-tag style="cursor: pointer;"
                               @click.native="goSource(comment)">{{ comment.user.sourceName }}</el-tag>
                     </div>
@@ -260,7 +234,7 @@
                   <span class="right p1">
 
                       <div class="rightTop">
-                        <el-link class="userName" :underline="false">{{ reply.user.nickName }}</el-link>
+                        <el-link class="user_name" :underline="false">{{ reply.user.user_name }}</el-link>
                         <el-tag style="cursor: pointer;" @click.native="goSource(reply)">{{ reply.user.sourceName }}</el-tag>
                       </div>
 
@@ -403,8 +377,8 @@
             <el-timeline-item v-for="follow in followList" :key="follow.createTime"
                               :timestamp="timeAgo(follow.createTime)" placement="top">
               <el-card>
-                <el-tag type="warning" style="cursor: pointer" v-if="follow.nickName"
-                        @click.native="goToInfo(follow.follower_id)">{{ follow.nickName }}
+                <el-tag type="warning" style="cursor: pointer" v-if="follow.user_name"
+                        @click.native="goToInfo(follow.follower_id)">{{ follow.user_name }}
                 </el-tag>
                 <el-tag style="cursor: pointer;" >取消关注</el-tag>
               </el-card>
@@ -517,7 +491,6 @@ export default {
       activeNames: ['1', '2'], // 激活的折叠面板
       activeName: '0', // 激活的标签
       yesNoDictList: [], // 是否 字典列表
-      genderDictList: [], // 性别 字典列表
       feedbackDictList: [], // 反馈 字典列表
       imagecropperShow: false,
       imagecropperKey: 0,
@@ -844,7 +817,8 @@ export default {
       // 判断当前激活的页面
       if (this.activeName === '0') {
         // 激活个人中心页面
-        this.userInfo.photoUrl = resData[0].url
+
+        this.userInfo.photoUrl = resData[0].image
         this.userInfo.avatar = resData[0].uid
       } else if (this.activeName === '5') {
         let photoList = []
@@ -1329,7 +1303,7 @@ export default {
   height: 30px;
 }
 
-.commentList .rightTop .userName {
+.commentList .rightTop .user_name {
   color: #303133;
   margin-left: 10px;
   font-size: 16px;
