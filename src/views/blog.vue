@@ -16,6 +16,9 @@
             <el-form-item :label-width="formLabelWidth" label="简介">
               <el-input v-model="form.summary" auto-complete="off" />
             </el-form-item>
+            <el-form-item :label-width="formLabelWidth" label="小贴士">
+              <el-input v-model="form.summary" auto-complete="off" />
+            </el-form-item>
           </el-col>
 
 <!--          <el-col :span="8">-->
@@ -79,11 +82,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="6.5">
-            <el-form-item label="所需积分" label-width="80px">
-              <el-input v-model="form.need_credit" auto-complete="off" @input="contentChange"/>
-            </el-form-item>
-          </el-col>
+<!--          <el-col :span="6.5">-->
+<!--            <el-form-item label="所需积分" label-width="80px">-->
+<!--              <el-input v-model="form.need_credit" auto-complete="off" @input="contentChange"/>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
 <!--          <el-col :span="6.5">-->
 <!--            <el-form-item :label-width="maxLineLabelWidth" label="推荐等级" prop="level">-->
 <!--              <el-select v-model="form.level" size="small" placeholder="请选择" style="width:210px">-->
@@ -127,8 +130,11 @@
 <!--            </el-form-item>-->
 <!--          </el-col>-->
 <!--        </el-row>-->
-
-        <el-form-item :label-width="formLabelWidth" label="内容" prop="content">
+        <el-form-item :label-width="formLabelWidth" label="配料" prop="content">
+          <ckeditor v-if="systemConfig.editorModel == '0'" ref="editor" v-model="form.content" :height="360"/>
+          <MarkdownEditor v-if="systemConfig.editorModel == '1'" ref="editor" :content="form.content" :height="465"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="步骤" prop="content">
           <ckeditor v-if="systemConfig.editorModel == '0'" ref="editor" v-model="form.content" :height="360"/>
           <MarkdownEditor v-if="systemConfig.editorModel == '1'" ref="editor" :content="form.content" :height="465"/>
         </el-form-item>
