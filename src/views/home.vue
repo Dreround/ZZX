@@ -37,11 +37,11 @@
           </router-link>
         </li>
 
-        <li>
-          <router-link to="/sort">
-            <a href="javascript:void(0);" :class="[saveTitle == '/sort' ? 'title' : '']">归档</a>
-          </router-link>
-        </li>
+<!--        <li>-->
+<!--          <router-link to="/sort">-->
+<!--            <a href="javascript:void(0);" :class="[saveTitle == '/sort' ? 'title' : '']">归档</a>-->
+<!--          </router-link>-->
+<!--        </li>-->
 
         <li>
           <router-link to="/classify">
@@ -64,6 +64,11 @@
         <li>
           <router-link to="/blog">
             <a href="javascript:void(0);" :class="[saveTitle == '/blog' ? 'title' : '']">上传菜谱</a>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/myRecipe">
+            <a href="javascript:void(0);" :class="[saveTitle == '/myRecipe' ? 'title' : '']">我的菜谱</a>
           </router-link>
         </li>
         <li v-if="userInfo.role==1">
