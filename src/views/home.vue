@@ -788,12 +788,14 @@ export default {
         }
           ;
           break
+        // eslint-disable-next-line no-lone-blocks
         case '3': {
           console.log('点击我的点赞')
           this.getPraiseList()
         }
           ;
           break
+        // eslint-disable-next-line no-lone-blocks
         case '4': {
           console.log('点击我的反馈')
           this.getFeedback()
