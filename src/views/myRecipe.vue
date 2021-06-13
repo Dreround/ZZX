@@ -43,6 +43,7 @@
 
 <script>
 import { getMyRecipe} from '../api/myRecipe'
+import {mapMutations} from 'vuex'
 
 export default {
   data () {
@@ -60,13 +61,17 @@ export default {
   },
   mounted () {},
   created () {
-    let uid = 1
-    getMyRecipe(uid).then(response => {
+    let info = {}
+    //info = this.$store.state.userInfo
+    info.uid = 1
+    console.log(info.uid)
+    // this.$commonUtil.message.info(info)
+    getMyRecipe(info).then(response => {
       if (response.data.code == this.$ECode.SUCCESS) {
         this.itemBySort = response.data.records
       }
     }).catch(error => {
-      this.$commonUtil.message.info(uid)
+      //this.$commonUtil.message.info(uid)
       for (let i = 0; i < 5; ++i) {
         this.itemBySort.push({title: 'test', author: 'ptss', labels: ['技术', '数据库'], summary: '略略略', clickCount: 100, likeCount: 200, time: '2020-12-2'})
       }
@@ -74,6 +79,7 @@ export default {
     })
   },
   methods: {
+    ...mapMutations(['getUserInfo', 'setUserInfo']),
     // clickActivity (id) {
     //   this.selectContent = id
     //   var params = new URLSearchParams()
