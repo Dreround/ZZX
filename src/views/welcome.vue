@@ -4,12 +4,12 @@
 </template>
 
 <script>
-//import someComponent from './someComponent'
+// import someComponent from './someComponent'
 export default {
   name: "",
   data() {
     return {
-      msg: "Hello Vue.js"
+      msg: 'Hello Vue.js'
     }
   },
   component: {
