@@ -151,7 +151,7 @@
           </el-form-item>
 
           <el-form-item label="ID" :label-width="labelWidth">
-            <el-input v-model="userInfo.user_name" style="width: 100%"></el-input>
+            <el-input v-model="userInfo.user_id" style="width: 100%"></el-input>
           </el-form-item>
 
           <el-form-item label="昵称" :label-width="labelWidth">
