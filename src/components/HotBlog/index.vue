@@ -33,7 +33,7 @@ export default {
     }).catch(error => {
       console.log(error)
       for (let i = 0; i < 5; ++i) {
-        this.hotBlogData.push({title: 'test', author: 'ptss', label: '技术', summary: '略略略', clickCount: 100, likeCount: 200, time: '2020-12-2', photoList: ['../../static/images/banner.png']})
+        this.hotBlogData.push({title: '胡辣汤', author: 'ptss', label: '技术', summary: '略略略', clickCount: 100, likeCount: 200, time: '2020-12-2', photoList: ['../../static/images/hulatang.jpeg']})
       }
     })
   },
