@@ -174,6 +174,15 @@ export default {
   components: {
     MarkdownEditor
   },
+  props: {
+    title: {
+      default: "新增菜谱"
+    },
+    isEdit: {
+      default: false,
+      type: Boolean
+    }
+  },
   data () {
     return {
       uploadLoading: null, // 文件上传loading
@@ -182,7 +191,7 @@ export default {
       tagData: [], // 标签数据
       tagValue: [], // 保存选中标签id(编辑时)
       blogSortData: [{uid: 1, name: '技术'}, {uid: 2, name: '大数据'}],
-      title: '增加菜谱',
+      title: '新增菜谱',
       dialogFormVisible: true, // 控制弹出框
       subjectVisible: false, // 是否显示专题
       isFirstSubjectVisible: true, // 专题选择器是否首次显示【用于懒加载】
@@ -259,7 +268,6 @@ export default {
   },
   created () {
     console.log('-----------------------------------------')
-    this.title = '新增菜谱'
     //  const that = this
     // // const tempForm = JSON.parse(getCookie('form'))
     //  const tempForm=null
@@ -469,6 +477,7 @@ export default {
         } else {
           this.form.tagUid = this.tagValue.join(',')
           if (this.isEditForm) {
+            this.$commonUtil.message.success('编辑提交')
             editBlog(this.form).then(response => {
               if (response.data.code === this.$ECode.SUCCESS) {
                 this.$commonUtil.message.success(response.message)

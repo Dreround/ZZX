@@ -26,7 +26,7 @@ export function uploadLocalBlog (params) {
 
 export function editBlog (params) {
   return request({
-    url: process.env.ADMIN_API + '/blog/edit',
+    url: process.env.ADMIN_API + '/personalRecipeManage/updateRecipe',
     method: 'post',
     data: params
   })

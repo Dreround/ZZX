@@ -21,9 +21,9 @@
                   <br>
                   <el-tag
                     class="elTag"
-                    v-if="item.author"
-                    @click="goToList('author', item)"
-                  >{{item.author}}</el-tag>
+                    v-if="item.holder"
+                    @click="goToList('holder', item)"
+                  >{{item.holder}}</el-tag>
 
                   <el-tag
                     class="elTag"
@@ -32,7 +32,9 @@
                     @click="goToList('blogContent', item.title)"
                   >{{item.summary}}</el-tag>
                   <el-tag style="cursor: pointer;"
-                          @click="deleteMyRecipe(item.uid)">删除</el-tag>
+                          @click="updateMyRecipe(item.recipe_id)">编辑</el-tag>
+                  <el-tag style="cursor: pointer;"
+                          @click="deleteMyRecipe(item.recipe_id)">删除</el-tag>
                 </el-card>
               </el-timeline-item>
             </el-timeline>
@@ -44,7 +46,7 @@
 </template>
 
 <script>
-import { getMyRecipe,deleteMyRecipe} from '../api/myRecipe'
+import { getMyRecipe,deleteMyRecipe,getRecipeById} from '../api/myRecipe'
 import {mapMutations} from 'vuex'
 
 export default {
@@ -73,18 +75,17 @@ export default {
         this.itemBySort = response.data.records
       }
     }).catch(error => {
-      //this.$commonUtil.message.info(uid)
+      this.$commonUtil.message.info('后端数据获取失败')
       for (let i = 0; i < 5; ++i) {
-        this.itemBySort.push({title: 'test', author: 'ptss', labels: ['技术', '数据库'], summary: '略略略', clickCount: 100, likeCount: 200, time: '2020-12-2'})
+        this.itemBySort.push({title: 'test', recipe_id:'1', holder: 'ptss', summary: '略略略', clickCount: 100, likeCount: 200, time: '2020-12-2'})
       }
-      console.log("getsortlist failed")
     })
   },
   methods: {
     ...mapMutations(['getUserInfo', 'setUserInfo']),
     deleteMyRecipe (id) {
       var params = new URLSearchParams()
-      params.append('Recipe_id', id)
+      params.append('recipe_id', id)
       deleteMyRecipe(params).then(response => {
         if (response.data.code == this.$ECode.SUCCESS) {
           // this.itemBySort = response.data.records
@@ -93,6 +94,29 @@ export default {
         }
       }).catch(error => {
         this.$commonUtil.message.info('删除失败')
+      })
+    },
+    updateMyRecipe (id) {
+      var params = new URLSearchParams()
+      params.append('recipe_id', id)
+      getRecipeById(params).then(response => {
+        if (response.data.code == this.$ECode.SUCCESS) {
+          let recipe = {}
+          recipe = response.data.records
+          let routeData = this.$router.resolve({
+            path: '/updateRecipe',
+            query: recipe
+          })
+          window.open(routeData.href, '_blank')
+        }
+      }).catch(error => {
+        this.$commonUtil.message.info('编辑失败')
+        let recipe = {}
+        let routeData = this.$router.resolve({
+          path: '/updateRecipe',
+          query: recipe
+        })
+        window.open(routeData.href, '_blank')
       })
     },
     // 跳转到搜索详情页
@@ -117,11 +141,11 @@ export default {
           window.open(routeData.href, '_blank')
         }
           break
-        case 'author':
+        case 'holder':
         {
           let routeData = this.$router.resolve({
             path: '/list',
-            query: { author: entity.author }
+            query: { holder: entity.holder }
           })
           window.open(routeData.href, '_blank')
         }
