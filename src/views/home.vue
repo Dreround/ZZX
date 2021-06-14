@@ -71,7 +71,8 @@
             <a href="javascript:void(0);" :class="[saveTitle == '/myRecipe' ? 'title' : '']">我的菜谱</a>
           </router-link>
         </li>
-        <li v-if="userInfo.role==1">
+<!--        <li>v-if="userInfo.role==1">-->
+        <li>
           <router-link to="/admin">
             <a href="javascript:void(0);" :class="[saveTitle == '/admin' ? 'title' : '']">管理</a>
           </router-link>

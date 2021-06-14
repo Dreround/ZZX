@@ -2,10 +2,8 @@
   <div class="app-container">
     <!-- 查询和其他操作 -->
     <div class="filter-container" style="margin: 65px 0 10px 0;">
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="changeReportState">举报信息管理</el-button>
-      <el-button class="filter-item" type="warning" icon="el-icon-star-on" @click="changeActivityState">活动信息管理
-      </el-button>
-      <el-button v-if="add_visible" class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">添加活动
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="changeReportState">冻结（解冻）用户管理</el-button>
+      <el-button class="filter-item" type="warning" icon="el-icon-star-on" @click="changeActivityState">禁言（解禁）用户管理
       </el-button>
     </div>
     <el-table v-if="report_visible" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
@@ -16,49 +14,31 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="举报用户用户名" width="180" align="center">
+      <el-table-column label="冻结用户用户名" width="180" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.uid }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="被举报博客名称" width="180" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.title }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="举报理由" width="150" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.reason }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="举报时间" width="150" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.time }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="举报状态" width="150" align="center">
+      <el-table-column label="冻结状态" width="150" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.status == 0">
-            <span>未审核</span>
+            <span>正常</span>
           </template>
           <template v-if="scope.row.status == 1">
-            <span>举报成功</span>
+            <span>冻结</span>
           </template>
           <template v-if="scope.row.status == 2">
-            <span>举报失败</span>
+            <span>解冻</span>
           </template>
         </template>
       </el-table-column>
 
       <el-table-column label="操作" fixed="right" min-width="230">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handlePass(scope.row)">审核成功
+          <el-button type="primary" size="small" @click="handlePass(scope.row)">冻结
           </el-button>
-          <el-button type="error" size="small" @click="handleFail(scope.row)">审核失败
+          <el-button type="error" size="small" @click="handleFail(scope.row)">解冻
           </el-button>
         </template>
       </el-table-column>
@@ -72,33 +52,32 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="管理员用户名" width="100" align="center">
+      <el-table-column label="禁言用户用户名" width="100" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.uid }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="活动名称" width="150" align="center">
+      <el-table-column label="禁言状态" width="150" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.sortName }}</span>
+          <template v-if="scope.row.status == 0">
+            <span>正常</span>
+          </template>
+          <template v-if="scope.row.status == 1">
+            <span>禁言</span>
+          </template>
+          <template v-if="scope.row.status == 2">
+            <span>解禁</span>
+          </template>
         </template>
       </el-table-column>
 
-      <el-table-column label="起始时间" width="150" align="center">
+      <el-table-column label="操作" fixed="right" min-width="230">
         <template slot-scope="scope">
-          <span>{{ scope.row.startTime }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="终止时间" width="150" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.endTime }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="奖励个人积分" width="200" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.credit }}</span>
+          <el-button type="primary" size="small" @click="handlePass(scope.row)">禁言
+          </el-button>
+          <el-button type="error" size="small" @click="handleFail(scope.row)">解禁
+          </el-button>
         </template>
       </el-table-column>
 
@@ -217,17 +196,9 @@ export default {
         console.log(error)
         this.tableData = [{
           uid: '1',
-          blog_id: '1',
-          title: 'test',
-          reason: 'ghs',
-          time: '2020-12-7',
           status: '0'
         }, {
           uid: '1',
-          blog_id: '1',
-          title: 'test',
-          reason: 'ghs',
-          time: '2020-12-7',
           status: '0'
         }]
       })
@@ -239,15 +210,9 @@ export default {
         console.log(error)
         this.tableData = [{
           uid: '1',
-          sortName: 'test',
-          startTime: '2020-12-7',
-          endTime: '2020-12-7',
-          credit: 10
+          status: '0'
         }, { uid: '1',
-          sortName: 'test',
-          startTime: '2020-12-7',
-          endTime: '2020-12-7',
-          credit: 10}
+          status: '0'}
         ]
       })
     },
@@ -263,10 +228,6 @@ export default {
       this.add_visible = true
       this.sortList()
     },
-    handleAdd: function () {
-      this.dialogFormVisible = true
-      this.form = this.getFormObject()
-    },
     handlePass: function (row) {
       row.status=1
       let params = row
@@ -281,7 +242,6 @@ export default {
       })
     },
     handleFail: function (row) {
-      row.status=2
       let params = row
       workReport(params).then(response => {
         if (response.data.code == this.$ECode.SUCCESS) {
@@ -293,36 +253,10 @@ export default {
         }
       })
     },
-    handleDelete: function (row) {
-      var that = this
-      this.$confirm('此操作将把分类删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          var params = []
-          params.push(row)
-          deleteBatchBlogSort(params).then(response => {
-            if (response.data.code == this.$ECode.SUCCESS) {
-              this.$commonUtil.message.success(response.message)
-            } else {
-              this.$commonUtil.message.error(response.message)
-            }
-            that.blogSortList()
-          })
-        })
-        .catch(() => {
-          this.$commonUtil.message.info('已取消删除')
-        })
-    },
     getFormObject: function () {
       let formObject = {
-        sortName: '',
-        description: '',
-        startTime: '',
-        endTime: '',
-        credit: 0
+        uid: '',
+        state: ''
       }
       return formObject
     },
