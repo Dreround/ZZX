@@ -241,6 +241,44 @@
         </div>
 
       </el-tab-pane>
+      
+      <el-tab-pane label="我的评论" name="1" @click="this.getCommentList">
+        <span slot="label"><i class="el-icon-message-solid"></i> 我的评论</span>
+        <div style="width: 100%; height: 840px;overflow:auto;">
+          <el-timeline>
+            <el-timeline-item v-for="comment in commentList" :key="comment.uid" :timestamp="timeAgo(comment.createTime)"
+                              placement="top">
+              <el-card>
+                <div class="commentList">
+                <span class="left p1">
+                  <img v-if="comment.user"
+                       :src="comment.user.photoUrl ? comment.user.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
+                       onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>
+                  <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"/>
+                </span>
+
+                  <span class="right p1">
+                    <div class="rightTop">
+                      <el-link class="userName" :underline="false">{{ comment.user.nickName }}</el-link>
+                      <el-tag style="cursor: pointer;"
+                              @click="goSource(comment)">{{ comment.user.sourceName }}</el-tag>
+                    </div>
+
+                  <div class="rightCenter" v-html="$xss(comment.user.content, options)"></div>
+                </span>
+                </div>
+              </el-card>
+            </el-timeline-item>
+
+            <el-timeline-item v-if="commentList.length == 0" placement="top">
+              <el-card>
+                <span style="font-size: 16px">空空如也~</span>
+              </el-card>
+            </el-timeline-item>
+          </el-timeline>
+        </div>
+      </el-tab-pane>
+
     </el-tabs>
   </el-drawer>
 
