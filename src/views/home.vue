@@ -31,11 +31,11 @@
           </router-link>
         </li>
 
-        <li>
-          <router-link to="/about">
-            <a href="javascript:void(0);" :class="[saveTitle == '/about' ? 'title' : '']">关于我</a>
-          </router-link>
-        </li>
+<!--        <li>-->
+<!--          <router-link to="/about">-->
+<!--            <a href="javascript:void(0);" :class="[saveTitle == '/about' ? 'title' : '']">关于我</a>-->
+<!--          </router-link>-->
+<!--        </li>-->
 
 <!--        <li>-->
 <!--          <router-link to="/sort">-->
@@ -43,23 +43,23 @@
 <!--          </router-link>-->
 <!--        </li>-->
 
-        <li>
-          <router-link to="/classify">
-            <a href="javascript:void(0);" :class="[saveTitle == '/classify' ? 'title' : '']">分类</a>
-          </router-link>
-        </li>
+<!--        <li>-->
+<!--          <router-link to="/classify">-->
+<!--            <a href="javascript:void(0);" :class="[saveTitle == '/classify' ? 'title' : '']">分类</a>-->
+<!--          </router-link>-->
+<!--        </li>-->
 
-        <li>
-          <router-link to="/tag">
-            <a href="javascript:void(0);" :class="[saveTitle == '/tag' ? 'title' : '']">标签</a>
-          </router-link>
-        </li>
+<!--        <li>-->
+<!--          <router-link to="/tag">-->
+<!--            <a href="javascript:void(0);" :class="[saveTitle == '/tag' ? 'title' : '']">标签</a>-->
+<!--          </router-link>-->
+<!--        </li>-->
 
-        <li>
-          <router-link to="/subject">
-            <a href="javascript:void(0);" :class="[saveTitle == '/subject' ? 'title' : '']">专题</a>
-          </router-link>
-        </li>
+<!--        <li>-->
+<!--          <router-link to="/subject">-->
+<!--            <a href="javascript:void(0);" :class="[saveTitle == '/subject' ? 'title' : '']">专题</a>-->
+<!--          </router-link>-->
+<!--        </li>-->
 
         <li>
           <router-link to="/blog">
