@@ -17,7 +17,7 @@
                 placement="top"
               >
                 <el-card>
-                  <h4 @click="goToList('blogContent', item)" class="itemTitle">{{item.title}}</h4>
+                  <h4 @click="goToList('recipeContent', item)" class="itemTitle">{{item.title}}</h4>
                   <br>
                   <el-tag
                     class="elTag"
@@ -29,7 +29,7 @@
                     class="elTag"
                     type="success"
                     v-if="item.summary != null"
-                    @click="goToList('blogContent', item.title)"
+                    @click="goToList('recipeContent', item.title)"
                   >{{item.summary}}</el-tag>
                   <el-tag style="cursor: pointer;"
                           @click="updateMyRecipe(item.recipe_id)">编辑</el-tag>
@@ -90,8 +90,6 @@ export default {
       params.append('recipe_id', id)
       deleteMyRecipe(params).then(response => {
         if (response.data.code == this.$ECode.SUCCESS) {
-          // this.itemBySort = response.data.records
-          // console.log(this.itemBySort)
           this.$commonUtil.message.info('删除成功')
         }
       }).catch(error => {
@@ -130,25 +128,25 @@ export default {
     // 跳转到搜索详情页
     goToList (type, entity) {
       switch (type) {
-        case 'tag':
-        {
-          // 标签uid
-          let routeData = this.$router.resolve({
-            path: '/list',
-            query: { tagUid: entity.uid }
-          })
-          window.open(routeData.href, '_blank')
-        }
-          break
-        case 'blogSort':
-        {
-          let routeData = this.$router.resolve({
-            path: '/list',
-            query: { sortUid: entity.blogSort.uid }
-          })
-          window.open(routeData.href, '_blank')
-        }
-          break
+        // case 'tag':
+        // {
+        //   // 标签uid
+        //   let routeData = this.$router.resolve({
+        //     path: '/list',
+        //     query: { tagUid: entity.uid }
+        //   })
+        //   window.open(routeData.href, '_blank')
+        // }
+        //   break
+        // case 'blogSort':
+        // {
+        //   let routeData = this.$router.resolve({
+        //     path: '/list',
+        //     query: { sortUid: entity.blogSort.uid }
+        //   })
+        //   window.open(routeData.href, '_blank')
+        // }
+        //   break
         case 'holder':
         {
           let routeData = this.$router.resolve({
@@ -159,17 +157,17 @@ export default {
         }
           break
 
-        case 'blogContent':
+        case 'recipeContent':
         {
-          if (entity.type == '0') {
+          //if (entity.type == '0') {
             let routeData = this.$router.resolve({
               path: '/info',
-              query: { blogOid: entity.oid }
+              query: { blogOid: entity.recipe_id }
             })
             window.open(routeData.href, '_blank')
-          } else if (entity.type == '1') {
-            window.open(entity.outsideLink, '_blank')
-          }
+          //} else if (entity.type == '1') {
+            //window.open(entity.outsideLink, '_blank')
+          //}
         }
           break
       }
