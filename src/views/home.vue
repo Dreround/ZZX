@@ -187,15 +187,15 @@
             <el-timeline-item v-if="collectlist.length == 0" placement="top">
               <div id="app14">
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="picked" id="r4" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="picked" id="r5" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="picked" id="r6" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
               </div>
@@ -223,15 +223,15 @@
             <el-timeline-item v-if="history.length == 0" placement="top">
               <div id="app14">
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="picked" id="r1" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="picked" id="r2" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="picked" id="r3" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
               </div>
@@ -241,7 +241,7 @@
         </div>
 
       </el-tab-pane>
-      
+
       <el-tab-pane label="我的评论" name="1" @click="this.getCommentList">
         <span slot="label"><i class="el-icon-message-solid"></i> 我的评论</span>
         <div style="width: 100%; height: 840px;overflow:auto;">
