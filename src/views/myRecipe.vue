@@ -65,11 +65,13 @@ export default {
   },
   mounted () {},
   created () {
+    //this.$commonUtil.message.info('xxx')
     let info = {}
-    //info = this.$store.state.userInfo
     info.uid = 1
+    this.setUserInfo(info)
+    info = this.$store.state.user.userInfo
     console.log(info.uid)
-    // this.$commonUtil.message.info(info)
+    //this.$commonUtil.message.info(this.$store.state.user.userInfo)
     getMyRecipe(info).then(response => {
       if (response.data.code == this.$ECode.SUCCESS) {
         this.itemBySort = response.data.records
@@ -77,12 +79,12 @@ export default {
     }).catch(error => {
       this.$commonUtil.message.info('后端数据获取失败')
       for (let i = 0; i < 5; ++i) {
-        this.itemBySort.push({title: 'test', recipe_id:'1', holder: 'ptss', summary: '略略略', clickCount: 100, likeCount: 200, time: '2020-12-2'})
+        this.itemBySort.push({title: 'test', recipe_id:'1', holder: 'ptss', summary: '略略略', time: '2020-12-2'})
       }
     })
   },
   methods: {
-    ...mapMutations(['getUserInfo', 'setUserInfo']),
+    ...mapMutations(['setUserInfo']),
     deleteMyRecipe (id) {
       var params = new URLSearchParams()
       params.append('recipe_id', id)
@@ -111,7 +113,13 @@ export default {
         }
       }).catch(error => {
         this.$commonUtil.message.info('编辑失败')
-        let recipe = {}
+        let recipe = {
+          'recipe_id': "1",
+          'recipe_name': "name",
+          'tips': "this is a test",
+          'ingredient': "this is ingredient",
+          'steps': "this is steps"
+        }
         let routeData = this.$router.resolve({
           path: '/updateRecipe',
           query: recipe

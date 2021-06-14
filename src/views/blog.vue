@@ -10,14 +10,14 @@
       <el-form ref="form" :model="form" :rules="rules">
         <el-row>
           <el-col >
-            <el-form-item :label-width="formLabelWidth" label="标题" prop="title">
-              <el-input v-model="form.title" auto-complete="off" @input="contentChange"/>
+            <el-form-item :label-width="formLabelWidth" label="标题" prop="recipe_name">
+              <el-input v-model="form.recipe_name" auto-complete="off" @input="contentChange"/>
             </el-form-item>
-            <el-form-item :label-width="formLabelWidth" label="简介">
-              <el-input v-model="form.summary" auto-complete="off" />
-            </el-form-item>
+<!--            <el-form-item :label-width="formLabelWidth" label="简介">-->
+<!--              <el-input v-model="form.summary" auto-complete="off" />-->
+<!--            </el-form-item>-->
             <el-form-item :label-width="formLabelWidth" label="小贴士">
-              <el-input v-model="form.summary" auto-complete="off" />
+              <el-input v-model="form.tips" auto-complete="off" />
             </el-form-item>
           </el-col>
 
@@ -45,43 +45,43 @@
         </el-row>
 
         <el-row>
-          <el-col :span="6.5">
-            <el-form-item :label-width="formLabelWidth" label="分类" prop="blogSortUid">
-              <el-select
-                v-model="form.blogSortUid"
-                size="small"
-                placeholder="请选择"
-                style="width:150px"
-              >
-                <el-option
-                  v-for="item in blogSortData"
-                  :key="item.uid"
-                  :label="item.name"
-                  :value="item.uid"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
+<!--          <el-col :span="6.5">-->
+<!--            <el-form-item :label-width="formLabelWidth" label="分类" prop="blogSortUid">-->
+<!--              <el-select-->
+<!--                v-model="form.blogSortUid"-->
+<!--                size="small"-->
+<!--                placeholder="请选择"-->
+<!--                style="width:150px"-->
+<!--              >-->
+<!--                <el-option-->
+<!--                  v-for="item in blogSortData"-->
+<!--                  :key="item.uid"-->
+<!--                  :label="item.name"-->
+<!--                  :value="item.uid"-->
+<!--                />-->
+<!--              </el-select>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
 
-          <el-col :span="6.5">
-            <el-form-item label="标签" label-width="80px">
-              <el-select
-                v-model="tagValue"
-                multiple
-                size="small"
-                placeholder="请选择"
-                style="width:210px"
-                filterable
-              >
-                <el-option
-                  v-for="item in tagData"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
+<!--          <el-col :span="6.5">-->
+<!--            <el-form-item label="标签" label-width="80px">-->
+<!--              <el-select-->
+<!--                v-model="tagValue"-->
+<!--                multiple-->
+<!--                size="small"-->
+<!--                placeholder="请选择"-->
+<!--                style="width:210px"-->
+<!--                filterable-->
+<!--              >-->
+<!--                <el-option-->
+<!--                  v-for="item in tagData"-->
+<!--                  :key="item.id"-->
+<!--                  :label="item.name"-->
+<!--                  :value="item.id"-->
+<!--                />-->
+<!--              </el-select>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
 <!--          <el-col :span="6.5">-->
 <!--            <el-form-item label="所需积分" label-width="80px">-->
 <!--              <el-input v-model="form.need_credit" auto-complete="off" @input="contentChange"/>-->
@@ -130,13 +130,13 @@
 <!--            </el-form-item>-->
 <!--          </el-col>-->
 <!--        </el-row>-->
-        <el-form-item :label-width="formLabelWidth" label="配料" prop="content">
-          <ckeditor v-if="systemConfig.editorModel == '0'" ref="editor" v-model="form.content" :height="360"/>
-          <MarkdownEditor v-if="systemConfig.editorModel == '1'" ref="editor" :content="form.content" :height="465"/>
+        <el-form-item :label-width="formLabelWidth" label="配料" prop="ingredient">
+          <ckeditor v-if="systemConfig.editorModel == '0'" ref="editor" v-model="form.ingredient" :height="360"/>
+          <MarkdownEditor v-if="systemConfig.editorModel == '1'" ref="editor" :content="form.ingredient" :height="465"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="步骤" prop="content">
-          <ckeditor v-if="systemConfig.editorModel == '0'" ref="editor" v-model="form.content" :height="360"/>
-          <MarkdownEditor v-if="systemConfig.editorModel == '1'" ref="editor" :content="form.content" :height="465"/>
+        <el-form-item :label-width="formLabelWidth" label="步骤" prop="steps">
+          <ckeditor v-if="systemConfig.editorModel == '0'" ref="editor" v-model="form.steps" :height="360"/>
+          <MarkdownEditor v-if="systemConfig.editorModel == '1'" ref="editor" :content="form.steps" :height="465"/>
         </el-form-item>
 
         <el-form-item style="float: right; margin-right: 20px;">
@@ -181,8 +181,29 @@ export default {
     isEdit: {
       default: false,
       type: Boolean
-    }
+    },
+    steps: {
+      default: ""
+    },
+    ingredient: {
+      default: ""
+    },
+    tips: {
+      default: ""
+    },
+    recipe_id: {
+      default: ""
+    },
+    recipe_name: {
+      default: ""
+    },
   },
+  // inject:{
+  //   steps:{
+  //     from:'steps',
+  //
+  //   },
+  //},
   data () {
     return {
       uploadLoading: null, // 文件上传loading
@@ -192,6 +213,7 @@ export default {
       tagValue: [], // 保存选中标签id(编辑时)
       blogSortData: [{uid: 1, name: '技术'}, {uid: 2, name: '大数据'}],
       title: '新增菜谱',
+      steps: '',
       dialogFormVisible: true, // 控制弹出框
       subjectVisible: false, // 是否显示专题
       isFirstSubjectVisible: true, // 专题选择器是否首次显示【用于懒加载】
@@ -221,43 +243,51 @@ export default {
       localUploadVisible: false,
       systemConfig: {editorModel: 0}, // 系统配置
       form: {
-        title: '',
-        summary: '',
-        content: '',
-        tagUid: '',
-        blogSortUid: '',
-        isOriginal: '', // 是否原创
-        isPublish: '',
-        author: '', // 作者
-        clickCount: 0,
-        articlesPart: '', // 文章出处
-        need_credit:''
+        //title: '',
+        //summary: '',
+        //content: '',
+        recipe_id: '',
+        recipe_name: '',
+        //blogSortUid: '',
+        //isOriginal: '', // 是否原创
+        //isPublish: '',
+        //author: '', // 作者
+        //clickCount: 0,
+        //articlesPart: '', // 文章出处
+        //need_credit:'',
+        steps: '',
+        ingredient: '',
+        tips: ''
+
       },
       rules: {
-        title: [
+        recipe_name: [
           { required: true, message: '标题不能为空', trigger: 'blur' }
         ],
-        blogSortUid: [
-          { required: true, message: '分类不能为空', trigger: 'blur' }
+        // blogSortUid: [
+        //   { required: true, message: '分类不能为空', trigger: 'blur' }
+        // ],
+        // level: [
+        //   { required: true, message: '推荐等级不能为空', trigger: 'blur' },
+        //   { pattern: /^[0-9]\d*$/, message: '推荐等级只能为自然数' }
+        // ],
+        // isPublish: [
+        //   { required: true, message: '发布字段不能为空', trigger: 'blur' },
+        //   { pattern: /^[0-9]\d*$/, message: '发布字段只能为自然数' }
+        // ],
+        // isOriginal: [
+        //   { required: true, message: '原创字段不能为空', trigger: 'blur' },
+        //   { pattern: /^[0-9]\d*$/, message: '原创字段只能为自然数' }
+        // ],
+        // openComment: [
+        //   { required: true, message: '网站评论不能为空', trigger: 'blur' },
+        //   { pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数' }
+        // ],
+        steps: [
+          { required: true, message: '步骤不能为空', trigger: 'blur' }
         ],
-        level: [
-          { required: true, message: '推荐等级不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '推荐等级只能为自然数' }
-        ],
-        isPublish: [
-          { required: true, message: '发布字段不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '发布字段只能为自然数' }
-        ],
-        isOriginal: [
-          { required: true, message: '原创字段不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '原创字段只能为自然数' }
-        ],
-        openComment: [
-          { required: true, message: '网站评论不能为空', trigger: 'blur' },
-          { pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数' }
-        ],
-        content: [
-          { required: true, message: '内容不能为空', trigger: 'blur' }
+        ingredient: [
+          { required: true, message: '配料不能为空', trigger: 'blur' }
         ],
         outsideLink: [
           { required: true, message: '外链地址不能为空', trigger: 'blur' },
@@ -267,6 +297,11 @@ export default {
     }
   },
   created () {
+    this.form.steps = this.steps
+    this.form.recipe_id = this.recipe_id
+    this.form.ingredient = this.ingredient
+    this.form.recipe_name = this.recipe_name
+    this.form.tips = this.tips
     console.log('-----------------------------------------')
     //  const that = this
     // // const tempForm = JSON.parse(getCookie('form'))
@@ -342,10 +377,10 @@ export default {
     // this.getDictList()
     //
     // // 获取标签列表
-    this.tagList()
+    //this.tagList()
     //
     // // 获取博客分类
-    this.blogSortList()
+    //this.blogSortList()
     //
     // // 获取博客列表
     // this.blogList()
@@ -468,14 +503,14 @@ export default {
       this.blogList()
     },
     submitForm: function () {
-      if (this.tagValue.length <= 0) {
-        this.$commonUtil.message.error('标签不能为空!')
-        return
-      }
+      // if (this.tagValue.length <= 0) {
+      //   this.$commonUtil.message.error('标签不能为空!')
+      //   return
+      // }
       this.$refs.form.validate((valid) => {
         if (!valid) {
         } else {
-          this.form.tagUid = this.tagValue.join(',')
+          //this.form.tagUid = this.tagValue.join(',')
           if (this.isEditForm) {
             this.$commonUtil.message.success('编辑提交')
             editBlog(this.form).then(response => {
@@ -484,7 +519,8 @@ export default {
                 // 清空cookie中的内容
                 // delCookie('form')
                 this.dialogFormVisible = false
-                this.blogList()
+                //this.blogList()
+                location.href=this.vueMoguWebUrl + '/#/'
               } else {
                 this.$commonUtil.message.error(response.message)
               }
