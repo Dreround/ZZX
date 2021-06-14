@@ -5,6 +5,8 @@
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="changeReportState">冻结（解冻）用户管理</el-button>
       <el-button class="filter-item" type="warning" icon="el-icon-star-on" @click="changeActivityState">禁言（解禁）用户管理
       </el-button>
+      <el-button class="filter-item" type="warning" icon="el-icon-star-on" @click="changeRecipeState">菜谱推荐
+      </el-button>
     </div>
     <el-table v-if="report_visible" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection"/>
@@ -88,6 +90,48 @@
       <!--        </template>-->
       <!--      </el-table-column>-->
     </el-table>
+    <el-table v-if="add_visible" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
+    <el-table-column type="selection"/>
+    <el-table-column label="序号" width="60" align="center">
+      <template slot-scope="scope">
+        <span>{{ scope.$index + 1 }}</span>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="推荐菜谱ID" width="100" align="center">
+      <template slot-scope="scope">
+        <span>{{ scope.row.uid }}</span>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="推荐状态" width="150" align="center">
+      <template slot-scope="scope">
+        <template v-if="scope.row.status == 0">
+          <span>正常</span>
+        </template>
+        <template v-if="scope.row.status == 1">
+          <span>推荐</span>
+        </template>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="操作" fixed="right" min-width="230">
+      <template slot-scope="scope">
+        <el-button type="primary" size="small" @click="handlePass(scope.row)">推荐
+        </el-button>
+        <el-button type="primary" size="small" @click="handlePass(scope.row)">取消推荐
+        </el-button>
+      </template>
+    </el-table-column>
+
+    <!--      <el-table-column label="操作" fixed="right" min-width="230">-->
+    <!--        <template slot-scope="scope">-->
+    <!--          <el-button v-permission="'/blogSort/stick'" type="warning" size="small" @click="handleStick(scope.row)">审核成功</el-button>-->
+    <!--          <el-button v-permission="'/blogSort/edit'" type="primary" size="small" @click="handleEdit(scope.row)">审核失败</el-button>-->
+    <!--        </template>-->
+    <!--      </el-table-column>-->
+    </el-table>
+
 
     <!--分页-->
     <div class="block">
@@ -198,7 +242,7 @@ export default {
           uid: '1',
           status: '0'
         }, {
-          uid: '1',
+          uid: '2',
           status: '0'
         }]
       })
@@ -211,7 +255,20 @@ export default {
         this.tableData = [{
           uid: '1',
           status: '0'
-        }, { uid: '1',
+        }, { uid: '2',
+          status: '0'}
+        ]
+      })
+    },
+    recipeList: function () {
+      getRecipeList().then(response => {
+        this.tableData = response.data.records
+      }).catch(error => {
+        console.log(error)
+        this.tableData = [{
+          uid: '1',
+          status: '0'
+        }, { uid: '2',
           status: '0'}
         ]
       })
@@ -225,8 +282,14 @@ export default {
     changeActivityState: function () {
       this.report_visible = false
       this.activity_visible = true
-      this.add_visible = true
+      this.add_visible = false
       this.sortList()
+    },
+    changeRecipeState: function () {
+      this.report_visible = false
+      this.activity_visible = false
+      this.add_visible = true
+      this.recipeList()
     },
     handlePass: function (row) {
       row.status=1

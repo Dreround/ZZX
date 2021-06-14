@@ -12,6 +12,12 @@ export function getSortList () {
     method: 'get'
   })
 }
+export function getRecipeList () {
+  return request({
+    url: process.env.WEB_API + '/admin/getRecipeList',
+    method: 'get'
+  })
+}
 export function workReport (params) {
   return request({
     url: process.env.WEB_API + '/admin/workReport',
