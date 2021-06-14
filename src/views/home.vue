@@ -155,176 +155,166 @@
             <el-input v-model="userInfo.user_id" style="width: 100%"></el-input>
           </el-form-item>
 
-          <el-form-item label="昵称" :label-width="labelWidth">
+          <el-form-item label="用户名" :label-width="labelWidth">
             <el-input v-model="userInfo.user_name" style="width: 100%"></el-input>
           </el-form-item>
 
-          <el-form-item label="简介" :label-width="labelWidth">
-            <el-input
-              type="textarea"
-              :autosize="{ minRows: 5, maxRows: 10}"
-              placeholder="请输入内容"
-              style="width: 100%"
-              v-model="userInfo.summary">
-            </el-input>
-          </el-form-item>
-
           <el-form-item>
-            <el-button type="primary" @click="submitForm('editUser')">保 存</el-button>
+            <el-button type="primary" @click="submitForm('changePwd')">修改密码</el-button>
           </el-form-item>
 
         </el-form>
       </el-tab-pane>
 
-      <el-tab-pane label="我的评论" name="1" @click="this.getCommentList">
-        <span slot="label"><i class="el-icon-message-solid"></i> 我的评论</span>
-        <div style="width: 100%; height: 840px;overflow:auto;">
-          <el-timeline>
-            <el-timeline-item v-for="comment in commentList" :key="comment.uid" :timestamp="timeAgo(comment.createTime)"
-                              placement="top">
-              <el-card>
-                <div class="commentList">
-                <span class="left p1">
-                  <img v-if="comment.user"
-                       :src="comment.user.photoUrl ? comment.user.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
-                       onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>
-                  <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"/>
-                </span>
+<!--      <el-tab-pane label="我的评论" name="1" @click="this.getCommentList">-->
+<!--        <span slot="label"><i class="el-icon-message-solid"></i> 我的评论</span>-->
+<!--        <div style="width: 100%; height: 840px;overflow:auto;">-->
+<!--          <el-timeline>-->
+<!--            <el-timeline-item v-for="comment in commentList" :key="comment.uid" :timestamp="timeAgo(comment.createTime)"-->
+<!--                              placement="top">-->
+<!--              <el-card>-->
+<!--                <div class="commentList">-->
+<!--                <span class="left p1">-->
+<!--                  <img v-if="comment.user"-->
+<!--                       :src="comment.user.photoUrl ? comment.user.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"-->
+<!--                       onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>-->
+<!--                  <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"/>-->
+<!--                </span>-->
 
-                  <span class="right p1">
-                    <div class="rightTop">
-                      <el-link class="user_name" :underline="false">{{ comment.user.user_name }}</el-link>
-                      <el-tag style="cursor: pointer;"
-                              @click.native="goSource(comment)">{{ comment.user.sourceName }}</el-tag>
-                    </div>
+<!--                  <span class="right p1">-->
+<!--                    <div class="rightTop">-->
+<!--                      <el-link class="user_name" :underline="false">{{ comment.user.user_name }}</el-link>-->
+<!--                      <el-tag style="cursor: pointer;"-->
+<!--                              @click.native="goSource(comment)">{{ comment.user.sourceName }}</el-tag>-->
+<!--                    </div>-->
 
-                  <div class="rightCenter" v-html="$xss(comment.user.content, options)"></div>
-                    <div class="rightCenter">
-                      <el-tag style="cursor: pointer;"
-                              @click="deleteCommentById(comment)">删除</el-tag>
-                    </div>
-                </span>
-                </div>
-              </el-card>
-            </el-timeline-item>
+<!--                  <div class="rightCenter" v-html="$xss(comment.user.content, options)"></div>-->
+<!--                    <div class="rightCenter">-->
+<!--                      <el-tag style="cursor: pointer;"-->
+<!--                              @click="deleteCommentById(comment)">删除</el-tag>-->
+<!--                    </div>-->
+<!--                </span>-->
+<!--                </div>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
 
-            <el-timeline-item v-if="commentList.length == 0" placement="top">
-              <el-card>
-                <span style="font-size: 16px">空空如也~</span>
-              </el-card>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </el-tab-pane>
+<!--            <el-timeline-item v-if="commentList.length == 0" placement="top">-->
+<!--              <el-card>-->
+<!--                <span style="font-size: 16px">空空如也~</span>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
+<!--          </el-timeline>-->
+<!--        </div>-->
+<!--      </el-tab-pane>-->
 
-      <el-tab-pane label="我的回复" name="2">
-        <span slot="label"><i class="el-icon-s-promotion"></i> 我的回复</span>
-        <div style="width: 100%; height: 840px;overflow:auto">
-          <el-timeline>
-            <el-timeline-item v-for="reply in replyList" :key="reply.createTime" :timestamp="timeAgo(reply.createTime)"
-                              placement="top">
-              <el-card>
-                <div class="commentList">
-                  <span class="left p1">
-                    <img v-if="reply.user"
-                         :src="reply.user.photoUrl ? reply.user.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
-                         onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>
-                    <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"/>
-                  </span>
+<!--      <el-tab-pane label="我的回复" name="2">-->
+<!--        <span slot="label"><i class="el-icon-s-promotion"></i> 我的回复</span>-->
+<!--        <div style="width: 100%; height: 840px;overflow:auto">-->
+<!--          <el-timeline>-->
+<!--            <el-timeline-item v-for="reply in replyList" :key="reply.createTime" :timestamp="timeAgo(reply.createTime)"-->
+<!--                              placement="top">-->
+<!--              <el-card>-->
+<!--                <div class="commentList">-->
+<!--                  <span class="left p1">-->
+<!--                    <img v-if="reply.user"-->
+<!--                         :src="reply.user.photoUrl ? reply.user.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"-->
+<!--                         onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>-->
+<!--                    <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"/>-->
+<!--                  </span>-->
 
-                  <span class="right p1">
+<!--                  <span class="right p1">-->
 
-                      <div class="rightTop">
-                        <el-link class="user_name" :underline="false">{{ reply.user.user_name }}</el-link>
-                        <el-tag style="cursor: pointer;" @click.native="goSource(reply)">{{ reply.user.sourceName }}</el-tag>
-                      </div>
+<!--                      <div class="rightTop">-->
+<!--                        <el-link class="user_name" :underline="false">{{ reply.user.user_name }}</el-link>-->
+<!--                        <el-tag style="cursor: pointer;" @click.native="goSource(reply)">{{ reply.user.sourceName }}</el-tag>-->
+<!--                      </div>-->
 
-                      <div class="rightCenter" v-html="$xss(reply.user.content, options)">
-                      </div>
-                  </span>
-                </div>
-              </el-card>
-            </el-timeline-item>
+<!--                      <div class="rightCenter" v-html="$xss(reply.user.content, options)">-->
+<!--                      </div>-->
+<!--                  </span>-->
+<!--                </div>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
 
-            <el-timeline-item v-if="replyList.length == 0" placement="top">
-              <el-card>
-                <span style="font-size: 16px">空空如也~</span>
-              </el-card>
-            </el-timeline-item>
+<!--            <el-timeline-item v-if="replyList.length == 0" placement="top">-->
+<!--              <el-card>-->
+<!--                <span style="font-size: 16px">空空如也~</span>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
 
-          </el-timeline>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="我的点赞" name="3" @click="this.getPraiseList">
-        <span slot="label"><i class="el-icon-star-on"></i> 我的点赞</span>
-        <div style="width: 100%; height: 840px;overflow:auto">
-          <el-timeline>
-            <el-timeline-item v-for="praise in praiseList" :key="praise.createTime"
-                              :timestamp="timeAgo(praise.createTime)" placement="top">
-              <el-card>
-                <span>点赞</span>
-                <el-tag type="warning" style="cursor: pointer" v-if="praise.blog"
-                        @click.native="goToInfo(praise.blog.uid)">{{ praise.blog.title }}
-                </el-tag>
-              </el-card>
-            </el-timeline-item>
+<!--          </el-timeline>-->
+<!--        </div>-->
+<!--      </el-tab-pane>-->
+<!--      <el-tab-pane label="我的点赞" name="3" @click="this.getPraiseList">-->
+<!--        <span slot="label"><i class="el-icon-star-on"></i> 我的点赞</span>-->
+<!--        <div style="width: 100%; height: 840px;overflow:auto">-->
+<!--          <el-timeline>-->
+<!--            <el-timeline-item v-for="praise in praiseList" :key="praise.createTime"-->
+<!--                              :timestamp="timeAgo(praise.createTime)" placement="top">-->
+<!--              <el-card>-->
+<!--                <span>点赞</span>-->
+<!--                <el-tag type="warning" style="cursor: pointer" v-if="praise.blog"-->
+<!--                        @click.native="goToInfo(praise.blog.uid)">{{ praise.blog.title }}-->
+<!--                </el-tag>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
 
-            <el-timeline-item v-if="praiseList.length == 0" placement="top">
-              <el-card>
-                <span style="font-size: 16px">空空如也~</span>
-              </el-card>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="我的反馈" name="4">
-        <span slot="label"><i class="el-icon-phone"></i> 我的反馈</span>
-        <div style="width: 100%; height: 450px;overflow:auto">
-          <el-timeline>
-            <el-timeline-item v-for="feedbackItem in feedbackList" :key="feedbackItem.uid"
-                              :timestamp="timeAgo(feedbackItem.createTime)" placement="top">
-              <el-card class="feedbackCard">
-                <div class="item">
-                  <span class="title">
-                    标题:
-                  </span>
-                  <span class="content">
-                    {{ feedbackItem.title }}
-                  </span>
-                </div>
+<!--            <el-timeline-item v-if="praiseList.length == 0" placement="top">-->
+<!--              <el-card>-->
+<!--                <span style="font-size: 16px">空空如也~</span>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
+<!--          </el-timeline>-->
+<!--        </div>-->
+<!--      </el-tab-pane>-->
+<!--      <el-tab-pane label="我的反馈" name="4">-->
+<!--        <span slot="label"><i class="el-icon-phone"></i> 我的反馈</span>-->
+<!--        <div style="width: 100%; height: 450px;overflow:auto">-->
+<!--          <el-timeline>-->
+<!--            <el-timeline-item v-for="feedbackItem in feedbackList" :key="feedbackItem.uid"-->
+<!--                              :timestamp="timeAgo(feedbackItem.createTime)" placement="top">-->
+<!--              <el-card class="feedbackCard">-->
+<!--                <div class="item">-->
+<!--                  <span class="title">-->
+<!--                    标题:-->
+<!--                  </span>-->
+<!--                  <span class="content">-->
+<!--                    {{ feedbackItem.title }}-->
+<!--                  </span>-->
+<!--                </div>-->
 
-                <div class="item">
-                  <span class="title">
-                    举报原因:
-                  </span>
-                  <span class="content">
-                    {{ feedbackItem.reason }}
-                  </span>
-                </div>
+<!--                <div class="item">-->
+<!--                  <span class="title">-->
+<!--                    举报原因:-->
+<!--                  </span>-->
+<!--                  <span class="content">-->
+<!--                    {{ feedbackItem.reason }}-->
+<!--                  </span>-->
+<!--                </div>-->
 
-                <div class="item">
-                  <span class="title">
-                    反馈状态:
-                  </span>
-                  <span class="content">
-<!--                    <el-tag v-for="item in feedbackDictList" :key="item.uid" :type="item.listClass"-->
-<!--                            v-if="feedbackItem.feedbackStatus == item.dictValue">{{ item.dictLabel }}</el-tag>-->
-                    <el-tag v-if="feedbackItem.status==0" type="info">未审核</el-tag>
-                    <el-tag v-if="feedbackItem.status==1 && this.userInfo.uid==feedbackItem.uid" type="success">成功</el-tag>
-                    <el-tag v-if="feedbackItem.status==1 && this.userInfo.uid!=feedbackItem.uid" type="danger">你已被举报</el-tag>
-                    <el-tag v-if="feedbackItem.status==2" type="danger">失败</el-tag>
-                  </span>
-                </div>
-              </el-card>
-            </el-timeline-item>
+<!--                <div class="item">-->
+<!--                  <span class="title">-->
+<!--                    反馈状态:-->
+<!--                  </span>-->
+<!--                  <span class="content">-->
+<!--&lt;!&ndash;                    <el-tag v-for="item in feedbackDictList" :key="item.uid" :type="item.listClass"&ndash;&gt;-->
+<!--&lt;!&ndash;                            v-if="feedbackItem.feedbackStatus == item.dictValue">{{ item.dictLabel }}</el-tag>&ndash;&gt;-->
+<!--                    <el-tag v-if="feedbackItem.status==0" type="info">未审核</el-tag>-->
+<!--                    <el-tag v-if="feedbackItem.status==1 && this.userInfo.uid==feedbackItem.uid" type="success">成功</el-tag>-->
+<!--                    <el-tag v-if="feedbackItem.status==1 && this.userInfo.uid!=feedbackItem.uid" type="danger">你已被举报</el-tag>-->
+<!--                    <el-tag v-if="feedbackItem.status==2" type="danger">失败</el-tag>-->
+<!--                  </span>-->
+<!--                </div>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
 
-            <el-timeline-item v-if="feedbackList.length == 0" placement="top">
-              <el-card>
-                <span style="font-size: 16px">空空如也~</span>
-              </el-card>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
+<!--            <el-timeline-item v-if="feedbackList.length == 0" placement="top">-->
+<!--              <el-card>-->
+<!--                <span style="font-size: 16px">空空如也~</span>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
+<!--          </el-timeline>-->
+<!--        </div>-->
 
 <!--        <el-divider></el-divider>-->
 
@@ -347,7 +337,7 @@
 <!--          </el-form-item>-->
 <!--        </el-form>-->
 
-      </el-tab-pane>
+<!--      </el-tab-pane>-->
       <el-tab-pane label="我的收藏" name="5">
         <span slot="label"><i class="el-icon-share"></i> 我的收藏</span>
         <div style="width: 100%; height: 840px;overflow:auto">
@@ -371,28 +361,28 @@
         </div>
 
       </el-tab-pane>
-      <el-tab-pane label="我的关注" name="6">
-        <span slot="label"><i class="el-icon-s-tools"></i> 我的关注</span>
-        <div style="width: 100%; height: 840px;overflow:auto">
-          <el-timeline>
-            <el-timeline-item v-for="follow in followList" :key="follow.createTime"
-                              :timestamp="timeAgo(follow.createTime)" placement="top">
-              <el-card>
-                <el-tag type="warning" style="cursor: pointer" v-if="follow.user_name"
-                        @click.native="goToInfo(follow.follower_id)">{{ follow.user_name }}
-                </el-tag>
-                <el-tag style="cursor: pointer;" >取消关注</el-tag>
-              </el-card>
-            </el-timeline-item>
+<!--      <el-tab-pane label="我的关注" name="6">-->
+<!--        <span slot="label"><i class="el-icon-s-tools"></i> 我的关注</span>-->
+<!--        <div style="width: 100%; height: 840px;overflow:auto">-->
+<!--          <el-timeline>-->
+<!--            <el-timeline-item v-for="follow in followList" :key="follow.createTime"-->
+<!--                              :timestamp="timeAgo(follow.createTime)" placement="top">-->
+<!--              <el-card>-->
+<!--                <el-tag type="warning" style="cursor: pointer" v-if="follow.user_name"-->
+<!--                        @click.native="goToInfo(follow.follower_id)">{{ follow.user_name }}-->
+<!--                </el-tag>-->
+<!--                <el-tag style="cursor: pointer;" >取消关注</el-tag>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
 
-            <el-timeline-item v-if="followList.length == 0" placement="top">
-              <el-card>
-                <span style="font-size: 16px">空空如也~</span>
-              </el-card>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
-      </el-tab-pane>
+<!--            <el-timeline-item v-if="followList.length == 0" placement="top">-->
+<!--              <el-card>-->
+<!--                <span style="font-size: 16px">空空如也~</span>-->
+<!--              </el-card>-->
+<!--            </el-timeline-item>-->
+<!--          </el-timeline>-->
+<!--        </div>-->
+<!--      </el-tab-pane>-->
       <el-tab-pane label="浏览记录" name="7">
         <span slot="label"><i class="el-icon-share"></i> 浏览记录</span>
         <div style="width: 100%; height: 840px;overflow:auto">
