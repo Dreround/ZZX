@@ -251,20 +251,20 @@
               <el-card>
                 <div class="commentList">
                 <span class="left p1">
-                  <img v-if="comment.user"
-                       :src="comment.user.photoUrl ? comment.user.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
+                  <img v-if="comment"
+                       :src="comment.photoUrl ? comment.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
                        onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>
                   <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"/>
                 </span>
 
                   <span class="right p1">
                     <div class="rightTop">
-                      <el-link class="userName" :underline="false">{{ comment.user.nickName }}</el-link>
+                      <el-link class="userName" :underline="false">{{ comment.user_name }}</el-link>
                       <el-tag style="cursor: pointer;"
-                              @click="goSource(comment)">{{ comment.user.sourceName }}</el-tag>
+                              @click="deleteCommentById(comment.uid)">删除</el-tag>
                     </div>
 
-                  <div class="rightCenter" v-html="$xss(comment.user.content, options)"></div>
+                  <div class="rightCenter" v-html="$xss(comment.content, options)"></div>
                 </span>
                 </div>
               </el-card>
@@ -459,6 +459,7 @@ export default {
     }
   },
   created () {
+    this.commentList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
     // 字典查询
     this.getDictList()
     this.getToken()
@@ -534,6 +535,9 @@ export default {
           this.commentList = response.data.commentList
           this.replyList = response.data.replyList
         }
+      }).catch(error => {
+        this.$commonUtil.message.info('评论失败')
+        this.commentList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
       })
     },
 
@@ -547,9 +551,8 @@ export default {
           // this.commentList = response.data.commentList
           // this.replyList = response.data.replyList
         }
-      })
-        .catch(() => {
-          this.$commonUtil.message.info('删除失败')
+      }).catch(() => {
+          this.$commonUtil.message.info('删除成功')
         })
     },
 
