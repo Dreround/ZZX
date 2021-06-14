@@ -185,9 +185,23 @@
             </el-timeline-item>
 
             <el-timeline-item v-if="collectlist.length == 0" placement="top">
-              <el-card>
-                <span style="font-size: 16px">空空如也~</span>
-              </el-card>
+              <div id="app14">
+                <el-card>
+                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <label for="html1">宫保鸡丁</label>
+                </el-card>
+                <el-card>
+                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <label for="html1">宫保鸡丁</label>
+                </el-card>
+                <el-card>
+                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <label for="html1">宫保鸡丁</label>
+                </el-card>
+              </div>
+
+              <el-button type="primary" @click="submitForm('changePwd')">删除收藏</el-button>
+
             </el-timeline-item>
           </el-timeline>
         </div>
@@ -207,9 +221,21 @@
             </el-timeline-item>
 
             <el-timeline-item v-if="history.length == 0" placement="top">
-              <el-card>
-                <span style="font-size: 16px">空空如也~</span>
-              </el-card>
+              <div id="app14">
+                <el-card>
+                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <label for="html1">宫保鸡丁</label>
+                </el-card>
+                <el-card>
+                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <label for="html1">宫保鸡丁</label>
+                </el-card>
+                <el-card>
+                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
+                  <label for="html1">宫保鸡丁</label>
+                </el-card>
+              </div>
+              <el-button type="primary" @click="submitForm('changePwd')">删除历史</el-button>
             </el-timeline-item>
           </el-timeline>
         </div>
