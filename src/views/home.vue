@@ -191,30 +191,8 @@
             </el-timeline-item>
           </el-timeline>
         </div>
-
       </el-tab-pane>
-<!--      <el-tab-pane label="我的关注" name="6">-->
-<!--        <span slot="label"><i class="el-icon-s-tools"></i> 我的关注</span>-->
-<!--        <div style="width: 100%; height: 840px;overflow:auto">-->
-<!--          <el-timeline>-->
-<!--            <el-timeline-item v-for="follow in followList" :key="follow.createTime"-->
-<!--                              :timestamp="timeAgo(follow.createTime)" placement="top">-->
-<!--              <el-card>-->
-<!--                <el-tag type="warning" style="cursor: pointer" v-if="follow.user_name"-->
-<!--                        @click.native="goToInfo(follow.follower_id)">{{ follow.user_name }}-->
-<!--                </el-tag>-->
-<!--                <el-tag style="cursor: pointer;" >取消关注</el-tag>-->
-<!--              </el-card>-->
-<!--            </el-timeline-item>-->
 
-<!--            <el-timeline-item v-if="followList.length == 0" placement="top">-->
-<!--              <el-card>-->
-<!--                <span style="font-size: 16px">空空如也~</span>-->
-<!--              </el-card>-->
-<!--            </el-timeline-item>-->
-<!--          </el-timeline>-->
-<!--        </div>-->
-<!--      </el-tab-pane>-->
       <el-tab-pane label="浏览记录" name="7">
         <span slot="label"><i class="el-icon-share"></i> 浏览记录</span>
         <div style="width: 100%; height: 840px;overflow:auto">
