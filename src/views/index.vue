@@ -2,33 +2,33 @@
   <article>
     <!--banner begin-->
     <div class="picsbox">
-      <FirstRecommend></FirstRecommend>
+<!--      <FirstRecommend></FirstRecommend>-->
       <!--banner end-->
       <!-- 二级推荐 -->
-      <div class="toppic">
-        <li v-for="item in secondData" :key="item.title" @click="goToInfo(item)">
-          <a href="javascript:void(0);">
-            <i>
-              <img v-if="item.photoList" :src="item.photoList[0]">
-            </i>
-            <h2>{{ item.title }}</h2>
-            <span>{{ item.labels[0] }}</span>
-          </a>
-        </li>
-      </div>
+<!--      <div class="toppic">-->
+<!--        <li v-for="item in secondData" :key="item.title" @click="goToInfo(item)">-->
+<!--          <a href="javascript:void(0);">-->
+<!--            <i>-->
+<!--              <img v-if="item.photoList" :src="item.photoList[0]">-->
+<!--            </i>-->
+<!--            <h2>{{ item.title }}</h2>-->
+<!--            <span>{{ item.labels[0] }}</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--      </div>-->
     </div>
     <div class="blank"></div>
 
     <!--blogsbox begin-->
     <div class="blogsbox">
       <div
-        v-for="item in newBlogData"
-        :key="item.blog_id"
+        v-for="item in newRecipeData"
+        :key="item.recipe_id"
         class="blogs"
         data-scroll-reveal="enter bottom over 1s"
       >
         <h3 class="blogtitle">
-          <a href="javascript:void(0);" @click="goToInfo(item)">{{ item.title }}</a>
+          <a href="javascript:void(0);" @click="goToInfo(item)">{{ item.recipe_name }}</a>
         </h3>
 
 <!--        <span class="blogpic">-->
@@ -37,33 +37,33 @@
 <!--          </a>-->
 <!--        </span>-->
 
-        <p class="blogtext">{{ item.summary }}</p>
+<!--        <p class="blogtext">{{ item.summary }}</p>-->
         <div class="bloginfo">
           <ul>
 
             <li class="author">
               <span class="iconfont">&#xe60f;</span>
-              <a href="javascript:void(0);" @click="goToAuthor(item.user_id)">{{ item.user_id }}</a>
+              <a href="javascript:void(0);" @click="goToAuthor(item.holder)">{{ item.holder }}</a>
             </li>
-            <li class="lmname" v-if="item.label">
+            <li class="lmname" v-if="item.tips">
               <span class="iconfont">&#xe603;</span>
               <a
                 href="javascript:void(0);"
-                @click="goToList(item.label)"
-              >{{ item.label}}</a>
+                @click="goToList(item.tips)"
+              >{{ item.tips}}</a>
             </li>
-            <li class="view">
-              <span class="iconfont">&#xe8c7;</span>
-              <span>{{ item.clickCount }}</span>
-            </li>
-            <li class="like">
-              <span class="iconfont">&#xe663;</span>
-              {{ item.likeCount }}
-            </li>
-            <li class="createTime">
-              <span class="iconfont">&#xe606;</span>
-              {{ item.time }}
-            </li>
+<!--            <li class="view">-->
+<!--              <span class="iconfont">&#xe8c7;</span>-->
+<!--              <span>{{ item.clickCount }}</span>-->
+<!--            </li>-->
+<!--            <li class="like">-->
+<!--              <span class="iconfont">&#xe663;</span>-->
+<!--              {{ item.likeCount }}-->
+<!--            </li>-->
+<!--            <li class="createTime">-->
+<!--              <span class="iconfont">&#xe606;</span>-->
+<!--              {{ item.time }}-->
+<!--            </li>-->
           </ul>
         </div>
       </div>
@@ -115,7 +115,7 @@ import TagCloud from '../components/TagCloud'
 import HotBlog from '../components/HotBlog'
 import FollowUs from '../components/FollowUs'
 import Link from '../components/Link'
-import {getBlogByLevel, getNewBlog, recorderVisitPage} from '../api/index'
+import {getBlogByLevel, getNewRecipe, recorderVisitPage} from '../api/index'
 import {Loading} from 'element-ui'
 import {getBlogByUid} from '../api/blogContent'
 
@@ -137,7 +137,7 @@ export default {
       VUE_MOGU_WEB: process.env.VUE_MOGU_WEB,
       firstData: [], // ；一级推荐数据
       secondData: [], // ；二级级推荐数据
-      newBlogData: [], // 最新文章
+      newRecipeData: [], // 最新文章
       hotBlogData: [], // 最热文章
       hotTagData: [], // 最新标签
       keyword: '',
@@ -154,22 +154,22 @@ export default {
   },
   created () {
     // 接口：二级推荐博客
-    var secondParams = new URLSearchParams()
-    secondParams.append('level', 2)
-    // 是否排序
-    secondParams.append('useSort', 1)
-    getBlogByLevel(secondParams).then(response => {
-      if (response.data.code === this.$ECode.SUCCESS) {
-        this.secondData = response.data.records
-      }
-    }).catch(error => {
-      console.log(error)
-      for (let i = 0; i < 2; ++i) {
-        this.secondData.push({title: '烩面', labels: '豫菜', photoList: ['../../static/images/huimian.jpeg']})
-      }
-    })
+    // var secondParams = new URLSearchParams()
+    // secondParams.append('level', 2)
+    // // 是否排序
+    // secondParams.append('useSort', 1)
+    // getBlogByLevel(secondParams).then(response => {
+    //   if (response.data.code === this.$ECode.SUCCESS) {
+    //     this.secondData = response.data.records
+    //   }
+    // }).catch(error => {
+    //   console.log(error)
+    //   for (let i = 0; i < 2; ++i) {
+    //     this.secondData.push({title: '烩面', labels: '豫菜', photoList: ['../../static/images/huimian.jpeg']})
+    //   }
+    // })
     // 获取最新博客
-    this.newBlogList()
+    this.newRecipeList()
     // var params = new URLSearchParams()
     // params.append('pageName', 'INDEX')
     // recorderVisitPage(params).then(response => {
@@ -177,12 +177,12 @@ export default {
   },
   methods: {
     // 跳转到文章详情【或推广链接】
-    goToInfo (blog) {
+    goToInfo (recipe) {
       let routeData = this.$router.resolve({
         path: '/info',
-        query: {blogUid: blog.blog_id}
+        query: {recipe_id: recipe.recipe_id}
       })
-      console.log(blog.id)
+      console.log(recipe.id)
       window.open(routeData.href, '_blank')
       // if (blog.type === '0') {
       //   let routeData = this.$router.resolve({
@@ -200,23 +200,23 @@ export default {
       // }
     },
     // 跳转到搜索详情页
-    goToList (uid) {
-      this.$router.push({
-        path: '/list',
-        query: {sortUid: uid}
-      })
-    },
+    // goToList (uid) {
+    //   this.$router.push({
+    //     path: '/list',
+    //     query: {sortUid: uid}
+    //   })
+    // },
 
     // 跳转到搜索详情页
-    goToAuthor (author) {
-      this.$router.push({
-        path: '/list',
-        query: {author: author}
-      })
-    },
+    // goToAuthor (holder) {
+    //   this.$router.push({
+    //     path: '/list',
+    //     query: {holder: holder}
+    //   })
+    // },
 
     // 最新博客列表
-    newBlogList () {
+    newRecipeList () {
       var that = this
       that.loadingInstance = Loading.service({
         lock: true,
@@ -227,9 +227,9 @@ export default {
       var params = new URLSearchParams()
       params.append('currentPage', this.currentPage)
       params.append('pageSize', this.pageSize)
-      getNewBlog(params).then(response => {
+      getNewRecipe(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
-          that.newBlogData = response.data.records
+          that.newRecipeData = response.data.records
           that.total = response.data.total
           that.pageSize = response.data.size
           that.currentPage = response.data.currentPage
@@ -238,7 +238,7 @@ export default {
         // eslint-disable-next-line handle-callback-err
       }).catch(error => {
         for (let i = 0; i < 5; ++i) {
-          this.newBlogData.push({title: 'test', author: 'ptss', labels: ['技术', '数据库'], summary: '略略略', clickCount: 100, likeCount: 200, time: '2020-12-2'})
+          this.newRecipeData.push({recipe_name: 'test', holder: 'ptss', tips: '略略略',recipe_id: '111'})
         }
         that.loadingInstance.close()
       })
@@ -252,11 +252,11 @@ export default {
       // 接口：博客列表
       params.append('currentPage', that.currentPage)
       params.append('pageSize', that.pageSize)
-      getNewBlog(params).then(response => {
+      getNewRecipe(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS && response.data.records.length > 0) {
           that.isEnd = false
-          var newData = that.newBlogData.concat(response.data.records)
-          that.newBlogData = newData
+          var newData = that.newRecipeData.concat(response.data.records)
+          that.newRecipeData = newData
           that.total = response.data.total
           that.pageSize = response.data.size
           that.currentPage = response.data.current

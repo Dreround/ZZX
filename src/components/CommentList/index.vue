@@ -5,15 +5,15 @@
         <span class="left p1">
           <img v-if="item.user" :src="item.user.photoUrl ? item.user.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'" onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'" />
           <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" />
-          <FollowBtn :uid="item.user.id"></FollowBtn>
+<!--          <FollowBtn :uid="item.user.id"></FollowBtn>-->
         </span>
 
         <span class="right p1">
           <div class="rightTop" v-if="item.user">
             <el-link class="user_name" :underline="false">{{item.user.user_name}}</el-link>
 <!--            <el-tag style="height: 30px; margin-left:5px;" v-for="userTag in userTagDictList" :key="userTag.uid" v-if="item.user.userTag == userTag.dictValue && item.user.userTag != 0" :type="userTag.listClass">{{userTag.dictLabel}}</el-tag>-->
-            <span class="timeAgo" v-if="item.createTime">{{timeAgo(item.createTime)}}</span>
-            <span class="timeAgo" v-else>刚刚</span>
+<!--            <span class="timeAgo" v-if="item.createTime">{{timeAgo(item.createTime)}}</span>-->
+<!--            <span class="timeAgo" v-else>刚刚</span>-->
           </div>
 
 <!--          <div class="rightCenter" v-html="$xss(item.content, options)"></div>-->

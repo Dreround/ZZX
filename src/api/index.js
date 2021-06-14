@@ -8,9 +8,9 @@ export function getBlogByLevel (params) {
   })
 }
 
-export function getNewBlog (params) {
+export function getNewRecipe (params) {
   return request({
-    url: process.env.WEB_API + '/index/getNewBlog',
+    url: process.env.WEB_API + '/index/getNewRecipe',
     method: 'get',
     params
   })

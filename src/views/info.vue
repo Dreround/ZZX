@@ -5,72 +5,84 @@
     </el-dialog>
     <h1 class="t_nav">
       <a href="/" class="n1">网站首页</a>
-      <a
-        href="javascript:void(0);"
-        v-if="blogData.blogSort"
-        @click="goToSortList(blogData.blogSort)"
-        class="n2"
-      >{{ blogData.blogSort ? blogData.blogSortName : "" }}</a>
+<!--      <a-->
+<!--        href="javascript:void(0);"-->
+<!--        v-if="blogData.blogSort"-->
+<!--        @click="goToSortList(blogData.blogSort)"-->
+<!--        class="n2"-->
+<!--      >{{ blogData.blogSort ? blogData.blogSortName : "" }}</a>-->
     </h1>
     <div class="infosbox">
       <div class="newsview">
-        <h3 class="news_title" v-if="blogData.title">{{ blogData.title }}</h3>
-        <div class="bloginfo" v-if="blogData.labels">
+        <h3 class="news_title" v-if="recipeData.recipe_name">{{ recipeData.recipe_name }}</h3>
+<!--        <div class="bloginfo" v-if="recipeData.labels">-->
           <ul>
             <li class="author">
               <span class="iconfont">&#xe60f;</span>
-              <a href="javascript:void(0);" @click="goToAuthor(blogData.author)">{{ blogData.author }}</a>
+              <a href="javascript:void(0);" @click="goToAuthor(recipeData.holder)">{{ recipeData.holder }}</a>
             </li>
             <li class="lmname">
               <span class="iconfont">&#xe603;</span>
-              <a
-                href="javascript:void(0);"
-                @click="goToSortList(blogData.blogSort)"
-              >{{ blogData.blogSort ? blogData.blogSort : "" }}</a>
+<!--              <a-->
+<!--                href="javascript:void(0);"-->
+<!--                @click="goToSortList(blogData.blogSort)"-->
+<!--              >{{ blogData.blogSort ? blogData.blogSort : "" }}</a>-->
             </li>
-            <li class="createTime">
-              <span class="iconfont">&#xe606;</span>
-              {{ blogData.time }}
-            </li>
-            <li class="view">
-              <span class="iconfont">&#xe8c7;</span>
-              {{ blogData.clickCount }}
-            </li>
-            <li class="like">
-              <span class="iconfont">&#xe663;</span>
-              {{ blogData.likeCount }}
-            </li>
+<!--            <li class="createTime">-->
+<!--              <span class="iconfont">&#xe606;</span>-->
+<!--              {{ blogData.time }}-->
+<!--            </li>-->
+<!--            <li class="view">-->
+<!--              <span class="iconfont">&#xe8c7;</span>-->
+<!--              {{ blogData.clickCount }}-->
+<!--            </li>-->
+<!--            <li class="like">-->
+<!--              <span class="iconfont">&#xe663;</span>-->
+<!--              {{ blogData.likeCount }}-->
+<!--            </li>-->
           </ul>
+<!--        </div>-->
+<!--        <div class="tags">-->
+<!--          <a-->
+<!--            v-if="blogData.labels"-->
+<!--            v-for="item in blogData.labels"-->
+<!--            :key="item"-->
+<!--            href="javascript:void(0);"-->
+<!--            @click="goToList(item)"-->
+<!--            target="_blank"-->
+<!--          >{{ item }}</a>-->
+<!--        </div>-->
+<!--        <div v-if="blogData.need_credit !=0">-->
+<!--          <img class="center" :src="lockImageUrl" alt="lock">-->
+<!--          <div class="center fit-content">-->
+<!--            <el-button type="primary" align="center" @click="payCredit">需要花费 {{blogData.need_credit}} 积分</el-button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--          <div-->
+<!--            v-if="blogData.need_credit ==0"-->
+        <div class="news_con ck-content"
+             v-html="recipe_ingredient"
+             v-highlight
+             @click="imageChange"
+        >{{ recipeData.recipe_ingredient }}
         </div>
-        <div class="tags">
-          <a
-            v-if="blogData.labels"
-            v-for="item in blogData.labels"
-            :key="item"
-            href="javascript:void(0);"
-            @click="goToList(item)"
-            target="_blank"
-          >{{ item }}</a>
-        </div>
-        <div v-if="blogData.need_credit !=0">
-          <img class="center" :src="lockImageUrl" alt="lock">
-          <div class="center fit-content">
-            <el-button type="primary" align="center" @click="payCredit">需要花费 {{blogData.need_credit}} 积分</el-button>
-          </div>
-        </div>
-          <div
-            v-if="blogData.need_credit ==0"
-            class="news_con ck-content"
-            v-html="blogContent"
+            <div class="news_con ck-content"
+            v-html="recipe_steps"
             v-highlight
             @click="imageChange"
-          >{{ blogContent }}
+          >{{ recipeData.recipe_steps }}
           </div>
+        <div class="news_con ck-content"
+             v-html="recipe_tips"
+             v-highlight
+             @click="imageChange"
+        >{{ recipeData.recipe_tips }}
+        </div>
       </div>
 
       <!--点赞和收藏和举报-->
-      <LikeAndCollect v-if="openAdmiration === '1'" :blogUid="blogUid"
-                      :praiseCount="blogData.likeCount"></LikeAndCollect>
+      <LikeAndCollect v-if="openAdmiration === '1'" :recipe_id="recipe_id"
+                       ></LikeAndCollect>
       <div class="news_pl" :style="openCommentCss">
         <h2 v-if="openComment === '1'">文章评论</h2>
         <ul v-if="openComment === '1'">
@@ -126,7 +138,9 @@ export default {
       showStickyTop: false,
       showSideCatalog: true,
       showSidebar: true, // 是否显示侧边栏
-      blogContent: '',
+      recipe_steps: '',
+      recipe_ingredient: '',
+      recipe_tips: '',
       catalogProps: {
         // 内容容器selector(必需)
         container: '.ck-content',
@@ -139,18 +153,18 @@ export default {
       comments: [],
       commentInfo: {
         // 评论来源： MESSAGE_BOARD，ABOUT，BLOG_INFO 等 代表来自某些页面的评论
-        source: 'BLOG_INFO',
-        blogUid: this.$route.query.blogUid
+        //source: 'BLOG_INFO',
+        recipe_id: this.$route.query.recipe_id
       },
       currentPage: 1,
       pageSize: 10,
       total: 0, // 总数量
       toInfo: {},
       userInfo: {},
-      blogUid: null, // 传递过来的博客uid
+      recipe_id: null, // 传递过来的菜谱uid
       // blogOid: 0, // 传递过来的博客oid
       // blogId: 0,
-      blogData: {},
+      recipeData: {},
       canShow: '',
       dialogPictureVisible: false,
       dialogImageUrl: '',
@@ -204,31 +218,35 @@ export default {
     // if (this.blogOid) {
     //   params.append('oid', this.blogOid)
     // }
-    params.append('blog_id', this.blogUid)
+    params.append('recipe_id', this.recipe_id)
     getBlogByUid(params).then(response => {
       if (response.data.code === this.$ECode.SUCCESS) {
-        this.blogData = response.data
-        console.log(this.blogData)
+        this.recipeData = response.data
+        console.log(this.recipeData)
         // this.blogUid = response.data.uid
         // this.blogOid = response.data.oid\
         this.getCommentDataList()
       }
       setTimeout(() => {
-        that.blogContent = response.data.content
+        that.recipe_steps = response.data.steps
+        that.recipe_ingredient = response.data.ingredient
+        that.recipe_tips = response.data.tips
         that.loadingInstance.close()
       }, 20)
     }).catch(error => {
       console.log(error)
-      this.blogData.labels = ['技术', '大数据']
-      this.blogData.blogSort = '技术'
-      this.blogContent = 'This is a test'
-      this.blogData.title = 'test'
-      this.blogData.author = 'ptss'
-      this.blogData.summary = '概括'
-      this.blogData.clickCount = 100
-      this.blogData.likeCount = 200
-      this.blogData.time = '2020-12-2'
-      this.blogData.need = 1
+      // this.blogData.labels = ['技术', '大数据']
+      // this.blogData.blogSort = '技术'
+      this.recipe_ingredient = 'This is a recipe ingredient'
+      this.recipe_steps = 'this is a recipe step'
+      this.recipe_tips = 'this is a recipe tip'
+      this.recipeData.recipe_name = 'test'
+      this.recipeData.holder = 'ptss'
+      // this.recipeData.summary = '概括'
+      // this.blogData.clickCount = 100
+      // this.blogData.likeCount = 200
+      // this.blogData.time = '2020-12-2'
+      // this.blogData.need = 1
       this.getCommentDataList()
       that.loadingInstance.close()
     })
@@ -297,8 +315,8 @@ export default {
       fullscreen: true,
       text: '正在努力加载中~'
     })
-    this.blogUid = this.$route.query.blogUid
-    console.log(this.$route.query.blogUid)
+    this.recipe_id = this.$route.query.recipe_id
+    console.log(this.$route.query.recipe_id)
     // var that = this
     // var params = new URLSearchParams()
     // // if (this.blogUid) {
@@ -379,9 +397,9 @@ export default {
     },
     submitBox (e) {
       let params = {}
-      params.blogUid = e.blogUid
-      params.source = e.source
-      params.userUid = e.userUid
+      params.recipe_id = e.recipe_id
+      //params.source = e.source
+      params.user_id = e.user_id
       params.content = e.content
       console.log(params)
       addComment(params).then(response => {
@@ -404,9 +422,9 @@ export default {
     },
     getCommentDataList: function () {
       let params = {}
-      params.source = this.commentInfo.source
-      params.blogUid = this.blogUid
-      console.log(params.blogUid)
+      // params.source = this.commentInfo.source
+      params.recipe_id = this.recipe_id
+      console.log(params.recipe_id)
       params.currentPage = this.currentPage
       params.pageSize = this.pageSize
       getCommentList(params).then(response => {
@@ -431,29 +449,29 @@ export default {
       window.open(routeData.href, '_blank')
     },
     // 跳转到搜索详情页
-    goToList (uid) {
-      let routeData = this.$router.resolve({
-        path: '/list',
-        query: {tagUid: uid}
-      })
-      window.open(routeData.href, '_blank')
-    },
+    // goToList (uid) {
+    //   let routeData = this.$router.resolve({
+    //     path: '/list',
+    //     query: {tagUid: uid}
+    //   })
+    //   window.open(routeData.href, '_blank')
+    // },
     // 跳转到搜索详情页
-    goToSortList (uid) {
-      let routeData = this.$router.resolve({
-        path: '/list',
-        query: {sortUid: uid}
-      })
-      window.open(routeData.href, '_blank')
-    },
+    // goToSortList (uid) {
+    //   let routeData = this.$router.resolve({
+    //     path: '/list',
+    //     query: {sortUid: uid}
+    //   })
+    //   window.open(routeData.href, '_blank')
+    // },
     // 跳转到搜索详情页
-    goToAuthor (author) {
-      let routeData = this.$router.resolve({
-        path: '/list',
-        query: {author: author}
-      })
-      window.open(routeData.href, '_blank')
-    },
+    // goToAuthor (author) {
+    //   let routeData = this.$router.resolve({
+    //     path: '/list',
+    //     query: {author: author}
+    //   })
+    //   window.open(routeData.href, '_blank')
+    // },
 
     imageChange: function (e) {
       // 首先需要判断点击的是否是图片

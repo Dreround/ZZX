@@ -16,9 +16,9 @@ export function getBlogByUid (params) {
   })
 }
 
-export function addCollectBlog (params) {
+export function CollectRecipe (params) {
   return request({
-    url: process.env.WEB_API + '/api/addCollectBlog',
+    url: process.env.WEB_API + '/info/CollectRecipe',
     method: 'get',
     params
   })

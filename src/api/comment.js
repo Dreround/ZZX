@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getCommentList (params) {
   return request({
-    url: process.env.WEB_API + '/web/comment/getList',
+    url: process.env.WEB_API + '/info/getComment',
     method: 'post',
     data: params
   })
@@ -48,7 +48,7 @@ export function getPraiseListByUser (params) {
 
 export function addComment (params) {
   return request({
-    url: process.env.WEB_API + '/web/comment/add',
+    url: process.env.WEB_API + '/info/CommentRecipe',
     method: 'post',
     data: params
   })
