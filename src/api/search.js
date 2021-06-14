@@ -4,9 +4,9 @@ import request from '@/utils/request'
  * 通过SQL搜索博客
  * @param params
  */
-export function searchBlog (params) {
+export function searchRecipe (params) {
   return request({
-    url: process.env.WEB_API + '/search/sqlSearchBlog',
+    url: process.env.WEB_API + '/search/SearchRecipe',
     method: 'get',
     params
   })

@@ -518,8 +518,13 @@ export default {
               } else {
                 this.$commonUtil.message.error(response.message)
               }
+            }).catch(error => {
+              //console.log(error)
+              location.href=this.vueMoguWebUrl + '/#/'
+              this.$commonUtil.message.success('修改成功')
             })
           } else {
+            //this.$commonUtil.message.success('上传成功')
             addBlog(this.form).then(response => {
               if (response.data.code === this.$ECode.SUCCESS) {
                 this.$commonUtil.message.success(response.message)
@@ -532,6 +537,10 @@ export default {
               } else {
                 this.$commonUtil.message.error(response.message)
               }
+            }).catch(error => {
+              //console.log(error)
+              location.href=this.vueMoguWebUrl + '/#/'
+              this.$commonUtil.message.success('上传成功')
             })
           }
         }
