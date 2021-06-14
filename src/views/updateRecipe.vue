@@ -8,10 +8,6 @@ import blog from './blog'
 
 export default {
 name: "updateRecipe",
-  // provide: {
-  //   steps:this.$route.query.steps,
-  //
-  // },
   data() {
     return {
       steps: "",

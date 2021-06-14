@@ -198,12 +198,6 @@ export default {
       default: ""
     },
   },
-  // inject:{
-  //   steps:{
-  //     from:'steps',
-  //
-  //   },
-  //},
   data () {
     return {
       uploadLoading: null, // 文件上传loading
