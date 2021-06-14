@@ -17,7 +17,7 @@
                 placement="top"
               >
                 <el-card>
-                  <h4 @click="goToList('recipeContent', item)" class="itemTitle">{{item.title}}</h4>
+                  <h4 @click="goToList('recipeContent', item)" class="itemTitle">{{item.recipe_name}}</h4>
                   <br>
                   <el-tag
                     class="elTag"
@@ -28,9 +28,9 @@
                   <el-tag
                     class="elTag"
                     type="success"
-                    v-if="item.summary != null"
-                    @click="goToList('recipeContent', item.title)"
-                  >{{item.summary}}</el-tag>
+                    v-if="item.tips != null"
+                    @click="goToList('recipeContent', item.recipe_name)"
+                  >{{item.tips}}</el-tag>
                   <el-tag style="cursor: pointer;"
                           @click="updateMyRecipe(item.recipe_id)">编辑</el-tag>
                   <el-tag style="cursor: pointer;"
@@ -79,7 +79,7 @@ export default {
     }).catch(error => {
       this.$commonUtil.message.info('后端数据获取失败')
       for (let i = 0; i < 5; ++i) {
-        this.itemBySort.push({title: 'test', recipe_id:'1', holder: 'ptss', summary: '略略略', time: '2020-12-2'})
+        this.itemBySort.push({recipe_name: 'test', recipe_id:'1', holder: 'ptss', tips: '略略略', time: '2020-12-2'})
       }
     })
   },
