@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/proxy': {
-        target:'http://localhost:8080',//目标服务器
+        target:'http://192.168.43.179:8080',//目标服务器
         changeOrigin: true,//是否跨域
         pathRewrite: {
           '^/proxy': ''//重定向
