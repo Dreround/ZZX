@@ -224,15 +224,16 @@ export default {
         background: 'rgba(0, 0, 0, 0.7)'
       })
       // 接口：博客列表
-      var params = new URLSearchParams()
-      params.append('currentPage', this.currentPage)
-      params.append('pageSize', this.pageSize)
-      getNewRecipe(params).then(response => {
-        if (response.data.code === this.$ECode.SUCCESS) {
-          that.newRecipeData = response.data.records
-          that.total = response.data.total
-          that.pageSize = response.data.size
-          that.currentPage = response.data.currentPage
+      //var params = new URLSearchParams()
+      //params.append('currentPage', this.currentPage)
+      //params.append('pageSize', this.pageSize)
+      getNewRecipe().then(response => {
+        if (response.code === this.$ECode.SUCCESS) {
+          console.log(response.obj)
+          // that.newRecipeData = response.data.records
+          // that.total = response.data.total
+          // that.pageSize = response.data.size
+          // that.currentPage = response.data.currentPage
         }
         that.loadingInstance.close()
         // eslint-disable-next-line handle-callback-err
