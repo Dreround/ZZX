@@ -187,15 +187,15 @@
             <el-timeline-item v-if="collectlist.length == 0" placement="top">
               <div id="app14">
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="r4" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="select" id="r4" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="r5" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="select" id="r5" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="r6" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="select" id="r6" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
               </div>
@@ -223,15 +223,15 @@
             <el-timeline-item v-if="history.length == 0" placement="top">
               <div id="app14">
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="r1" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="select" id="r1" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="r2" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="select" id="r2" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
                 <el-card>
-                  <input type="checkbox" v-model="picked" id="r3" value="宫保鸡丁"/>
+                  <input type="checkbox" v-model="select" id="r3" value="宫保鸡丁"/>
                   <label for="html1">宫保鸡丁</label>
                 </el-card>
               </div>
