@@ -50,3 +50,12 @@ export function logout (params) {
     data: params
   })
 }
+
+// 保存
+export function pwdUpd (params) {
+  return request({
+    url: '/user/pwdupd',
+    method: 'post',
+    data: params
+  })
+}
