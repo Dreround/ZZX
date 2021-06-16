@@ -43,7 +43,7 @@
 
             <li class="author">
               <span class="iconfont">&#xe60f;</span>
-              <a href="javascript:void(0);" @click="goToAuthor(item.holder)">{{ item.holder }}</a>
+              <a href="javascript:void(0);" @click="goToList(item.holder)">{{ item.holder }}</a>
             </li>
             <li class="lmname" v-if="item.tips">
               <span class="iconfont">&#xe603;</span>
@@ -200,12 +200,13 @@ export default {
       // }
     },
     // 跳转到搜索详情页
-    // goToList (uid) {
-    //   this.$router.push({
-    //     path: '/list',
-    //     query: {sortUid: uid}
-    //   })
-    // },
+    goToList (keyword) {
+      //在当前页面跳转
+      this.$router.push({
+        path: '/list',
+        query: {keyword: keyword}
+      })
+    },
 
     // 跳转到搜索详情页
     // goToAuthor (holder) {
