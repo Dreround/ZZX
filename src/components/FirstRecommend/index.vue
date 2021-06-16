@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {getBlogByLevel} from '../../api/index'
+import {getRecipeByLevel} from '../../api/index'
 import {getBlogByUid} from '../../api/blogContent'
 
 export default {
@@ -33,40 +33,40 @@ export default {
     }
   },
   created () {
-    var params = new URLSearchParams()
-    params.append('level', 1)
-    params.append('useSort', 1)
-    getBlogByLevel(params).then(response => {
-      if (response.code === this.$ECode.SUCCESS) {
-        this.slideList = response.data.records
+    // var params = new URLSearchParams()
+    // params.append('level', 1)
+    // params.append('useSort', 1)
+    getRecipeByLevel().then(response => {
+      if (response.data.code === this.$ECode.SUCCESS) {
+        this.slideList = response.data.obj
       }
     }).catch(err => {
       console.log(err)
       for (let i = 0; i < 5; ++i) {
         this.slideList.push({
           title: '新疆大盘鸡',
-          photoList: [require('../../../static/images/dapanji.jpeg')]
+          photoList: ['../../../static/images/dapanji.jpeg']
           // photoList: ['http://nacospicture.moguit.cn//blog/admin/jfif/2020/8/22/1598099950516.jfif']
         })
       }
     })
   },
   methods: {
-    goToInfo (blog) {
-      if (blog.type === '0') {
+    goToInfo (recipe) {
+      //if (recipe.type === '0') {
         let routeData = this.$router.resolve({
           path: '/info',
-          query: {blogOid: blog.oid}
+          query: {recipe_id: recipe.recipe_id}
         })
         window.open(routeData.href, '_blank')
-      } else if (blog.type === '1') {
-        var params = new URLSearchParams()
-        params.append('uid', blog.uid)
-        getBlogByUid(params).then(response => {
-          // 记录一下用户点击日志
-        })
-        window.open(blog.outsideLink, '_blank')
-      }
+      // } else if (blog.type === '1') {
+      //   var params = new URLSearchParams()
+      //   params.append('uid', blog.uid)
+      //   getBlogByUid(params).then(response => {
+      //     // 记录一下用户点击日志
+      //   })
+      //   window.open(blog.outsideLink, '_blank')
+      // }
     }
   }
 }

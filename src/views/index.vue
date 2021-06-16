@@ -228,9 +228,11 @@ export default {
       //params.append('currentPage', this.currentPage)
       //params.append('pageSize', this.pageSize)
       getNewRecipe().then(response => {
-        if (response.code === this.$ECode.SUCCESS) {
-          console.log(response.obj)
-          // that.newRecipeData = response.data.records
+        //this.$commonUtil.message.info(response.data)
+        if (response.data.code === this.$ECode.SUCCESS) {
+          this.$commonUtil.message.info('success')
+          console.log(response.data.obj)
+          that.newRecipeData = response.data.obj
           // that.total = response.data.total
           // that.pageSize = response.data.size
           // that.currentPage = response.data.currentPage
@@ -247,27 +249,29 @@ export default {
 
     loadContent: function () {
       var that = this
-      that.loading = false
-      that.currentPage = that.currentPage + 1
-      var params = new URLSearchParams()
-      // 接口：博客列表
-      params.append('currentPage', that.currentPage)
-      params.append('pageSize', that.pageSize)
-      getNewRecipe(params).then(response => {
-        if (response.data.code === this.$ECode.SUCCESS && response.data.records.length > 0) {
+      // that.loading = false
+      //that.currentPage = that.currentPage + 1
+      // var params = new URLSearchParams()
+      // // 接口：博客列表
+      // params.append('currentPage', that.currentPage)
+      // params.append('pageSize', that.pageSize)
+      getNewRecipe().then(response => {
+        if (response.data.code === this.$ECode.SUCCESS && response.data.obj.length > 0) {
+          this.$commonUtil.message.info('成功')
           that.isEnd = false
+          console.log(response.obj)
           var newData = that.newRecipeData.concat(response.data.records)
           that.newRecipeData = newData
-          that.total = response.data.total
-          that.pageSize = response.data.size
-          that.currentPage = response.data.current
+          // that.total = response.data.total
+          // that.pageSize = response.data.size
+          // that.currentPage = response.data.current
           // 全部加载完毕
           if (newData.length < that.pageSize) {
             that.isEnd = true
           }
         } else {
           that.isEnd = true
-        }
+         }
         that.loading = false
       })
     }
