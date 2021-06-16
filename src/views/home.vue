@@ -548,7 +548,7 @@ export default {
         }
       }).catch(error => {
         this.$commonUtil.message.info('评论失败')
-        this.commentList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
+        //this.commentList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
       })
     },
 
@@ -664,49 +664,49 @@ export default {
           ;
           break
         case '1': {
-          console.log('点击我的评论')
-          this.getCommentList()
-        }
-          ;
-          break
-        case '2': {
-          console.log('点击我的回复')
-          this.getCommentList()
-        }
-          ;
-          break
-        // eslint-disable-next-line no-lone-blocks
-        case '3': {
-          console.log('点击我的点赞')
-          this.getPraiseList()
-        }
-          ;
-          break
-        // eslint-disable-next-line no-lone-blocks
-        case '4': {
-          console.log('点击我的反馈')
-          this.getFeedback()
-        }
-          ;
-          break
-        case '5': {
           console.log('点击我的收藏')
           this.getCollect()
         }
           ;
           break
-        case '6': {
-          console.log('点击我的关注')
-          this.getFollow()
-        }
-          ;
-          break
-        case '7': {
-          console.log('点击历史记录')
+        case '2': {
+          console.log('点击浏览记录')
           this.getHistory()
         }
           ;
           break
+        // eslint-disable-next-line no-lone-blocks
+        case '3': {
+          console.log('点击我的收藏')
+          this.getCommentList()
+        }
+          ;
+          break
+        // eslint-disable-next-line no-lone-blocks
+        // case '4': {
+        //   console.log('点击我的评论')
+        //   this.getCommentList()
+        // }
+        //   ;
+        //   break
+        // case '5': {
+        //   console.log('点击我的收藏')
+        //   this.getCollect()
+        // }
+        //   ;
+        //   break
+        // case '6': {
+        //   console.log('点击我的关注')
+        //   this.getFollow()
+        // }
+        //   ;
+        //   break
+        // case '7': {
+        //   console.log('点击历史记录')
+        //   this.getHistory()
+        // }
+        //   ;
+        //   break
       }
     },
 
