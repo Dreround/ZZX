@@ -4,20 +4,12 @@
     <div class="filter-container" style="margin: 65px 0 10px 0;">
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="changeReportState">冻结（解冻）用户管理</el-button>
       <el-button class="filter-item" type="warning" icon="el-icon-star-on" @click="changeActivityState">禁言（解禁）用户管理</el-button>
-<!--        <el-input class="filter-item" type="warning" icon="el-icon-edit"-->
-<!--          ref="searchInput"-->
-<!--          class="input"-->
-<!--          placeholder="想搜点什么呢.."-->
-<!--          type="text"-->
-<!--          name="keyboard"-->
-<!--          v-model="keyword"-->
-<!--          v-on:keyup.enter="search"-->
-<!--        ></el-input>-->
       <el-input style="width: 15%"
                 type="warning"
                 placeholder="想搜点什么呢.."
                 prefix-icon="el-icon-search"
                 v-model="keyword"
+                v-on:keyup.enter="search"
       ></el-input>
     </div>
     <el-table v-if="report_visible" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
