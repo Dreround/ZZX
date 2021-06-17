@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { getBlogByLevel } from "../../api/index";
+import { getRecipeByLevel } from "../../api/index";
 import {getBlogByUid} from "../../api/blogContent";
 export default {
   name: 'FourthRecommend',
@@ -32,7 +32,7 @@ export default {
       fourthParams.append("pageSize", 5);
       fourthParams.append("level", 4);
       fourthParams.append("useSort", 1);
-      getBlogByLevel(fourthParams).then(response => {
+      getRecipeByLevel(fourthParams).then(response => {
         if(response.code == this.$ECode.SUCCESS) {
           this.fourthData = response.data.records;
         }

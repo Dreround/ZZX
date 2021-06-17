@@ -3,7 +3,7 @@
     <h2 class="hometitle">标签云</h2>
     <ul>
       <a v-for="item in hotTagData" :key="item.uid" href="javascript:void(0);"
-         @click="goToList(item.uid)">{{ item.name }}</a>
+         @click="goToList(item.name)">{{ item.name }}</a>
     </ul>
   </div>
 </template>
@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     // 跳转到搜索详情页
-    goToList (uid) {
-      let routeData = this.$router.resolve({path: '/list', query: {tagUid: uid}})
+    goToList (tag) {
+      let routeData = this.$router.resolve({path: '/list', query: {keyword: tag}})
       window.open(routeData.href, '_blank')
     }
   }

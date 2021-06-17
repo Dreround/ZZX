@@ -19,7 +19,7 @@
           <h3 class="blogtitle">
             <a
               href="javascript:void(0);"
-              @click="goToInfo(item.recipe_id?item.recipe_id:item.recipe_id)"
+              @click="goToInfo(item.recipe_id)"
               v-html="item.recipe_name"
             >{{item.recipe_name}}</a>
           </h3>
@@ -210,11 +210,11 @@ export default {
           if (response.code == this.$ECode.SUCCESS) {
             that.isEnd = false;
             //获取总页数
-            that.totalPages = response.data.RecipeList.length;
+            that.totalPages = response.data.length;
             that.total = response.data.total;
             that.pageSize = response.data.pageSize;
             that.currentPage = response.data.currentPage;
-            var RecipeData = response.data.blogList;
+            var RecipeData = response.data.RecipeList;
 
             // 判断搜索的博客是否有内容
             if(response.data.total <= 0) {
@@ -241,6 +241,9 @@ export default {
               for (let i = 0; i < 5; ++i) {
                 this.RecipeData.push({recipe_name: this.keywords, recipe_id:'1', holder: 'ptss', tips: '略略略', time: '2020-12-2'})
               }
+              this.totalPages = this.RecipeData.length;
+              this.loading = false;
+              this.isEnd = false;
             });
       // } else if (this.tagUid != undefined) {
       //   var params = new URLSearchParams();
