@@ -11,7 +11,7 @@
       <!--blogsbox begin-->
       <div class="blogsbox">
         <div
-          v-for="item in blogData"
+          v-for="item in RecipeData"
           :key="item.recipe_id"
           class="blogs"
           data-scroll-reveal="enter bottom over 1s"
@@ -33,7 +33,7 @@
             <ul>
               <li class="author">
                 <span class="iconfont">&#xe60f;</span>
-                <a href="javascript:void(0);" @click="goToAuthor(item.holder)">{{item.holder}}</a>
+                <a href="javascript:void(0);" @click="goToList(item.holder)">{{item.holder}}</a>
               </li>
 <!--              <li class="lmname" v-if="item.blogSortName">-->
 <!--                <span class="iconfont">&#xe603;</span>-->
@@ -59,7 +59,7 @@
             </div>
           </div>
 
-          <span v-if="blogData.length >= 0 && isEnd &&!loading && totalPages>0">我也是有底线的~</span>
+          <span v-if="RecipeData.length >= 0 && isEnd &&!loading && totalPages>0">我也是有底线的~</span>
 
           <span v-if="totalPages == 0 && !loading">空空如也~</span>
         </div>
@@ -106,14 +106,15 @@ export default {
   name: "list",
   data() {
     return {
-      blogData: [],
+      RecipeData: [],
       keywords: "",
+      //holder: "",
       currentPage: 1,
       totalPages: 0,
       pageSize: 10,
       total: 0, //总数量
       tagUid: "",
-      searchBlogData: [], //搜索出来的文章
+      searchRecipeData: [], //搜索出来的文章
       sortUid: "",
       isEnd: false, //是否到底底部了
       loading: false //内容是否正在加载
@@ -128,15 +129,15 @@ export default {
   },
   created() {
     this.keywords = this.$route.query.keyword;
-    this.tagUid = this.$route.query.tagUid;
-    this.sortUid = this.$route.query.sortUid;
-    this.author = this.$route.query.author;
+    // this.tagUid = this.$route.query.tagUid;
+    // this.sortUid = this.$route.query.sortUid;
+    this.holder = this.$route.query.holder;
 
     if (
-      this.keywords == undefined &&
-      this.tagUid == undefined &&
-      this.sortUid == undefined &&
-      this.author == undefined
+       this.keywords == undefined
+      // this.tagUid == undefined &&
+      // this.sortUid == undefined &&
+      // this.author == undefined
     ) {
       return;
     }
@@ -159,36 +160,36 @@ export default {
   watch: {
     $route(to, from) {
       this.keywords = this.$route.query.keyword;
-      this.tagUid = this.$route.query.tagUid;
-      this.sortUid = this.$route.query.sortUid;
-      this.searchBlogData = [] // 清空查询出来的博客
+      //this.tagUid = this.$route.query.tagUid;
+      //this.sortUid = this.$route.query.sortUid;
+      this.searchRecipeData = [] // 清空查询出来的博客
       this.search();
     }
   },
   methods: {
     //跳转到文章详情
-    goToInfo(uid) {
+    goToInfo(recipe_id) {
       let routeData = this.$router.resolve({
         path: "/info",
-        query: { blogUid: uid }
+        query: { recipe_id: recipe_id }
       });
       window.open(routeData.href, '_blank');
     },
-    //点击了分类
-    goToList(uid) {
+    //点击了作者
+    goToList(holder) {
       let routeData = this.$router.resolve({
         path: "/list",
-        query: { sortUid: uid }
+        query: { keyword: holder }
       });
       window.open(routeData.href, '_blank');
     },
-    goToAuthor(author) {
-      let routeData = this.$router.resolve({
-        path: "/list",
-        query: {author: author}
-      });
-      window.open(routeData.href, '_blank');
-    },
+    // goToAuthor(author) {
+    //   let routeData = this.$router.resolve({
+    //     path: "/list",
+    //     query: {holder: holder}
+    //   });
+    //   window.open(routeData.href, '_blank');
+    // },
     // 加载内容
     loadContent: function() {
       var that = this;
@@ -209,28 +210,28 @@ export default {
           if (response.code == this.$ECode.SUCCESS) {
             that.isEnd = false;
             //获取总页数
-            that.totalPages = response.data.blogList.length;
+            that.totalPages = response.data.RecipeList.length;
             that.total = response.data.total;
             that.pageSize = response.data.pageSize;
             that.currentPage = response.data.currentPage;
-            var blogData = response.data.blogList;
+            var RecipeData = response.data.blogList;
 
             // 判断搜索的博客是否有内容
             if(response.data.total <= 0) {
               that.isEnd = true;
               that.loading = false;
-              this.blogData = []
+              this.RecipeData = []
               return;
             }
 
             //全部加载完毕
-            if (blogData.length < that.pageSize) {
+            if (RecipeData.length < that.pageSize) {
               that.isEnd = true;
             }
 
-            blogData = that.searchBlogData.concat(blogData);
-            that.searchBlogData = blogData;
-            this.blogData = blogData;
+            RecipeData = that.searchRecipeData.concat(RecipeData);
+            that.searchRecipeData = RecipeData;
+            this.RecipeData = RecipeData;
           } else {
             that.isEnd = true;
           }
@@ -238,7 +239,7 @@ export default {
         }).catch(error => {
               console.log(error)
               for (let i = 0; i < 5; ++i) {
-                this.blogData.push({recipe_name: this.keywords, recipe_id:'1', holder: 'ptss', tips: '略略略', time: '2020-12-2'})
+                this.RecipeData.push({recipe_name: this.keywords, recipe_id:'1', holder: 'ptss', tips: '略略略', time: '2020-12-2'})
               }
             });
       // } else if (this.tagUid != undefined) {
@@ -254,24 +255,24 @@ export default {
       //       //获取总页数
       //       that.totalPages = response.data.total;
       //
-      //       var blogData = response.data.records;
+      //       var RecipeData = response.data.records;
       //       that.total = response.data.total;
       //       that.pageSize = response.data.size;
       //       that.currentPage = response.data.current;
       //
       //       //全部加载完毕
-      //       if (blogData.length < that.pageSize) {
+      //       if (RecipeData.length < that.pageSize) {
       //         that.isEnd = true;
       //       }
       //
       //       // 设置分类名
-      //       for (var i = 0; i < blogData.length; i++) {
-      //         blogData[i].blogSort = blogData[i].blogSort.sortName;
+      //       for (var i = 0; i < RecipeData.length; i++) {
+      //         RecipeData[i].blogSort = RecipeData[i].blogSort.sortName;
       //       }
       //
-      //       blogData = that.searchBlogData.concat(blogData);
-      //       that.searchBlogData = blogData;
-      //       this.blogData = blogData;
+      //       RecipeData = that.searchRecipeData.concat(RecipeData);
+      //       that.searchRecipeData = RecipeData;
+      //       this.RecipeData = RecipeData;
       //       that.loading = false;
       //
       //     } else {
@@ -293,23 +294,23 @@ export default {
       //       //获取总页数
       //       that.totalPages = response.data.total;
       //
-      //       var blogData = response.data.records;
+      //       var RecipeData = response.data.records;
       //       that.total = response.data.total;
       //       that.pageSize = response.data.size;
       //       that.currentPage = response.data.current;
       //
       //       //全部加载完毕
-      //       if (blogData.length < that.pageSize) {
+      //       if (RecipeData.length < that.pageSize) {
       //         that.isEnd = true;
       //       }
       //
-      //       for (var i = 0; i < blogData.length; i++) {
-      //         blogData[i].blogSort = blogData[i].blogSort.sortName;
+      //       for (var i = 0; i < RecipeData.length; i++) {
+      //         RecipeData[i].blogSort = RecipeData[i].blogSort.sortName;
       //       }
       //
-      //       blogData = that.searchBlogData.concat(blogData);
-      //       that.searchBlogData = blogData;
-      //       this.blogData = blogData;
+      //       RecipeData = that.searchRecipeData.concat(RecipeData);
+      //       that.searchRecipeData = RecipeData;
+      //       this.RecipeData = RecipeData;
       //       that.loading = false;
       //     } else {
       //
@@ -332,27 +333,27 @@ export default {
       //       //获取总页数
       //       that.totalPages = response.data.total;
       //
-      //       var blogData = response.data.records;
+      //       var RecipeData = response.data.records;
       //       that.total = response.data.total;
       //       that.pageSize = response.data.size;
       //       that.currentPage = response.data.current;
       //
       //       //全部加载完毕
-      //       if (blogData.length < that.pageSize) {
+      //       if (RecipeData.length < that.pageSize) {
       //         that.isEnd = true;
       //       }
       //
-      //       for (var i = 0; i < blogData.length; i++) {
-      //         if (blogData[i].blogSort == undefined) {
-      //           blogData[i].blogSort = "未分类";
+      //       for (var i = 0; i < RecipeData.length; i++) {
+      //         if (RecipeData[i].blogSort == undefined) {
+      //           RecipeData[i].blogSort = "未分类";
       //         } else {
-      //           blogData[i].blogSort = blogData[i].blogSort.sortName;
+      //           RecipeData[i].blogSort = RecipeData[i].blogSort.sortName;
       //         }
       //       }
       //
-      //       blogData = that.searchBlogData.concat(blogData);
-      //       that.searchBlogData = blogData;
-      //       this.blogData = blogData;
+      //       RecipeData = that.searchRecipeData.concat(RecipeData);
+      //       that.searchRecipeData = RecipeData;
+      //       this.RecipeData = RecipeData;
       //       that.loading = false;
       //     } else {
       //

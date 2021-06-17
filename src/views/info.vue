@@ -21,13 +21,13 @@
               <span class="iconfont">&#xe60f;</span>
               <a href="javascript:void(0);" @click="goToAuthor(recipeData.holder)">{{ recipeData.holder }}</a>
             </li>
-            <li class="lmname">
-              <span class="iconfont">&#xe603;</span>
-<!--              <a-->
-<!--                href="javascript:void(0);"-->
-<!--                @click="goToSortList(blogData.blogSort)"-->
-<!--              >{{ blogData.blogSort ? blogData.blogSort : "" }}</a>-->
-            </li>
+<!--            <li class="lmname">-->
+<!--              <span class="iconfont">&#xe603;</span>-->
+<!--&lt;!&ndash;              <a&ndash;&gt;-->
+<!--&lt;!&ndash;                href="javascript:void(0);"&ndash;&gt;-->
+<!--&lt;!&ndash;                @click="goToSortList(blogData.blogSort)"&ndash;&gt;-->
+<!--&lt;!&ndash;              >{{ blogData.blogSort ? blogData.blogSort : "" }}</a>&ndash;&gt;-->
+<!--            </li>-->
 <!--            <li class="createTime">-->
 <!--              <span class="iconfont">&#xe606;</span>-->
 <!--              {{ blogData.time }}-->
@@ -60,24 +60,30 @@
 <!--        </div>-->
 <!--          <div-->
 <!--            v-if="blogData.need_credit ==0"-->
-        <div class="news_con ck-content"
-             v-html="recipe_ingredient"
-             v-highlight
-             @click="imageChange"
-        >{{ recipeData.recipe_ingredient }}
-        </div>
-            <div class="news_con ck-content"
-            v-html="recipe_steps"
-            v-highlight
-            @click="imageChange"
-          >{{ recipeData.recipe_steps }}
+        <el-tabs>
+          <el-tab-pane label="食材">
+          <div class="news_con ck-content"
+               v-html="recipeData.recipe_ingredient"
+               v-highlight
+               @click="imageChange"
+          >{{ recipeData.recipe_ingredient }}
           </div>
-        <div class="news_con ck-content"
-             v-html="recipe_tips"
-             v-highlight
-             @click="imageChange"
-        >{{ recipeData.recipe_tips }}
-        </div>
+          </el-tab-pane>
+          <el-tab-pane label="步骤">
+            <div class="news_con ck-content"
+                 v-html="recipeData.recipe_steps"
+                 v-highlight
+                 @click="imageChange"
+            ></div>
+          </el-tab-pane>
+          <el-tab-pane label="小贴士">
+            <div class="news_con ck-content"
+                 v-html="recipeData.recipe_tips"
+                 v-highlight
+                 @click="imageChange"
+            ></div>
+          </el-tab-pane>
+        </el-tabs>
       </div>
 
       <!--点赞和收藏和举报-->
@@ -221,7 +227,7 @@ export default {
     params.append('recipe_id', this.recipe_id)
     getBlogByUid(params).then(response => {
       if (response.data.code === this.$ECode.SUCCESS) {
-        this.recipeData = response.data
+        this.recipeData = response.data.obj
         console.log(this.recipeData)
         // this.blogUid = response.data.uid
         // this.blogOid = response.data.oid\
@@ -237,16 +243,11 @@ export default {
       console.log(error)
       // this.blogData.labels = ['技术', '大数据']
       // this.blogData.blogSort = '技术'
-      this.recipe_ingredient = 'This is a recipe ingredient'
-      this.recipe_steps = 'this is a recipe step'
-      this.recipe_tips = 'this is a recipe tip'
+      this.recipeData.recipe_ingredient = 'This is a recipe ingredient'
+      this.recipeData.recipe_steps = 'this is a recipe step'
+      this.recipeData.recipe_tips = 'this is a recipe tip'
       this.recipeData.recipe_name = 'test'
       this.recipeData.holder = 'ptss'
-      // this.recipeData.summary = '概括'
-      // this.blogData.clickCount = 100
-      // this.blogData.likeCount = 200
-      // this.blogData.time = '2020-12-2'
-      // this.blogData.need = 1
       this.getCommentDataList()
       that.loadingInstance.close()
     })

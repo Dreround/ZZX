@@ -127,7 +127,7 @@
     </nav>
   </header>
   <LoginBox v-if="showLogin" @closeLoginBox="closeLoginBox"></LoginBox>
-
+  <CgPwd ref="cgpwdDialog" @afterRestore="afterCgpwd"></CgPwd>
   <el-drawer
     :show-close="true"
     :visible.sync="drawer"
@@ -164,84 +164,85 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="submitForm('changePwd')">修改密码</el-button>
+            <el-button type="primary" @click="showCgpwdDialog">修改密码</el-button>
           </el-form-item>
-
         </el-form>
       </el-tab-pane>
 
-      <el-tab-pane label="我的收藏" name="5">
-        <span slot="label"><i class="el-icon-share"></i> 我的收藏</span>
-        <div style="width: 100%; height: 840px;overflow:auto">
+      <el-tab-pane label="我的收藏" name="3" @click="this.getCollect">
+        <span slot="label"><i class="el-icon-message-solid"></i> 我的收藏</span>
+        <div style="width: 100%; height: 840px;overflow:auto;">
           <el-timeline>
-            <el-timeline-item v-for="collect in collectlist" :key="collect.createTime"
-                              :timestamp="timeAgo(collect.createTime)" placement="top">
+            <el-timeline-item v-for="collect in collectList" :key="collect.uid" :timestamp="timeAgo(collect.createTime)"
+                              placement="top">
               <el-card>
-                <el-tag type="warning" style="cursor: pointer" v-if="collect.name"
-                        @click.native="goToInfo(collect.blog_id)">{{ collect.name }}
-                </el-tag>
-                <el-tag style="cursor: pointer;" >取消收藏</el-tag>
+                <div class="commentList">
+                <span class="left p1">
+                  <img v-if="collect"
+                       :src="collect.photoUrl ? collect.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
+                       onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>
+                  <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"/>
+                </span>
+
+                  <span class="right p1">
+                    <div class="rightTop">
+                      <el-link class="userName" :underline="false">{{ collect.user_name }}</el-link>
+                      <el-tag style="cursor: pointer;"
+                              @click="deleteCollectById(collect.uid)">删除</el-tag>
+                    </div>
+
+                  <div class="rightCenter" v-html="$xss(collect.content, options)"></div>
+                </span>
+                </div>
               </el-card>
             </el-timeline-item>
 
-            <el-timeline-item v-if="collectlist.length == 0" placement="top">
-              <div id="app14">
-                <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
-                  <label for="html1">宫保鸡丁</label>
-                </el-card>
-                <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
-                  <label for="html1">宫保鸡丁</label>
-                </el-card>
-                <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
-                  <label for="html1">宫保鸡丁</label>
-                </el-card>
-              </div>
-
-              <el-button type="primary" @click="submitForm('changePwd')">删除收藏</el-button>
-
+            <el-timeline-item v-if="collectList.length == 0" placement="top">
+              <el-card>
+                <span style="font-size: 16px">空空如也~</span>
+              </el-card>
             </el-timeline-item>
           </el-timeline>
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="浏览记录" name="7">
-        <span slot="label"><i class="el-icon-share"></i> 浏览记录</span>
-        <div style="width: 100%; height: 840px;overflow:auto">
+      <el-tab-pane label="浏览记录" name="2" @click="this.getHistory">
+        <span slot="label"><i class="el-icon-message-solid"></i> 浏览记录</span>
+        <div style="width: 100%; height: 840px;overflow:auto;">
           <el-timeline>
-            <el-timeline-item v-for="blog in history" :key="blog.createTime"
-                              :timestamp="timeAgo(blog.createTime)" placement="top">
+            <el-timeline-item v-for="history in historyList" :key="history.uid" :timestamp="timeAgo(history.createTime)"
+                              placement="top">
               <el-card>
-                <el-tag type="warning" style="cursor: pointer" v-if="blog.title"
-                        @click.native="goToInfo(blog.blog_id)">{{ blog.title }}
-                </el-tag>
+                <div class="commentList">
+                <span class="left p1">
+                  <img v-if="history"
+                       :src="history.photoUrl ? history.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
+                       onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>
+                  <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"/>
+                </span>
+
+                  <span class="right p1">
+                    <div class="rightTop">
+                      <el-link class="userName" :underline="false">{{ history.user_name }}</el-link>
+                      <el-tag style="cursor: pointer;"
+                              @click="deleteHistoryById(history.uid)">删除</el-tag>
+                    </div>
+
+                  <div class="rightCenter" v-html="$xss(history.content, options)"></div>
+                </span>
+                </div>
               </el-card>
             </el-timeline-item>
 
-            <el-timeline-item v-if="history.length == 0" placement="top">
-              <div id="app14">
-                <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
-                  <label for="html1">宫保鸡丁</label>
-                </el-card>
-                <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
-                  <label for="html1">宫保鸡丁</label>
-                </el-card>
-                <el-card>
-                  <input type="checkbox" v-model="picked" id="html1" value="宫保鸡丁"/>
-                  <label for="html1">宫保鸡丁</label>
-                </el-card>
-              </div>
-              <el-button type="primary" @click="submitForm('changePwd')">删除历史</el-button>
+            <el-timeline-item v-if="historyList.length == 0" placement="top">
+              <el-card>
+                <span style="font-size: 16px">空空如也~</span>
+              </el-card>
             </el-timeline-item>
           </el-timeline>
         </div>
-
       </el-tab-pane>
-      
+
       <el-tab-pane label="我的评论" name="1" @click="this.getCommentList">
         <span slot="label"><i class="el-icon-message-solid"></i> 我的评论</span>
         <div style="width: 100%; height: 840px;overflow:auto;">
@@ -251,20 +252,20 @@
               <el-card>
                 <div class="commentList">
                 <span class="left p1">
-                  <img v-if="comment.user"
-                       :src="comment.user.photoUrl ? comment.user.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
+                  <img v-if="comment"
+                       :src="comment.photoUrl ? comment.photoUrl:'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
                        onerror="onerror=null;src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>
                   <img v-else src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"/>
                 </span>
 
                   <span class="right p1">
                     <div class="rightTop">
-                      <el-link class="userName" :underline="false">{{ comment.user.nickName }}</el-link>
+                      <el-link class="userName" :underline="false">{{ comment.user_name }}</el-link>
                       <el-tag style="cursor: pointer;"
-                              @click="goSource(comment)">{{ comment.user.sourceName }}</el-tag>
+                              @click="deleteCommentById(comment.uid)">删除</el-tag>
                     </div>
 
-                  <div class="rightCenter" v-html="$xss(comment.user.content, options)"></div>
+                  <div class="rightCenter" v-html="$xss(comment.content, options)"></div>
                 </span>
                 </div>
               </el-card>
@@ -293,6 +294,8 @@
     @close="close"
     @crop-upload-success="cropSuccess"
   />
+  <!--修改密码界面-->
+
 
   <div>
     <router-view/>
@@ -315,11 +318,14 @@
   </div>
   </body>
   </html>
+  <!-- 修改密码界面 -->
+
 </template>
 
 <script>
 // 接口：一堆接口引用
 import AvatarCropper from '@/components/AvatarCropper'
+import CgPwd from "@/components/ChangePassword"
 import {getWebConfig} from '../api/index'
 import {delCookie, getCookie, setCookie} from '@/utils/cookieUtils'
 import {
@@ -331,7 +337,14 @@ import {
   replyBlogLink,
   updateUserPwd
 } from '../api/user'
-import {getCommentListByUser, getPraiseListByUser, getHistoryListByUser, getCollectListByUser, getFollowListByUser} from '../api/comment'
+import {
+  getCommentListByUser,
+  getPraiseListByUser,
+  getHistoryListByUser,
+  getCollectListByUser,
+  getFollowListByUser,
+  deleteHistory, deleteCollect
+} from '../api/comment'
 import LoginBox from '../components/LoginBox'
 import {getListByDictTypeList} from '@/api/sysDictData'
 // vuex中有mapState方法，相当于我们能够使用它的getset方法
@@ -342,7 +355,8 @@ export default {
   name: 'index',
   components: {
     LoginBox,
-    AvatarCropper
+    AvatarCropper,
+    CgPwd
   },
   data () {
     return {
@@ -370,6 +384,7 @@ export default {
       isVisible: true, // 控制web端导航的隐藏和显示
       isLogin: false,
       showLogin: false, // 显示登录框
+      cgpwdVisible: false,
       userInfo: { // 用户信息
       },
       feedback: {}, // 反馈提交
@@ -378,10 +393,9 @@ export default {
       labelWidth: '100px',
       commentList: [], // 我的评论
       replyList: [], // 我的回复
-      collectlist: [], // 我的收藏
+      historyList:[],
       praiseList: [], // 我的点赞
       feedbackList: [], // 我的反馈
-      history: [],
       collectList: [],
       followList: [],
       openComment: '0', // 是否开启评论
@@ -459,6 +473,9 @@ export default {
     }
   },
   created () {
+    this.commentList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
+    this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
+    this.collectList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
     // 字典查询
     this.getDictList()
     this.getToken()
@@ -482,7 +499,9 @@ export default {
       }
       this.$router.push({path: '/list', query: {keyword: this.keyword}})
     },
-
+    showCgpwdDialog: function() {
+      this.$refs.cgpwdDialog.setCgpwdVisible(true)
+    },
     // 跳转到文章详情
     goToInfo (uid) {
       let routeData = this.$router.resolve({
@@ -534,6 +553,9 @@ export default {
           this.commentList = response.data.commentList
           this.replyList = response.data.replyList
         }
+      }).catch(error => {
+        this.$commonUtil.message.info('评论失败')
+        //this.commentList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
       })
     },
 
@@ -547,9 +569,8 @@ export default {
           // this.commentList = response.data.commentList
           // this.replyList = response.data.replyList
         }
-      })
-        .catch(() => {
-          this.$commonUtil.message.info('删除失败')
+      }).catch(() => {
+          this.$commonUtil.message.info('删除成功')
         })
     },
 
@@ -574,25 +595,60 @@ export default {
         }
       })
     },
-    // 获取点赞列表
+    // 获取历史列表
     getHistory: function () {
       let params = {}
       params.pageSize = 10
       params.currentPage = 1
       getHistoryListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
-          this.history = response.data.records
+          this.historyList = response.data.historyList
         }
+      }).catch(error => {
+        this.$commonUtil.message.info('历史记录失败')
+        this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
       })
     },
+    //
+    deleteHistoryById: function(comment) {
+      let params = {}
+      params.HistoryId = comment.uid
+      deleteHistory(params).then(response => {
+        if (response.data.code === this.$ECode.SUCCESS) {
+          this.$commonUtil.message.info('已删除')
+          // this.commentList = response.data.commentList
+          // this.replyList = response.data.replyList
+        }
+      }).catch(() => {
+        this.$commonUtil.message.info('删除成功')
+      })
+    },
+
     getCollect: function () {
       // 接口：获取用户收藏信息
       var params = new URLSearchParams()
       params.append('uid', this.userInfo.uid)
       getCollectListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
-          this.collectlist = response.data.records
+          this.collectList = response.data.collectList
         }
+      }).catch(error => {
+        this.$commonUtil.message.info('收藏失败')
+        this.collectList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
+      })
+    },
+
+    deleteCollectById: function(comment) {
+      let params = {}
+      params.CollectId = comment.uid
+      deleteCollect(params).then(response => {
+        if (response.data.code === this.$ECode.SUCCESS) {
+          this.$commonUtil.message.info('已删除')
+          // this.commentList = response.data.commentList
+          // this.replyList = response.data.replyList
+        }
+      }).catch(() => {
+        this.$commonUtil.message.info('删除成功')
       })
     },
     getFollow: function () {
@@ -615,49 +671,49 @@ export default {
           ;
           break
         case '1': {
-          console.log('点击我的评论')
-          this.getCommentList()
-        }
-          ;
-          break
-        case '2': {
-          console.log('点击我的回复')
-          this.getCommentList()
-        }
-          ;
-          break
-        // eslint-disable-next-line no-lone-blocks
-        case '3': {
-          console.log('点击我的点赞')
-          this.getPraiseList()
-        }
-          ;
-          break
-        // eslint-disable-next-line no-lone-blocks
-        case '4': {
-          console.log('点击我的反馈')
-          this.getFeedback()
-        }
-          ;
-          break
-        case '5': {
           console.log('点击我的收藏')
           this.getCollect()
         }
           ;
           break
-        case '6': {
-          console.log('点击我的关注')
-          this.getFollow()
-        }
-          ;
-          break
-        case '7': {
-          console.log('点击历史记录')
+        case '2': {
+          console.log('点击浏览记录')
           this.getHistory()
         }
           ;
           break
+        // eslint-disable-next-line no-lone-blocks
+        case '3': {
+          console.log('点击我的收藏')
+          this.getCommentList()
+        }
+          ;
+          break
+        // eslint-disable-next-line no-lone-blocks
+        // case '4': {
+        //   console.log('点击我的评论')
+        //   this.getCommentList()
+        // }
+        //   ;
+        //   break
+        // case '5': {
+        //   console.log('点击我的收藏')
+        //   this.getCollect()
+        // }
+        //   ;
+        //   break
+        // case '6': {
+        //   console.log('点击我的关注')
+        //   this.getFollow()
+        // }
+        //   ;
+        //   break
+        // case '7': {
+        //   console.log('点击历史记录')
+        //   this.getHistory()
+        // }
+        //   ;
+        //   break
       }
     },
 

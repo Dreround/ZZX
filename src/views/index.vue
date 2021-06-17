@@ -43,7 +43,7 @@
 
             <li class="author">
               <span class="iconfont">&#xe60f;</span>
-              <a href="javascript:void(0);" @click="goToAuthor(item.holder)">{{ item.holder }}</a>
+              <a href="javascript:void(0);" @click="goToList(item.holder)">{{ item.holder }}</a>
             </li>
             <li class="lmname" v-if="item.tips">
               <span class="iconfont">&#xe603;</span>
@@ -200,12 +200,13 @@ export default {
       // }
     },
     // 跳转到搜索详情页
-    // goToList (uid) {
-    //   this.$router.push({
-    //     path: '/list',
-    //     query: {sortUid: uid}
-    //   })
-    // },
+    goToList (keyword) {
+      //在当前页面跳转
+      this.$router.push({
+        path: '/list',
+        query: {keyword: keyword}
+      })
+    },
 
     // 跳转到搜索详情页
     // goToAuthor (holder) {
@@ -224,15 +225,18 @@ export default {
         background: 'rgba(0, 0, 0, 0.7)'
       })
       // 接口：博客列表
-      var params = new URLSearchParams()
-      params.append('currentPage', this.currentPage)
-      params.append('pageSize', this.pageSize)
-      getNewRecipe(params).then(response => {
+      //var params = new URLSearchParams()
+      //params.append('currentPage', this.currentPage)
+      //params.append('pageSize', this.pageSize)
+      getNewRecipe().then(response => {
+        //this.$commonUtil.message.info(response.data)
         if (response.data.code === this.$ECode.SUCCESS) {
-          that.newRecipeData = response.data.records
-          that.total = response.data.total
-          that.pageSize = response.data.size
-          that.currentPage = response.data.currentPage
+          this.$commonUtil.message.info('success')
+          console.log(response.data.obj)
+          that.newRecipeData = response.data.obj
+          // that.total = response.data.total
+          // that.pageSize = response.data.size
+          // that.currentPage = response.data.currentPage
         }
         that.loadingInstance.close()
         // eslint-disable-next-line handle-callback-err
@@ -246,27 +250,29 @@ export default {
 
     loadContent: function () {
       var that = this
-      that.loading = false
-      that.currentPage = that.currentPage + 1
-      var params = new URLSearchParams()
-      // 接口：博客列表
-      params.append('currentPage', that.currentPage)
-      params.append('pageSize', that.pageSize)
-      getNewRecipe(params).then(response => {
-        if (response.data.code === this.$ECode.SUCCESS && response.data.records.length > 0) {
+      // that.loading = false
+      //that.currentPage = that.currentPage + 1
+      // var params = new URLSearchParams()
+      // // 接口：博客列表
+      // params.append('currentPage', that.currentPage)
+      // params.append('pageSize', that.pageSize)
+      getNewRecipe().then(response => {
+        if (response.data.code === this.$ECode.SUCCESS && response.data.obj.length > 0) {
+          this.$commonUtil.message.info('成功')
           that.isEnd = false
+          console.log(response.obj)
           var newData = that.newRecipeData.concat(response.data.records)
           that.newRecipeData = newData
-          that.total = response.data.total
-          that.pageSize = response.data.size
-          that.currentPage = response.data.current
+          // that.total = response.data.total
+          // that.pageSize = response.data.size
+          // that.currentPage = response.data.current
           // 全部加载完毕
           if (newData.length < that.pageSize) {
             that.isEnd = true
           }
         } else {
           that.isEnd = true
-        }
+         }
         that.loading = false
       })
     }

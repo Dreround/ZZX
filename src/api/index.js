@@ -1,18 +1,16 @@
 import request from '@/utils/request'
 
-export function getBlogByLevel (params) {
+export function getRecipeByLevel () {
   return request({
-    url: process.env.WEB_API + '/index/getBlogByLevel',
-    method: 'get',
-    params
+    url: process.env.WEB_API + 'HomePage/getRecipeByLevel',
+    method: 'get'
   })
 }
 
-export function getNewRecipe (params) {
+export function getNewRecipe () {
   return request({
-    url: process.env.WEB_API + '/index/getNewRecipe',
-    method: 'get',
-    params
+    url: process.env.WEB_API + 'HomePage/BrowseRecipe',
+    method: 'get'
   })
 }
 

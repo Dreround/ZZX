@@ -54,7 +54,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="禁言用户用户名" width="100" align="center">
+      <el-table-column label="禁言用户用户名" width="180" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.uid }}</span>
         </template>
@@ -119,7 +119,7 @@
       <template slot-scope="scope">
         <el-button type="primary" size="small" @click="handlePass(scope.row)">推荐
         </el-button>
-        <el-button type="primary" size="small" @click="handlePass(scope.row)">取消推荐
+        <el-button type="primary" size="small" @click="handleFail(scope.row)">取消推荐
         </el-button>
       </template>
     </el-table-column>
@@ -305,6 +305,7 @@ export default {
       })
     },
     handleFail: function (row) {
+      row.status=0
       let params = row
       workReport(params).then(response => {
         if (response.data.code == this.$ECode.SUCCESS) {

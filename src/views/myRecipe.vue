@@ -151,7 +151,7 @@ export default {
         {
           let routeData = this.$router.resolve({
             path: '/list',
-            query: { holder: entity.holder }
+            query: { keyword: entity.holder }
           })
           window.open(routeData.href, '_blank')
         }
@@ -162,7 +162,7 @@ export default {
           //if (entity.type == '0') {
             let routeData = this.$router.resolve({
               path: '/info',
-              query: { blogOid: entity.recipe_id }
+              query: { recipe_id: entity.recipe_id }
             })
             window.open(routeData.href, '_blank')
           //} else if (entity.type == '1') {
