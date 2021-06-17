@@ -17,7 +17,7 @@
 <!--              <el-input v-model="form.summary" auto-complete="off" />-->
 <!--            </el-form-item>-->
             <el-form-item :label-width="formLabelWidth" label="小贴士">
-              <el-input v-model="form.tips" auto-complete="off" />
+              <el-input v-model="form.tip" auto-complete="off" />
             </el-form-item>
           </el-col>
 
@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import { addBlog, editBlog } from '@/api/blog'
+import { addRecipe, editRecipe } from '@/api/blog'
 // import { getSystemConfig } from '@/api/systemConfig'
 import { getTagList } from '@/api/tag'
 import { getBlogSortList } from '@/api/blogSort'
@@ -188,7 +188,7 @@ export default {
     ingredient: {
       default: ""
     },
-    tips: {
+    tip: {
       default: ""
     },
     recipe_id: {
@@ -205,7 +205,7 @@ export default {
       tableData: [], // 博客数据
       tagData: [], // 标签数据
       tagValue: [], // 保存选中标签id(编辑时)
-      blogSortData: [{uid: 1, name: '技术'}, {uid: 2, name: '大数据'}],
+      //blogSortData: [{uid: 1, name: '技术'}, {uid: 2, name: '大数据'}],
       title: '新增菜谱',
       steps: '',
       dialogFormVisible: true, // 控制弹出框
@@ -242,6 +242,7 @@ export default {
         //content: '',
         recipe_id: '',
         recipe_name: '',
+        holder: '',
         //blogSortUid: '',
         //isOriginal: '', // 是否原创
         //isPublish: '',
@@ -251,7 +252,9 @@ export default {
         //need_credit:'',
         steps: '',
         ingredient: '',
-        tips: ''
+        tip: '',
+        video: '',
+        image: ''
 
       },
       rules: {
@@ -295,7 +298,9 @@ export default {
     this.form.recipe_id = this.recipe_id
     this.form.ingredient = this.ingredient
     this.form.recipe_name = this.recipe_name
-    this.form.tips = this.tips
+    this.form.tip = this.tip
+    //this.form.holder = this.$store.state.user.userInfo.user_name
+    this.form.holder = "yrk"
     console.log('-----------------------------------------')
     //  const that = this
     // // const tempForm = JSON.parse(getCookie('form'))
@@ -389,24 +394,24 @@ export default {
     closeLoading () {
       this.uploadLoading.close()
     },
-    tagList: function () {
-      getTagList().then(response => {
-        this.tagData = response.data.records
-      }).catch(error => {
-        console.log(error)
-        this.tagData = [{uid: 1, content: '技术'}, {uid: 2, content: '大数据'}]
-      })
-    },
-    blogSortList: function () {
-      getBlogSortList().then(response => {
-        if (response.data.code === this.$ECode.SUCCESS) {
-          this.blogSortData = response.data.records
-        }
-      }).catch(error => {
-        console.log(error)
-        this.blogSortData = [{uid: 1, name: '技术'}, {uid: 2, name: '大数据'}]
-      })
-    },
+    // tagList: function () {
+    //   getTagList().then(response => {
+    //     this.tagData = response.data.records
+    //   }).catch(error => {
+    //     console.log(error)
+    //     this.tagData = [{uid: 1, content: '技术'}, {uid: 2, content: '大数据'}]
+    //   })
+    // },
+    // blogSortList: function () {
+    //   getBlogSortList().then(response => {
+    //     if (response.data.code === this.$ECode.SUCCESS) {
+    //       this.blogSortData = response.data.records
+    //     }
+    //   }).catch(error => {
+    //     console.log(error)
+    //     this.blogSortData = [{uid: 1, name: '技术'}, {uid: 2, name: '大数据'}]
+    //   })
+    // },
     // getFormObject: function () {
     //   var formObject = {
     //     uid: null,
@@ -507,9 +512,9 @@ export default {
           //this.form.tagUid = this.tagValue.join(',')
           if (this.isEditForm) {
             this.$commonUtil.message.success('编辑提交')
-            editBlog(this.form).then(response => {
+            editRecipe(this.form).then(response => {
               if (response.data.code === this.$ECode.SUCCESS) {
-                this.$commonUtil.message.success(response.message)
+                this.$commonUtil.message.success(response.data.message)
                 // 清空cookie中的内容
                 // delCookie('form')
                 this.dialogFormVisible = false
@@ -524,8 +529,8 @@ export default {
               this.$commonUtil.message.success('修改成功')
             })
           } else {
-            //this.$commonUtil.message.success('上传成功')
-            addBlog(this.form).then(response => {
+            this.$commonUtil.message.success('上传菜谱')
+            addRecipe(this.form).then(response => {
               if (response.data.code === this.$ECode.SUCCESS) {
                 this.$commonUtil.message.success(response.message)
                 // 清空cookie中的内容
@@ -539,8 +544,8 @@ export default {
               }
             }).catch(error => {
               //console.log(error)
-              location.href=this.vueMoguWebUrl + '/#/'
-              this.$commonUtil.message.success('上传成功')
+              //location.href=this.vueMoguWebUrl + '/#/'
+              this.$commonUtil.message.success('上传失败')
             })
           }
         }

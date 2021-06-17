@@ -8,9 +8,9 @@ export function payCreditByUid (params) {
   })
 }
 
-export function getBlogByUid (params) {
+export function getRecipeById (params) {
   return request({
-    url: process.env.WEB_API + '/api/getBlogByUid',
+    url: process.env.WEB_API + 'HomePage/SearchById',
     method: 'get',
     params
   })

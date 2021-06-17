@@ -477,11 +477,11 @@ export default {
     this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
     this.collectList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
     // 字典查询
-    this.getDictList()
-    this.getToken()
-    this.getKeyword()
-    this.getCurrentPageTitle()
-    this.getWebConfigInfo()
+    //this.getDictList()
+    //this.getToken()
+    //this.getKeyword()
+    //this.getCurrentPageTitle()
+    //this.getWebConfigInfo()
   },
   methods: {
     // 拿到vuex中的写的方法

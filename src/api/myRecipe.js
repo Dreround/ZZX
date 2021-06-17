@@ -2,16 +2,16 @@ import request from '@/utils/request'
 
 export function getMyRecipe (params) {
   return request({
-    url: process.env.WEB_API + '/personalRecipeManage/viewRecipe',
-    method: 'post',
+    url: process.env.WEB_API + 'PersonalRecipeManage/ViewRecipe',
+    method: 'get',
     params
   })
 }
 
 export function deleteMyRecipe (params) {
   return request({
-    url: process.env.WEB_API + '/personalRecipeManage/deleteRecipe',
-    method: 'post',
+    url: process.env.WEB_API + 'PersonalRecipeManage/DeleteRecipe',
+    method: 'get',
     params
   })
 }

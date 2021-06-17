@@ -8,9 +8,9 @@ export function getBlogList (params) {
   })
 }
 
-export function addBlog (params) {
+export function addRecipe (params) {
   return request({
-    url: process.env.WEB_API + '/blog/add',
+    url: process.env.WEB_API + 'PersonalRecipeManage/UploadRecipe',
     method: 'post',
     data: params
   })
@@ -24,9 +24,9 @@ export function uploadLocalBlog (params) {
   })
 }
 
-export function editBlog (params) {
+export function editRecipe (params) {
   return request({
-    url: process.env.ADMIN_API + '/personalRecipeManage/updateRecipe',
+    url: process.env.ADMIN_API + 'PersonalRecipeManage/UpdateRecipe',
     method: 'post',
     data: params
   })

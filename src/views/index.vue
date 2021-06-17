@@ -2,7 +2,7 @@
   <article>
     <!--banner begin-->
     <div class="picsbox">
-      <FirstRecommend></FirstRecommend>
+<!--      <FirstRecommend></FirstRecommend>-->
       <!--banner end-->
       <!-- 二级推荐 -->
 <!--      <div class="toppic">-->
@@ -87,7 +87,7 @@
 <!--    删除-->
     <div class="sidebar">
       <!--标签云-->
-      <TagCloud></TagCloud>
+<!--      <TagCloud></TagCloud>-->
 
       <!--关注我们-->
 <!--      <FollowUs></FollowUs>-->
@@ -141,7 +141,7 @@ export default {
       hotTagData: [], // 最新标签
       keyword: '',
       currentPage: 1,
-      pageSize: 15,
+      pageSize: 6,
       total: 0, // 总数量
       isEnd: false, // 是否到底底部了
       loading: false // 是否正在加载
@@ -224,18 +224,18 @@ export default {
         background: 'rgba(0, 0, 0, 0.7)'
       })
       // 接口：博客列表
-      //var params = new URLSearchParams()
-      //params.append('currentPage', this.currentPage)
-      //params.append('pageSize', this.pageSize)
-      getNewRecipe().then(response => {
+      var params = new URLSearchParams()
+      params.append('page_num', this.currentPage)
+      params.append('page_size', this.pageSize)
+      getNewRecipe(params).then(response => {
         //this.$commonUtil.message.info(response.data)
         if (response.data.code === this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('success')
-          console.log(response.data.obj)
-          that.newRecipeData = response.data.obj
+          console.log(response.data.obj.recipes)
+          that.newRecipeData = response.data.obj.recipes
           // that.total = response.data.total
-          // that.pageSize = response.data.size
-          // that.currentPage = response.data.currentPage
+           //that.pageSize = response.data.size
+           that.currentPage = response.data.obj.page_num
         }
         that.loadingInstance.close()
         // eslint-disable-next-line handle-callback-err
@@ -251,22 +251,25 @@ export default {
       var that = this
       that.loading = true
       //that.currentPage = that.currentPage + 1
-      // var params = new URLSearchParams()
+       var params = new URLSearchParams()
       // // 接口：博客列表
-      // params.append('currentPage', that.currentPage)
-      // params.append('pageSize', that.pageSize)
-      getNewRecipe().then(response => {
-        if (response.data.code === this.$ECode.SUCCESS && response.data.obj.length > 0) {
+       params.append('page_num', that.currentPage)
+       params.append('page_size', that.pageSize)
+      getNewRecipe(params).then(response => {
+        if (response.data.code === this.$ECode.SUCCESS && response.data.obj.recipes.length > 0) {
           this.$commonUtil.message.info('成功')
           that.isEnd = false
-          console.log(response.obj)
-          var newData = that.newRecipeData.concat(response.data.obj)
+          console.log(response.data.obj.recipes)
+          var newData = that.newRecipeData.concat(response.data.obj.recipes)
           that.newRecipeData = newData
           // that.total = response.data.total
           // that.pageSize = response.data.size
-          // that.currentPage = response.data.current
+           that.currentPage = response.data.obj.page_num
           // 全部加载完毕
-          if (newData.length < that.pageSize) {
+          // if (newData.length < that.pageSize) {
+          //   that.isEnd = true
+          // }
+          if (response.data.message === "end"){
             that.isEnd = true
           }
         } else {
@@ -274,6 +277,7 @@ export default {
          }
         that.loading = false
       }).catch(error => {
+        this.$commonUtil.message.info('XXX')
         console.log(error)
         for (let i = 0; i < 5; ++i) {
           this.newRecipeData.push({recipe_name: 'newTest', recipe_id:'1', holder: 'ptss', tips: '略略略', time: '2020-12-2'})

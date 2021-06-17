@@ -119,7 +119,7 @@
 
 <script>
 import {getWebConfig} from '../api/index'
-import {getBlogByUid, payCreditByUid} from '../api/blogContent'
+import {getRecipeById, payCreditByUid} from '../api/blogContent'
 import CommentList from '../components/CommentList'
 import CommentBox from '../components/CommentBox'
 // vuex中有mapState方法，相当于我们能够使用它的getset方法
@@ -146,9 +146,9 @@ export default {
       showStickyTop: false,
       showSideCatalog: true,
       showSidebar: true, // 是否显示侧边栏
-      recipe_steps: '',
-      recipe_ingredient: '',
-      recipe_tips: '',
+      //recipe_steps: '',
+      //recipe_ingredient: '',
+      //recipe_tips: '',
       catalogProps: {
         // 内容容器selector(必需)
         container: '.ck-content',
@@ -222,25 +222,23 @@ export default {
     this.openComment = 0
     var that = this
     var params = new URLSearchParams()
-    // if (this.blogUid) {
-    //   params.append('uid', this.blogUid)
-    // }
-    // if (this.blogOid) {
-    //   params.append('oid', this.blogOid)
-    // }
     params.append('recipe_id', this.recipe_id)
-    getBlogByUid(params).then(response => {
+    getRecipeById(params).then(response => {
       if (response.data.code === this.$ECode.SUCCESS) {
-        this.recipeData = response.data.obj
+        this.$commonUtil.message.info(response.data.message)
+        //this.recipeData = response.data.obj
         console.log(this.recipeData)
-        // this.blogUid = response.data.uid
-        // this.blogOid = response.data.oid\
+        this.recipeData.recipe_steps = response.data.obj.steps
+        this.recipeData.recipe_ingredient = response.data.obj.ingredient
+        this.recipeData.recipe_tips = response.data.obj.tip
+        this.recipeData.holder = response.data.obj.holder
         this.getCommentDataList()
       }
       setTimeout(() => {
-        that.recipe_steps = response.data.steps
-        that.recipe_ingredient = response.data.ingredient
-        that.recipe_tips = response.data.tips
+        that.recipeData.recipe_steps = response.data.obj.steps
+        that.recipeData.recipe_ingredient = response.data.obj.ingredient
+        that.recipeData.recipe_tips = response.data.obj.tip
+        that.recipeData.holder = response.data.obj.holder
         that.loadingInstance.close()
       }, 20)
     }).catch(error => {

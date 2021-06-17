@@ -67,14 +67,16 @@ export default {
   created () {
     //this.$commonUtil.message.info('xxx')
     let info = {}
-    info.uid = 1
+    info.user_name = "yrk"
     this.setUserInfo(info)
     info = this.$store.state.user.userInfo
-    console.log(info.uid)
-    //this.$commonUtil.message.info(this.$store.state.user.userInfo)
-    getMyRecipe(info).then(response => {
+    console.log(info.user_name)
+    var params = new URLSearchParams()
+    params.append('user_name', info.user_name)
+    getMyRecipe(params).then(response => {
       if (response.data.code == this.$ECode.SUCCESS) {
-        this.itemBySort = response.data.records
+        this.$commonUtil.message.info(response.data.message)
+        this.itemBySort = response.data.obj
       }
     }).catch(error => {
       this.$commonUtil.message.info('后端数据获取失败')
@@ -91,6 +93,7 @@ export default {
       deleteMyRecipe(params).then(response => {
         if (response.data.code == this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('删除成功')
+          location.reload()
         }
       }).catch(error => {
         this.$commonUtil.message.info('删除失败')
