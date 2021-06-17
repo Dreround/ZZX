@@ -54,6 +54,22 @@ export function addComment (params) {
   })
 }
 
+export function deleteCollect (params) {
+  return request({
+    url: process.env.WEB_API + '/web/collect/delete',
+    method: 'post',
+    data: params
+  })
+}
+
+export function deleteHistory (params) {
+  return request({
+    url: process.env.WEB_API + '/web/history/delete',
+    method: 'post',
+    data: params
+  })
+}
+
 export function deleteComment (params) {
   return request({
     url: process.env.WEB_API + '/web/comment/delete',
@@ -61,7 +77,6 @@ export function deleteComment (params) {
     data: params
   })
 }
-
 export function reportComment (params) {
   return request({
     url: process.env.WEB_API + '/web/comment/report',

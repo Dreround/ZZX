@@ -337,7 +337,14 @@ import {
   replyBlogLink,
   updateUserPwd
 } from '../api/user'
-import {getCommentListByUser, getPraiseListByUser, getHistoryListByUser, getCollectListByUser, getFollowListByUser} from '../api/comment'
+import {
+  getCommentListByUser,
+  getPraiseListByUser,
+  getHistoryListByUser,
+  getCollectListByUser,
+  getFollowListByUser,
+  deleteHistory, deleteCollect
+} from '../api/comment'
 import LoginBox from '../components/LoginBox'
 import {getListByDictTypeList} from '@/api/sysDictData'
 // vuex中有mapState方法，相当于我们能够使用它的getset方法
@@ -606,7 +613,7 @@ export default {
     deleteHistoryById: function(comment) {
       let params = {}
       params.HistoryId = comment.uid
-      deleteComment(params).then(response => {
+      deleteHistory(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('已删除')
           // this.commentList = response.data.commentList
@@ -634,7 +641,7 @@ export default {
     deleteCollectById: function(comment) {
       let params = {}
       params.CollectId = comment.uid
-      deleteComment(params).then(response => {
+      deleteCollect(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('已删除')
           // this.commentList = response.data.commentList
