@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { getBlogByLevel } from "../../api/index";
+import { getRecipeByLevel } from "../../api/index";
 import {getBlogByUid} from "../../api/blogContent";
 export default {
   name: 'ThirdRecommend',
@@ -26,7 +26,7 @@ export default {
       thirdParams.append("pageSize", 3);
       thirdParams.append("level", 3);
       thirdParams.append("useSort", 1);
-      getBlogByLevel(thirdParams).then(response => {
+      getRecipeByLevel(thirdParams).then(response => {
         if (response.code == this.$ECode.SUCCESS) {
           this.thirdData = response.data.records;
         }

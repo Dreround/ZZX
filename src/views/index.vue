@@ -69,8 +69,7 @@
       </div>
 
       <div class="isEnd">
-        <!-- <span v-if="!isEnd">正在加载中~</span> -->
-
+<!--         <span v-if="!isEnd">正在加载中~</span> -->
         <div class="loadContent" @click="loadContent" v-if="!isEnd&&!loading">点击加载更多</div>
 
         <div class="lds-css ng-scope" v-if="!isEnd&&loading">
@@ -100,7 +99,7 @@
 <!--      <FourthRecommend></FourthRecommend>-->
 
       <!--点击排行-->
-      <HotBlog></HotBlog>
+<!--      <HotBlog></HotBlog>-->
 
     </div>
 
@@ -250,7 +249,7 @@ export default {
 
     loadContent: function () {
       var that = this
-      // that.loading = false
+      that.loading = true
       //that.currentPage = that.currentPage + 1
       // var params = new URLSearchParams()
       // // 接口：博客列表
@@ -261,7 +260,7 @@ export default {
           this.$commonUtil.message.info('成功')
           that.isEnd = false
           console.log(response.obj)
-          var newData = that.newRecipeData.concat(response.data.records)
+          var newData = that.newRecipeData.concat(response.data.obj)
           that.newRecipeData = newData
           // that.total = response.data.total
           // that.pageSize = response.data.size
@@ -274,6 +273,13 @@ export default {
           that.isEnd = true
          }
         that.loading = false
+      }).catch(error => {
+        console.log(error)
+        for (let i = 0; i < 5; ++i) {
+          this.newRecipeData.push({recipe_name: 'newTest', recipe_id:'1', holder: 'ptss', tips: '略略略', time: '2020-12-2'})
+        }
+        this.loading = false;
+        this.isEnd = false;
       })
     }
   }

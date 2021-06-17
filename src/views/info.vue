@@ -5,6 +5,7 @@
     </el-dialog>
     <h1 class="t_nav">
       <a href="/" class="n1">网站首页</a>
+      <a href="javascript:void(0);" class="n2">菜谱详情</a>
 <!--      <a-->
 <!--        href="javascript:void(0);"-->
 <!--        v-if="blogData.blogSort"-->
@@ -19,7 +20,7 @@
           <ul>
             <li class="author">
               <span class="iconfont">&#xe60f;</span>
-              <a href="javascript:void(0);" @click="goToAuthor(recipeData.holder)">{{ recipeData.holder }}</a>
+              <a href="javascript:void(0);" @click="goToList(recipeData.holder)">{{ recipeData.holder }}</a>
             </li>
 <!--            <li class="lmname">-->
 <!--              <span class="iconfont">&#xe603;</span>-->
@@ -90,13 +91,14 @@
       <LikeAndCollect v-if="openAdmiration === '1'" :recipe_id="recipe_id"
                        ></LikeAndCollect>
       <div class="news_pl" :style="openCommentCss">
-        <h2 v-if="openComment === '1'">文章评论</h2>
-        <ul v-if="openComment === '1'">
+        <h2>文章评论</h2>
+        <ul>
           <CommentBox
             :userInfo="userInfo"
             :commentInfo="commentInfo"
             @submit-box="submitBox"
             :showCancel="showCancel"
+            v-if="openComment === '1'"
           ></CommentBox>
           <div class="message_infos">
             <CommentList :comments="comments" :commentInfo="commentInfo"></CommentList>
@@ -216,6 +218,8 @@ export default {
     Sticky
   },
   mounted () {
+    this.openComment = this.$store.state.user.userInfo.openComment
+    this.openComment = 0
     var that = this
     var params = new URLSearchParams()
     // if (this.blogUid) {
@@ -368,34 +372,34 @@ export default {
       this.getCommentDataList()
     },
     // 设置是否开启评论和赞赏
-    setCommentAndAdmiration () {
-      let webConfigData = this.$store.state.app.webConfigData
-      if (webConfigData.createTime) {
-        this.openAdmiration = webConfigData.openAdmiration
-        this.openComment = webConfigData.openComment
-      } else {
-        getWebConfig().then(response => {
-          if (response.data.code === this.$ECode.SUCCESS) {
-            webConfigData = response.data
-            // 存储在Vuex中
-            this.setWebConfigData(response.data)
-            this.openAdmiration = webConfigData.openAdmiration
-            this.openComment = webConfigData.openComment
-          }
-        })
-      }
-    },
-    payCredit () {
-      var params = new URLSearchParams()
-      params.append('blog_id', this.blogUid)
-      payCreditByUid(params).then(response => {
-        if (response.data.code === this.$ECode.SUCCESS) {
-          this.blogData.need_credit = 0
-        } else {
-          this.$commonUtil.message.error(response.data.message)
-        }
-      })
-    },
+    // setCommentAndAdmiration () {
+    //   let webConfigData = this.$store.state.app.webConfigData
+    //   if (webConfigData.createTime) {
+    //     this.openAdmiration = webConfigData.openAdmiration
+    //     this.openComment = webConfigData.openComment
+    //   } else {
+    //     getWebConfig().then(response => {
+    //       if (response.data.code === this.$ECode.SUCCESS) {
+    //         webConfigData = response.data
+    //         // 存储在Vuex中
+    //         this.setWebConfigData(response.data)
+    //         this.openAdmiration = webConfigData.openAdmiration
+    //         this.openComment = webConfigData.openComment
+    //       }
+    //     })
+    //   }
+    // },
+    // payCredit () {
+    //   var params = new URLSearchParams()
+    //   params.append('blog_id', this.blogUid)
+    //   payCreditByUid(params).then(response => {
+    //     if (response.data.code === this.$ECode.SUCCESS) {
+    //       this.blogData.need_credit = 0
+    //     } else {
+    //       this.$commonUtil.message.error(response.data.message)
+    //     }
+    //   })
+    // },
     submitBox (e) {
       let params = {}
       params.recipe_id = e.recipe_id
@@ -450,13 +454,13 @@ export default {
       window.open(routeData.href, '_blank')
     },
     // 跳转到搜索详情页
-    // goToList (uid) {
-    //   let routeData = this.$router.resolve({
-    //     path: '/list',
-    //     query: {tagUid: uid}
-    //   })
-    //   window.open(routeData.href, '_blank')
-    // },
+    goToList (holder) {
+      let routeData = this.$router.resolve({
+        path: '/list',
+        query: {keyword: holder}
+      })
+      window.open(routeData.href, '_blank')
+    },
     // 跳转到搜索详情页
     // goToSortList (uid) {
     //   let routeData = this.$router.resolve({

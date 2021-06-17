@@ -83,11 +83,11 @@
         <!--          </router-link>-->
         <!--        </li>-->
 
-        <li v-if="openComment=='1'">
-          <router-link to="/messageBoard">
-            <a href="javascript:void(0);" :class="[saveTitle == '/messageBoard' ? 'title' : '']">留言板</a>
-          </router-link>
-        </li>
+<!--        <li v-if="openComment=='1'">-->
+<!--          <router-link to="/messageBoard">-->
+<!--            <a href="javascript:void(0);" :class="[saveTitle == '/messageBoard' ? 'title' : '']">留言板</a>-->
+<!--          </router-link>-->
+<!--        </li>-->
 
       </ul>
 
@@ -819,34 +819,34 @@ export default {
           ;
           break
 
-        case 'feedback': {
-          var feedback = this.feedback
-
-          if (feedback.title == undefined || feedback.title == '' || feedback.content == undefined || feedback.content == '') {
-            this.$message({
-              type: 'error',
-              message: '必填项不能为空'
-            })
-            return
-          }
-          addFeedback(this.feedback).then(response => {
-            if (response.data.code == this.$ECode.SUCCESS) {
-              this.$message({
-                type: 'success',
-                message: response.data
-              })
-              this.feedback = {}
-              this.getFeedback()
-            } else {
-              this.$message({
-                type: 'error',
-                message: response.data
-              })
-            }
-          })
-        }
-          ;
-          break
+        // case 'feedback': {
+        //   var feedback = this.feedback
+        //
+        //   if (feedback.title == undefined || feedback.title == '' || feedback.content == undefined || feedback.content == '') {
+        //     this.$message({
+        //       type: 'error',
+        //       message: '必填项不能为空'
+        //     })
+        //     return
+        //   }
+        //   addFeedback(this.feedback).then(response => {
+        //     if (response.data.code == this.$ECode.SUCCESS) {
+        //       this.$message({
+        //         type: 'success',
+        //         message: response.data
+        //       })
+        //       this.feedback = {}
+        //       this.getFeedback()
+        //     } else {
+        //       this.$message({
+        //         type: 'error',
+        //         message: response.data
+        //       })
+        //     }
+        //   })
+        // }
+        //   ;
+        //   break
 
         case 'changePwd': {
           let newPwd = this.userInfo.newPwd
