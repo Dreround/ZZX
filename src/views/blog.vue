@@ -13,9 +13,6 @@
             <el-form-item :label-width="formLabelWidth" label="标题" prop="recipe_name">
               <el-input v-model="form.recipe_name" auto-complete="off" @input="contentChange"/>
             </el-form-item>
-<!--            <el-form-item :label-width="formLabelWidth" label="简介">-->
-<!--              <el-input v-model="form.summary" auto-complete="off" />-->
-<!--            </el-form-item>-->
             <el-form-item :label-width="formLabelWidth" label="小贴士">
               <el-input v-model="form.tip" auto-complete="off" />
             </el-form-item>

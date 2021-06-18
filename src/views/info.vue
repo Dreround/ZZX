@@ -146,23 +146,19 @@ export default {
       showStickyTop: false,
       showSideCatalog: true,
       showSidebar: true, // 是否显示侧边栏
-      //recipe_steps: '',
-      //recipe_ingredient: '',
-      //recipe_tips: '',
       catalogProps: {
         // 内容容器selector(必需)
         container: '.ck-content',
         watch: true,
         levelList: ['h2', 'h3']
       },
+      isEnd: false,
       loadingInstance: null, // loading对象
       showCancel: false,
       submitting: false,
       comments: [],
       commentInfo: {
-        // 评论来源： MESSAGE_BOARD，ABOUT，BLOG_INFO 等 代表来自某些页面的评论
-        //source: 'BLOG_INFO',
-        recipe_id: this.$route.query.recipe_id
+        recipe_id: ''
       },
       currentPage: 1,
       pageSize: 5,
@@ -282,22 +278,25 @@ export default {
       after = winScrollHeight
       // 还有30像素的时候,就查询
       if (docHeight === winHeight + winScrollHeight) {
-        if (that.comments.length >= that.total) {
+        if (that.isEnd) {
           console.log('已经到底了')
           return
         }
         let params = {}
-        params.source = that.commentInfo.source
-        params.blogUid = that.commentInfo.blogUid
+        //params.source = that.commentInfo.source
+        params.recipe_id = that.commentInfo.recipe_id
         params.currentPage = that.currentPage + 1
         params.pageSize = that.pageSize
         getCommentList(params).then(response => {
-          if (response.code === that.$ECode.SUCCESS) {
-            that.comments = that.comments.concat(response.data.records)
+          if (response.data.code === that.$ECode.SUCCESS) {
+            that.comments = that.comments.concat(response.data.obj)
             that.setCommentList(that.comments)
             that.currentPage = response.data.current
             that.pageSize = response.data.size
-            that.total = response.data.total
+            if(response.data.message === 'End'){
+              that.isEnd = true
+            }
+            //that.total = response.data.total
           }
         }).catch(error => {
           console.log(error)
@@ -320,6 +319,7 @@ export default {
       text: '正在努力加载中~'
     })
     this.recipe_id = this.$route.query.recipe_id
+    this.commentInfo.recipe_id = this.recipe_id
     console.log(this.$route.query.recipe_id)
     // var that = this
     // var params = new URLSearchParams()
@@ -438,6 +438,9 @@ export default {
           this.setCommentList(this.comments)
           this.currentPage = response.data.current
           this.pageSize = response.data.size
+          if(response.data.message === 'End'){
+            this.isEnd = true
+          }
           //this.total = response.data.total
         }
       }).catch(error => {
