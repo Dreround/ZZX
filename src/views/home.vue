@@ -158,7 +158,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="submitForm('editUser')">修改用户名</el-button>
+            <el-button type="primary" @click="submitForm('changeName')">修改用户名</el-button>
           </el-form-item>
 
           <el-form-item>
@@ -328,13 +328,12 @@ import {
   addFeedback,
   authVerify,
   deleteUserAccessToken,
-  editUser,
+  changeName,
   getFeedbackList,
   replyBlogLink
 } from '../api/user'
 import {
   getCommentListByUser,
-  getPraiseListByUser,
   getHistoryListByUser,
   getCollectListByUser,
   getFollowListByUser,
@@ -743,12 +742,13 @@ export default {
     submitForm: function (type) {
       switch (type) {
         // 接口：修改用户信息
-        case 'editUser': {
+        case 'changeName': {
           this.$refs.userInfo.validate((valid) => {
             if (!valid) {
               console.log('校验失败')
             } else {
-              editUser(this.userInfo).then(response => {
+
+              changeName(this.userInfo).then(response => {
                 if (response.data.code === this.$ECode.SUCCESS) {
                   this.$message({
                     type: 'success',
