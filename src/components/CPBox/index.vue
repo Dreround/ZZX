@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {localLogin, localRegister} from '../../api/user'
+import {localLogin, localRegister, pwdUpd} from '../../api/user'
 import { Loading } from 'element-ui'
 export default {
   name: 'share',
@@ -58,6 +58,7 @@ export default {
         wechat: true
       },
       CPForm: {
+        user_id:'',
         password: '',
         password2: '',
       },
@@ -93,16 +94,14 @@ export default {
             return
           }
           var params = {}
-          params.user_name = this.CPForm.user_name
+          params.user_id = this.$store.state.user.userInfo.user_id
           params.passWord = this.CPForm.password
-          localRegister(params).then(response => {
+          pwdUpd(params).then(response => {
             if (response.data.code == this.$ECode.SUCCESS) {
               this.$message({
                 type: 'success',
                 message: response.data.message
               })
-              // 打开登录页面
-              this.goCP()
             } else {
               this.$message({
                 type: 'error',
