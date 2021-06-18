@@ -119,7 +119,7 @@
 
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="login" v-show="!isLogin">登录</el-dropdown-item>
-          <el-dropdown-item command="goUserInfo" v-show="!isLogin">个人中心</el-dropdown-item>
+          <el-dropdown-item command="goUserInfo" v-show="isLogin">个人中心</el-dropdown-item>
           <el-dropdown-item command="logout" v-show="isLogin">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -301,7 +301,7 @@
 
   <footer>
     <p>
-      <a href="http://localhost:9527/" target="_blank">&nbsp;&nbsp;</a>
+      <a href="http://localhost:7878/" target="_blank">&nbsp;&nbsp;</a>
       <a href="javasrcipt:void(0);" @click="goIndex()">Copyright 2020-2021&nbsp;{{ info.name }}&nbsp;</a>
       <a href="http://www.beian.miit.gov.cn">{{ info.recordNum }}</a>
     </p>
@@ -439,6 +439,10 @@ export default {
     var that = this
     var offset = 300
     var after = 0
+
+    this.isLogin = this.$store.state.user.isLogin
+    this.userInfo = this.$store.state.user.userInfo
+    this.$commonUtil.message.info("wmyyyds")
     window.addEventListener('scroll', function () {
       let scrollTop = document.documentElement.scrollTop // 当前的的位置
       // eslint-disable-next-line no-unused-vars
@@ -471,6 +475,9 @@ export default {
     this.commentList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
     this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
     this.collectList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
+    this.isLogin = this.$store.state.user.isLogin
+    this.userInfo = this.$store.state.user.userInfo
+    this.$commonUtil.message.info(this.isLogin)
     // 字典查询
     //this.getDictList()
     //this.getToken()

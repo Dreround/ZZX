@@ -1,12 +1,24 @@
 import {SET_USER_INFO, SET_LOGIN_STATE} from './mutation-types'
-
+// import VuexPersistence from 'vuex-persist'
+// const userInfo = new VuexPersistence({
+//   storage : window.localStorage
+// })
+// const store = new Vuex.Store({
+//   state: { ... },
+//   mutations: { ... },
+//   actions: { ... },
+//   plugins: [vuexLocal.plugin]
+// })
 const app = {
   // 全局状态
+
   state: {
     // 用户信息
     userInfo: {},
+
     isLogin: false
   },
+
   // getters是对数据的包装，例如对数据进行拼接，或者过滤
   getters: {
     // 类似于计算属性
@@ -39,4 +51,5 @@ const app = {
 
   }
 }
+
 export default app

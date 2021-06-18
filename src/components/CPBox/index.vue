@@ -105,6 +105,7 @@ export default {
             })
             return
           }
+          this.$commonUtil.message.info('badbad')
           var params = {}
           params.user_id = this.$store.state.user.userInfo.user_id
           params.old_password = this.$store.state.user.userInfo.password
@@ -115,6 +116,7 @@ export default {
                 type: 'success',
                 message: response.data.message
               })
+              this.showCP = true
             } else {
               this.$message({
                 type: 'error',

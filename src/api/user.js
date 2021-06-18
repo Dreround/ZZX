@@ -18,9 +18,9 @@ export function getFeedbackList(params) {
  */
 export function localLogin (params) {
   return request({
-    url: process.env.WEB_API + '/login/login',
-    method: 'post',
-    data: params
+    url: process.env.WEB_API + 'HomePage/Login',
+    method: 'get',
+    params
   })
 }
 
@@ -30,7 +30,7 @@ export function localLogin (params) {
  */
 export function localRegister (params) {
   return request({
-    url: process.env.WEB_API + '/login/register',
+    url: process.env.WEB_API + 'HomePage/Register',
     method: 'post',
     data: params
   })
@@ -38,14 +38,14 @@ export function localRegister (params) {
 
 export function deleteUserAccessToken(params) {
   return request({
-    url: process.env.WEB_API + '/oauth/delete/' + params,
+    url: process.env.WEB_API + 'oauth/delete/' + params,
     method: 'post',
   })
 }
 
 export function logout (params) {
   return request({
-    url: process.env.WEB_API + '/user/logout',
+    url: process.env.WEB_API + 'user/logout',
     method: 'post',
     data: params
   })
@@ -54,7 +54,7 @@ export function logout (params) {
 // 修改密码
 export function pwdUpd (params) {
   return request({
-    url: '/user/pwdupd',
+    url: 'user/pwdupd',
     method: 'post',
     data: params
   })
@@ -63,7 +63,7 @@ export function pwdUpd (params) {
 // 修改用户名
 export function changeName (params) {
   return request({
-    url: '/user/changename',
+    url: 'user/changename',
     method: 'post',
     data: params
   })
