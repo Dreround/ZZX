@@ -229,7 +229,7 @@ export default {
         this.recipeData.recipe_tips = response.data.obj.tip
         this.recipeData.holder = response.data.obj.holder
         this.recipeData.recipe_name = response.data.obj.recipe_name
-        this.getCommentDataList()
+        //this.getCommentDataList()
       }
       setTimeout(() => {
         that.recipeData.recipe_steps = response.data.obj.steps
@@ -384,7 +384,7 @@ export default {
       params.type = 'p'
       params.message_id = ''
       params.user_name = e.user_name
-      this.$commonUtil.message.info(params)
+      //this.$commonUtil.message.info(params)
       console.log(params)
       addComment(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
@@ -401,6 +401,9 @@ export default {
             offset: 100
           })
         }
+        this.comments = []
+        this.currentPage = 1
+        this.isEnd = false
         this.getCommentDataList()
       })
     },
@@ -425,6 +428,7 @@ export default {
         }
       }).catch(error => {
         this.comments = [{recipe_id: '1', user_name: 'ptss', user_id: '2', content: '我怀疑你在ghs', message_id:'1'}]
+        this.isEnd = true
       })
     },
     // 跳转到搜索详情页
