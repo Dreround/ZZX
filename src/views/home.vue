@@ -127,7 +127,6 @@
     </nav>
   </header>
   <LoginBox v-if="showLogin" @closeLoginBox="closeLoginBox"></LoginBox>
-  <CPBox v-if="showCP" @closeCPBox="closeCPBox"></CPBox>
   <el-drawer
     :show-close="true"
     :visible.sync="drawer"
@@ -295,7 +294,7 @@
     @crop-upload-success="cropSuccess"
   />
   <!--修改密码界面-->
-
+  <CPBox v-if="showCP" @closeCPBox="closeCPBox"></CPBox>
 
   <div>
     <router-view/>
@@ -318,7 +317,6 @@
   </div>
   </body>
   </html>
-  <!-- 修改密码界面 -->
 
 </template>
 
@@ -499,9 +497,7 @@ export default {
       }
       this.$router.push({path: '/list', query: {keyword: this.keyword}})
     },
-    showCgpwdDialog: function() {
-      this.$refs.cgpwdDialog.setCgpwdVisible(true)
-    },
+
     // 跳转到文章详情
     goToInfo (uid) {
       let routeData = this.$router.resolve({
@@ -603,13 +599,14 @@ export default {
       getHistoryListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.historyList = response.data.historyList
+          //this.$store.state.user.userInfo
         }
       }).catch(error => {
         this.$commonUtil.message.info('历史记录失败')
         this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
       })
     },
-    //
+
     deleteHistoryById: function(comment) {
       let params = {}
       params.HistoryId = comment.uid

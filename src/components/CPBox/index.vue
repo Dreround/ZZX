@@ -78,44 +78,6 @@ export default {
   },
   components: {},
   methods: {
-    startLogin: function () {
-      console.log('---------------!!!!!!!!!!!')
-      this.$refs.loginForm.validate((valid) => {
-        console.log('开始校验', valid)
-        if (!valid) {
-          console.log('校验失败')
-        } else {
-          var params = {}
-          params.user_name = this.loginForm.user_name
-          params.passWord = this.loginForm.password
-          // params.isRememberMe = 1
-          console.log(params)
-          localLogin(params).then(response => {
-
-            if (response.data.code === this.$ECode.SUCCESS) {
-              // 跳转到首页
-              console.log(response)
-              console.log(response)
-              console.log(response)
-              console.log(response)
-              console.log(response)
-              location.replace(this.vueMoguWebUrl + '/#/?token=' + response.data.id)
-              // this.isLogin = true
-              // let userInfo = response.data.records
-              // this.setUserInfo(userInfo)
-              window.location.reload()
-            } else {
-              this.$message({
-                type: 'error',
-                message: response.data.message
-              })
-            }
-          }).catch(error => {
-            console.log(error+"6666666666666666")
-          })
-        }
-      })
-    },
     startCP: function () {
       this.$refs.CPForm.validate((valid) => {
         if (!valid) {
@@ -178,6 +140,7 @@ export default {
 
 .CPBox {
   height: 400px;
+  z-index: 999999;
 }
 
 .box .title {
