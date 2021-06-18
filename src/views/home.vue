@@ -127,7 +127,7 @@
     </nav>
   </header>
   <LoginBox v-if="showLogin" @closeLoginBox="closeLoginBox"></LoginBox>
-  <CgPwd ref="cgpwdDialog" @afterRestore="afterCgpwd"></CgPwd>
+  <CPBox v-if="showCP" @closeCPBox="closeCPBox"></CPBox>
   <el-drawer
     :show-close="true"
     :visible.sync="drawer"
@@ -164,7 +164,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="showCgpwdDialog">修改密码</el-button>
+            <el-button type="primary" @click="openCPBox">修改密码</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -325,7 +325,6 @@
 <script>
 // 接口：一堆接口引用
 import AvatarCropper from '@/components/AvatarCropper'
-import CgPwd from "@/components/ChangePassword"
 import {getWebConfig} from '../api/index'
 import {delCookie, getCookie, setCookie} from '@/utils/cookieUtils'
 import {
@@ -346,6 +345,7 @@ import {
   deleteHistory, deleteCollect
 } from '../api/comment'
 import LoginBox from '../components/LoginBox'
+import CPBox from "../components/CPBox"
 import {getListByDictTypeList} from '@/api/sysDictData'
 // vuex中有mapState方法，相当于我们能够使用它的getset方法
 import {mapMutations} from 'vuex'
@@ -356,7 +356,7 @@ export default {
   components: {
     LoginBox,
     AvatarCropper,
-    CgPwd
+    CPBox
   },
   data () {
     return {
@@ -384,7 +384,7 @@ export default {
       isVisible: true, // 控制web端导航的隐藏和显示
       isLogin: false,
       showLogin: false, // 显示登录框
-      cgpwdVisible: false,
+      showCP: false,
       userInfo: { // 用户信息
       },
       feedback: {}, // 反馈提交
@@ -1071,8 +1071,13 @@ export default {
     },
     closeLoginBox: function () {
       this.showLogin = false
+    },
+    closeCPBox: function () {
+      this.showCP = false
+    },
+    openCPBox: function (){
+      this.showCP = true
     }
-
   }
 }
 </script>
