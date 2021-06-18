@@ -747,8 +747,9 @@ export default {
             if (!valid) {
               console.log('校验失败')
             } else {
-
-              changeName(this.userInfo).then(response => {
+              var params = {}
+              params.user_name = this.userInfo.user_name
+              changeName(params).then(response => {
                 if (response.data.code === this.$ECode.SUCCESS) {
                   this.$message({
                     type: 'success',

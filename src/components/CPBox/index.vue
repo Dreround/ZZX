@@ -9,6 +9,10 @@
       <el-divider></el-divider>
       <el-form :rules="rules" :label-position="labelPosition" :model="CPForm" ref="CPForm">
 
+        <el-form-item label="旧密码" prop="password">
+          <el-input type="password" v-model="CPForm.password0" :disabled="CPType.password"></el-input>
+        </el-form-item>
+
         <el-form-item label="新密码" prop="password">
           <el-input type="password" v-model="CPForm.password" placeholder="密码长度在5~20之间" :disabled="CPType.password"></el-input>
         </el-form-item>
@@ -59,6 +63,7 @@ export default {
       },
       CPForm: {
         user_id:'',
+        password0: '',
         password: '',
         password2: '',
       },
@@ -93,9 +98,17 @@ export default {
             })
             return
           }
+          if (this.CPForm.password0 != this.$store.state.user.userInfo) {
+            this.$message({
+              type: 'error',
+              message: '密码错误'
+            })
+            return
+          }
           var params = {}
           params.user_id = this.$store.state.user.userInfo.user_id
-          params.passWord = this.CPForm.password
+          params.old_password = this.$store.state.user.userInfo.password
+          params.new_password = this.CPForm.password
           pwdUpd(params).then(response => {
             if (response.data.code == this.$ECode.SUCCESS) {
               this.$message({
@@ -138,7 +151,7 @@ export default {
 }
 
 .CPBox {
-  height: 400px;
+  height: 500px;
 }
 
 .box .title {
