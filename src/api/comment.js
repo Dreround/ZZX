@@ -2,9 +2,9 @@ import request from '@/utils/request'
 
 export function getCommentList (params) {
   return request({
-    url: process.env.WEB_API + '/info/getComment',
-    method: 'post',
-    data: params
+    url: process.env.WEB_API + 'RecipeDetail/ViewComment',
+    method: 'get',
+    params
   })
 }
 
@@ -41,7 +41,7 @@ export function getFollowListByUser (params) {
 
 export function addHistory (params) {
   return request({
-    url: process.env.WEB_API + '/info/CommentRecipe',
+    url: process.env.WEB_API + 'RecipeDetail/AddHistory',
     method: 'post',
     data: params
   })
@@ -57,7 +57,7 @@ export function addCollect (params) {
 
 export function addComment (params) {
   return request({
-    url: process.env.WEB_API + '/info/CommentRecipe',
+    url: process.env.WEB_API + 'RecipeDetail/CommentRecipe',
     method: 'post',
     data: params
   })

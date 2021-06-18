@@ -130,7 +130,7 @@ import TagCloud from '../components/TagCloud'
 import HotBlog from '../components/HotBlog'
 import FollowUs from '../components/FollowUs'
 import Link from '../components/Link'
-import {addComment, getCommentList} from '../api/comment'
+import {addComment, addHistory, getCommentList} from '../api/comment'
 import {Loading} from 'element-ui'
 import Sticky from '@/components/Sticky'
 import SideCatalog from '@/components/VueSideCatalog'
@@ -283,17 +283,16 @@ export default {
           return
         }
         let params = {}
-        //params.source = that.commentInfo.source
         params.recipe_id = that.commentInfo.recipe_id
-        params.currentPage = that.currentPage + 1
-        params.pageSize = that.pageSize
+        params.page_num = that.currentPage
+        params.page_size = that.pageSize
         getCommentList(params).then(response => {
           if (response.data.code === that.$ECode.SUCCESS) {
-            that.comments = that.comments.concat(response.data.obj)
+            that.comments = that.comments.concat(response.data.obj.comments)
             that.setCommentList(that.comments)
-            that.currentPage = response.data.current
-            that.pageSize = response.data.size
-            if(response.data.message === 'End'){
+            that.currentPage = response.data.obj.page_num
+            //that.pageSize = response.data.size
+            if(response.data.message === 'end'){
               that.isEnd = true
             }
             //that.total = response.data.total
@@ -318,48 +317,25 @@ export default {
       fullscreen: true,
       text: '正在努力加载中~'
     })
+    this.$store.state.user.userInfo.user_id = '1'
+    this.userInfo = this.$store.state.user.userInfo
     this.recipe_id = this.$route.query.recipe_id
     this.commentInfo.recipe_id = this.recipe_id
+    this.$commonUtil.message.info(this.recipe_id)
+    var history = {}
+    history.user_id = this.userInfo.user_id
+    history.recipe_id = this.recipe_id
+    addHistory(history).then(response => {
+      if (response.data.code === this.$ECode.SUCCESS) {
+        //this.$commonUtil.message.info(response.data.message)
+        //this.$commonUtil.message.info('www')
+      }
+    }).catch(error => {
+      console.log(error)
+      //this.$commonUtil.message.info('sss')
+    })
     console.log(this.$route.query.recipe_id)
-    // var that = this
-    // var params = new URLSearchParams()
-    // // if (this.blogUid) {
-    // //   params.append('uid', this.blogUid)
-    // // }
-    // // if (this.blogOid) {
-    // //   params.append('oid', this.blogOid)
-    // // }
-    // params.append('blog_id', this.blogUid)
-    // getBlogByUid(params).then(response => {
-    //   if (response.data.code === this.$ECode.SUCCESS) {
-    //     this.blogData = response.data
-    //     // this.blogUid = response.data.uid
-    //     // this.blogOid = response.data.oid\
-    //     console.log(this.blogData)
-    //     this.commentInfo.blogUid = response.data.uid
-    //     this.getCommentDataList()
-    //   }
-    //   // setTimeout(() => {
-    //   //   that.blogContent = response.data.content
-    //   //   that.loadingInstance.close()
-    //   // }, 20)
-    // }).catch(error => {
-    //   console.log(error)
-    //   this.blogData.labels = ['技术', '大数据']
-    //   this.blogData.blogSort = '技术'
-    //   this.blogContent = 'This is a test'
-    //   this.blogData.title = 'test'
-    //   this.blogData.author = 'ptss'
-    //   this.blogData.summary = '概括'
-    //   this.blogData.clickCount = 100
-    //   this.blogData.likeCount = 200
-    //   this.blogData.time = '2020-12-2'
-    //   this.blogData.need = 1
-    //   this.getCommentDataList()
-    //   that.loadingInstance.close()
-    // })
-    //  this.blogOid = this.$route.query.blogOid
-    this.setCommentAndAdmiration()
+    //this.setCommentAndAdmiration()
     // 屏幕大于950px的时候，显示侧边栏
     this.showSidebar = document.body.clientWidth > 950
   },
@@ -400,11 +376,15 @@ export default {
     //   })
     // },
     submitBox (e) {
+      this.$commonUtil.message.info('添加评论')
       let params = {}
       params.recipe_id = e.recipe_id
-      //params.source = e.source
       params.user_id = e.user_id
       params.content = e.content
+      params.type = 'p'
+      params.message_id = ''
+      params.user_name = e.user_name
+      this.$commonUtil.message.info(params)
       console.log(params)
       addComment(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
@@ -429,31 +409,23 @@ export default {
       // params.source = this.commentInfo.source
       params.recipe_id = this.recipe_id
       console.log(params.recipe_id)
-      params.currentPage = this.currentPage
-      params.pageSize = this.pageSize
+      params.page_num = this.currentPage
+      params.page_size = this.pageSize
       getCommentList(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
-          this.comments = response.data.records
-          console.log(this.comments)
+          this.comments = response.data.obj.comments
+          //console.log(this.comments)
           this.setCommentList(this.comments)
-          this.currentPage = response.data.current
-          this.pageSize = response.data.size
-          if(response.data.message === 'End'){
+          //this.currentPage = response.data.current
+          //this.pageSize = response.data.size
+          if(response.data.message === 'end'){
             this.isEnd = true
           }
           //this.total = response.data.total
         }
       }).catch(error => {
-        this.comments = [{user: {user_name: 'ptss', user_id: '2'},content: '我怀疑你在ghs'}]
+        this.comments = [{recipe_id: '1', user_name: 'ptss', user_id: '2', content: '我怀疑你在ghs', message_id:'1'}]
       })
-    },
-    // 跳转到文章详情
-    goToInfo (uid) {
-      let routeData = this.$router.resolve({
-        path: '/info',
-        query: {blogUid: uid}
-      })
-      window.open(routeData.href, '_blank')
     },
     // 跳转到搜索详情页
     goToList (holder) {

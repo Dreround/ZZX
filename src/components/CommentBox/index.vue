@@ -34,9 +34,9 @@ export default {
       type: Object
     },
     // 回复的对象
-    toInfo: {
-      type: Object
-    },
+    // toInfo: {
+    //   type: Object
+    // },
     // 博客信息
     commentInfo: {
       type: Object
@@ -78,8 +78,11 @@ export default {
       }
     },
     handleSubmit () {
+      this.$store.state.user.userInfo.user_id = '1'
+      this.$store.state.user.userInfo.user_name = 'yrk'
       let info = this.$store.state.user.userInfo
       let isLogin = this.$store.state.user.isLogin
+      isLogin = true
       if (!isLogin) {
         this.$notify.error({
           title: '警告',
@@ -100,39 +103,27 @@ export default {
         return
       }
 
-      let userUid = info.uid
-      let toUserUid = ''
-      let toCommentUid = ''
-      let blogUid = ''
-
-      // 评论来源： MESSAGE_BOARD，ABOUT，BLOG_INFO 等 代表来自某些页面的评论
-      let source = ''
+      let user_id = info.user_id
+      let user_name = info.user_name
+      let recipe_id = ''
       // 替换表情
       console.log('替换后', this.value.replace(/:.*?:/g, this.emoji))
       let content = this.value.replace(/:.*?:/g, this.emoji)
-      if (this.toInfo) {
-        toUserUid = this.toInfo.uid
-        toCommentUid = this.toInfo.commentUid
-      }
       console.log("111111--------")
       console.log(this.commentInfo)
       if (this.commentInfo) {
-        blogUid = this.commentInfo.blogUid
-        source = this.commentInfo.source
+        recipe_id = this.commentInfo.recipe_id
       }
 
       this.comments = {
-        userUid: userUid,
-        toCommentUid: toCommentUid,
-        toUserUid: toUserUid,
+        user_id: user_id,
+        user_name: user_name,
         content: content,
-        blogUid: blogUid,
-        source: source,
-        reply: []
+        recipe_id: recipe_id,
       }
       this.value = ''
       this.count = 1024
-      this.comments.createTime = dateFormat('YYYY-mm-dd HH:MM:SS', new Date())
+      //this.comments.createTime = dateFormat('YYYY-mm-dd HH:MM:SS', new Date())
       this.hideEmojiPanel()
       console.log(this.comments)
       this.$emit('submit-box', this.comments)
