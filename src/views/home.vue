@@ -127,7 +127,6 @@
     </nav>
   </header>
   <LoginBox v-if="showLogin" @closeLoginBox="closeLoginBox"></LoginBox>
-  <CPBox v-if="showCP" @closeCPBox="closeCPBox"></CPBox>
   <el-drawer
     :show-close="true"
     :visible.sync="drawer"
@@ -139,7 +138,6 @@
         <span slot="label"><i class="el-icon-user-solid"></i> 个人中心</span>
         <el-form label-position="left" :model="userInfo" label-width="100px" :rules="rules" ref="userInfo">
           <el-form-item label="用户头像" :label-width="labelWidth">
-
             <div class="imgBody" v-if="userInfo.photoUrl">
               <i class="el-icon-error inputClass" v-show="icon" @click="deletePhoto('user')"
                  @mouseover="icon = true"></i>
@@ -295,7 +293,7 @@
     @crop-upload-success="cropSuccess"
   />
   <!--修改密码界面-->
-
+  <CPBox v-if="showCP" @closeCPBox="closeCPBox"></CPBox>
 
   <div>
     <router-view/>
@@ -318,7 +316,6 @@
   </div>
   </body>
   </html>
-  <!-- 修改密码界面 -->
 
 </template>
 
@@ -424,20 +421,20 @@ export default {
           {pattern: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/, message: '请输入正确的邮箱'}
         ]
       },
-      userInfoRules: {
-        oldPwd: [
-          {required: true, message: '旧密码不能为空', trigger: 'blur'},
-          {min: 5, max: 20, message: '密码长度在5到20个字符'}
-        ],
-        newPwd: [
-          {required: true, message: '新密码不能为空', trigger: 'blur'},
-          {min: 5, max: 20, message: '密码长度在5到20个字符'}
-        ],
-        newPwd2: [
-          {required: true, message: '新密码不能为空', trigger: 'blur'},
-          {min: 5, max: 20, message: '密码长度在5到20个字符'}
-        ]
-      }
+      // userInfoRules: {
+      //   oldPwd: [
+      //     {required: true, message: '旧密码不能为空', trigger: 'blur'},
+      //     {min: 5, max: 20, message: '密码长度在5到20个字符'}
+      //   ],
+      //   newPwd: [
+      //     {required: true, message: '新密码不能为空', trigger: 'blur'},
+      //     {min: 5, max: 20, message: '密码长度在5到20个字符'}
+      //   ],
+      //   newPwd2: [
+      //     {required: true, message: '新密码不能为空', trigger: 'blur'},
+      //     {min: 5, max: 20, message: '密码长度在5到20个字符'}
+      //   ]
+      // }
     }
   },
   mounted () {
@@ -499,9 +496,7 @@ export default {
       }
       this.$router.push({path: '/list', query: {keyword: this.keyword}})
     },
-    showCgpwdDialog: function() {
-      this.$refs.cgpwdDialog.setCgpwdVisible(true)
-    },
+
     // 跳转到文章详情
     goToInfo (uid) {
       let routeData = this.$router.resolve({
@@ -583,18 +578,6 @@ export default {
       })
     },
 
-    // 获取点赞列表
-    getPraiseList: function () {
-      let params = {}
-      params.pageSize = 10
-      params.currentPage = 1
-      getPraiseListByUser(params).then(response => {
-        if (response.data.code === this.$ECode.SUCCESS) {
-          this.praiseList = response.data.records
-          console.log(this.praiseList)
-        }
-      })
-    },
     // 获取历史列表
     getHistory: function () {
       let params = {}
@@ -603,13 +586,14 @@ export default {
       getHistoryListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.historyList = response.data.historyList
+          //this.$store.state.user.userInfo
         }
       }).catch(error => {
         this.$commonUtil.message.info('历史记录失败')
         this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
       })
     },
-    //
+
     deleteHistoryById: function(comment) {
       let params = {}
       params.HistoryId = comment.uid
@@ -649,17 +633,6 @@ export default {
         }
       }).catch(() => {
         this.$commonUtil.message.info('删除成功')
-      })
-    },
-    getFollow: function () {
-      // 接口：获取用户关注信息
-      var params = new URLSearchParams()
-      params.append('uid', this.userInfo.uid)
-      getFollowListByUser(params).then(response => {
-        if (response.data.code === this.$ECode.SUCCESS) {
-          this.followList = response.data.records
-          console.log(this.followList)
-        }
       })
     },
     // 标签选择
