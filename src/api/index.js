@@ -7,10 +7,11 @@ export function getRecipeByLevel () {
   })
 }
 
-export function getNewRecipe () {
+export function getNewRecipe (params) {
   return request({
     url: process.env.WEB_API + 'HomePage/BrowseRecipe',
-    method: 'get'
+    method: 'get',
+    params
   })
 }
 

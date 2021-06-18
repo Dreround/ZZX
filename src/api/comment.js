@@ -38,9 +38,18 @@ export function getFollowListByUser (params) {
     params
   })
 }
-export function getPraiseListByUser (params) {
+
+export function addHistory (params) {
   return request({
-    url: process.env.WEB_API + '/web/comment/getPraiseListByUser',
+    url: process.env.WEB_API + '/info/CommentRecipe',
+    method: 'post',
+    data: params
+  })
+}
+
+export function addCollect (params) {
+  return request({
+    url: process.env.WEB_API + '/info/CommentRecipe',
     method: 'post',
     data: params
   })
@@ -53,7 +62,6 @@ export function addComment (params) {
     data: params
   })
 }
-
 export function deleteCollect (params) {
   return request({
     url: process.env.WEB_API + '/web/collect/delete',

@@ -1,6 +1,6 @@
 <template>
-  <blog title="修改菜谱" :is-edit="true" :steps=steps :ingredient="ingredient"
-        :recipe_id="recipe_id" :recipe_name=recipe_name :tips="tips"></blog>
+  <blog title="修改菜谱" :is-edit-form="true" :steps=steps :ingredient="ingredient"
+        :recipe_id="recipe_id" :recipe_name=recipe_name :tip="tip"></blog>
 </template>
 
 <script>
@@ -12,7 +12,7 @@ name: "updateRecipe",
     return {
       steps: "",
       recipe_name: "",
-      tips: "",
+      tip: "",
       ingredient: "",
       recipe_id: "",
     };
@@ -21,7 +21,7 @@ name: "updateRecipe",
     this.recipe_id = this.$route.query.recipe_id;
     this.steps = this.$route.query.steps;
     this.ingredient = this.$route.query.ingredient;
-    this.tips = this.$route.query.tips;
+    this.tip = this.$route.query.tip;
     this.recipe_name = this.$route.query.recipe_name;
   },
   components: {

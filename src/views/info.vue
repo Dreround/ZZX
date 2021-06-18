@@ -119,7 +119,7 @@
 
 <script>
 import {getWebConfig} from '../api/index'
-import {getBlogByUid, payCreditByUid} from '../api/blogContent'
+import {getRecipeById, payCreditByUid} from '../api/blogContent'
 import CommentList from '../components/CommentList'
 import CommentBox from '../components/CommentBox'
 // vuex中有mapState方法，相当于我们能够使用它的getset方法
@@ -146,26 +146,22 @@ export default {
       showStickyTop: false,
       showSideCatalog: true,
       showSidebar: true, // 是否显示侧边栏
-      recipe_steps: '',
-      recipe_ingredient: '',
-      recipe_tips: '',
       catalogProps: {
         // 内容容器selector(必需)
         container: '.ck-content',
         watch: true,
         levelList: ['h2', 'h3']
       },
+      isEnd: false,
       loadingInstance: null, // loading对象
       showCancel: false,
       submitting: false,
       comments: [],
       commentInfo: {
-        // 评论来源： MESSAGE_BOARD，ABOUT，BLOG_INFO 等 代表来自某些页面的评论
-        //source: 'BLOG_INFO',
-        recipe_id: this.$route.query.recipe_id
+        recipe_id: ''
       },
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 5,
       total: 0, // 总数量
       toInfo: {},
       userInfo: {},
@@ -219,28 +215,27 @@ export default {
   },
   mounted () {
     this.openComment = this.$store.state.user.userInfo.openComment
-    this.openComment = 0
+    this.openComment = '1'
     var that = this
     var params = new URLSearchParams()
-    // if (this.blogUid) {
-    //   params.append('uid', this.blogUid)
-    // }
-    // if (this.blogOid) {
-    //   params.append('oid', this.blogOid)
-    // }
     params.append('recipe_id', this.recipe_id)
-    getBlogByUid(params).then(response => {
+    getRecipeById(params).then(response => {
       if (response.data.code === this.$ECode.SUCCESS) {
-        this.recipeData = response.data.obj
+        this.$commonUtil.message.info(response.data.message)
+        //this.recipeData = response.data.obj
         console.log(this.recipeData)
-        // this.blogUid = response.data.uid
-        // this.blogOid = response.data.oid\
+        this.recipeData.recipe_steps = response.data.obj.steps
+        this.recipeData.recipe_ingredient = response.data.obj.ingredient
+        this.recipeData.recipe_tips = response.data.obj.tip
+        this.recipeData.holder = response.data.obj.holder
+        this.recipeData.recipe_name = response.data.obj.recipe_name
         this.getCommentDataList()
       }
       setTimeout(() => {
-        that.recipe_steps = response.data.steps
-        that.recipe_ingredient = response.data.ingredient
-        that.recipe_tips = response.data.tips
+        that.recipeData.recipe_steps = response.data.obj.steps
+        that.recipeData.recipe_ingredient = response.data.obj.ingredient
+        that.recipeData.recipe_tips = response.data.obj.tip
+        that.recipeData.holder = response.data.obj.holder
         that.loadingInstance.close()
       }, 20)
     }).catch(error => {
@@ -283,26 +278,29 @@ export default {
       after = winScrollHeight
       // 还有30像素的时候,就查询
       if (docHeight === winHeight + winScrollHeight) {
-        if (that.comments.length >= that.total) {
+        if (that.isEnd) {
           console.log('已经到底了')
           return
         }
         let params = {}
-        params.source = that.commentInfo.source
-        params.blogUid = that.commentInfo.blogUid
+        //params.source = that.commentInfo.source
+        params.recipe_id = that.commentInfo.recipe_id
         params.currentPage = that.currentPage + 1
         params.pageSize = that.pageSize
         getCommentList(params).then(response => {
-          if (response.code === that.$ECode.SUCCESS) {
-            that.comments = that.comments.concat(response.data.records)
+          if (response.data.code === that.$ECode.SUCCESS) {
+            that.comments = that.comments.concat(response.data.obj)
             that.setCommentList(that.comments)
             that.currentPage = response.data.current
             that.pageSize = response.data.size
-            that.total = response.data.total
+            if(response.data.message === 'End'){
+              that.isEnd = true
+            }
+            //that.total = response.data.total
           }
         }).catch(error => {
           console.log(error)
-          this.comments = [{creatTime: '2020-12-6', user: {user_name: 'ptss'}, content: '我怀疑你在ghs'}]
+          this.comments = [{ user: {user_name: 'ptss', user_id: '2'}, content: '我怀疑你在ghs'}]
         })
       }
     })
@@ -321,6 +319,7 @@ export default {
       text: '正在努力加载中~'
     })
     this.recipe_id = this.$route.query.recipe_id
+    this.commentInfo.recipe_id = this.recipe_id
     console.log(this.$route.query.recipe_id)
     // var that = this
     // var params = new URLSearchParams()
@@ -439,10 +438,13 @@ export default {
           this.setCommentList(this.comments)
           this.currentPage = response.data.current
           this.pageSize = response.data.size
-          this.total = response.data.total
+          if(response.data.message === 'End'){
+            this.isEnd = true
+          }
+          //this.total = response.data.total
         }
       }).catch(error => {
-        this.comments = [{creatTime: '2020-12-6', user: {user_name: 'ptss'},content: '我怀疑你在ghs'}]
+        this.comments = [{user: {user_name: 'ptss', user_id: '2'},content: '我怀疑你在ghs'}]
       })
     },
     // 跳转到文章详情
