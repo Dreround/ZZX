@@ -219,7 +219,7 @@ export default {
   },
   mounted () {
     this.openComment = this.$store.state.user.userInfo.openComment
-    this.openComment = 0
+    this.openComment = '1'
     var that = this
     var params = new URLSearchParams()
     params.append('recipe_id', this.recipe_id)
