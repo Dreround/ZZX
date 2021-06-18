@@ -12,7 +12,7 @@
       <el-divider></el-divider>
       <el-form :label-position="labelPosition" :rules="loginRules" :model="loginForm" ref="loginForm">
         <el-form-item label="用户名" prop="user_name">
-          <el-input v-model="loginForm.user_name" placeholder="请输入用户名或邮箱" :disabled="loginType.password"></el-input>
+          <el-input v-model="loginForm.user_name" placeholder="请输入用户名" :disabled="loginType.password"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" :disabled="loginType.password"></el-input>
@@ -44,10 +44,6 @@
 
         <el-form-item label="重复密码" prop="password2">
           <el-input type="password" v-model="registerForm.password2" placeholder="请再次输入密码" :disabled="loginType.password"></el-input>
-        </el-form-item>
-
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="registerForm.email" placeholder="请输入正确的邮箱" :disabled="loginType.password"></el-input>
         </el-form-item>
 
         <el-row class="btn">
@@ -91,7 +87,6 @@ export default {
         user_name: '',
         password: '',
         password2: '',
-        email: ''
       },
       // 登录类别
       loginType: {
@@ -129,10 +124,6 @@ export default {
           { min: 5, message: '密码长度需要大于等于 5 个字符', trigger: 'blur' },
           { max: 20, message: '密码长度不能大于 20 个字符', trigger: 'blur' }
         ],
-        email: [
-          { required: true, message: '邮箱不能为空', trigger: 'blur' },
-          {pattern: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/, message: '请输入正确的邮箱'}
-        ]
       }
     }
   },
@@ -193,7 +184,6 @@ export default {
           var params = {}
           params.user_name = this.registerForm.user_name
           params.passWord = this.registerForm.password
-          params.email = this.registerForm.email
           localRegister(params).then(response => {
             if (response.data.code == this.$ECode.SUCCESS) {
               this.$message({

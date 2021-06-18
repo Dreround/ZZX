@@ -150,7 +150,7 @@
           </el-form-item>
 
           <el-form-item label="ID" :label-width="labelWidth">
-            <el-input v-model="userInfo.user_id" style="width: 100%"></el-input>
+            <el-input v-model="userInfo.user_id" style="width: 100%" :disabled="!isLogin"></el-input>
           </el-form-item>
 
           <el-form-item label="用户名" :label-width="labelWidth">
@@ -158,7 +158,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="submitForm('editUser')">修改昵称</el-button>
+            <el-button type="primary" @click="submitForm('editUser')">修改用户名</el-button>
           </el-form-item>
 
           <el-form-item>
@@ -330,8 +330,7 @@ import {
   deleteUserAccessToken,
   editUser,
   getFeedbackList,
-  replyBlogLink,
-  updateUserPwd
+  replyBlogLink
 } from '../api/user'
 import {
   getCommentListByUser,
@@ -820,45 +819,6 @@ export default {
         // }
         //   ;
         //   break
-
-        case 'changePwd': {
-          let newPwd = this.userInfo.newPwd
-          let newPwd2 = this.userInfo.newPwd2
-          let oldPwd = this.userInfo.oldPwd
-          if (newPwd != newPwd2) {
-            this.$message({
-              type: 'error',
-              message: '两次密码不一致'
-            })
-            return
-          }
-          if (newPwd == oldPwd) {
-            this.$message({
-              type: 'error',
-              message: '新旧密码相同'
-            })
-            return
-          }
-          // 接口：更新密码
-          let params = new URLSearchParams()
-          params.append('oldPwd', oldPwd)
-          params.append('newPwd', newPwd)
-          updateUserPwd(params).then(response => {
-            if (response.code == this.$ECode.SUCCESS) {
-              this.$message({
-                type: 'success',
-                message: response.data
-              })
-            } else {
-              this.$message({
-                type: 'error',
-                message: response.data
-              })
-            }
-            // 重置表单
-            this.$refs.userInfoForm.resetFields()
-          })
-        }
           ;
           break
       }

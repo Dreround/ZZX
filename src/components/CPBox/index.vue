@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="box CPBox" v-if="showCP == true">
+    <div class="box CPBox" v-if="showCP == true" append-to-body>
       <div class="title">
         <span class="t1">
           修改密码
@@ -134,12 +134,11 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  z-index: 101; /* 要比遮罩层大 */
+  z-index: 99999; /* 要比遮罩层大 */
 }
 
 .CPBox {
   height: 400px;
-  z-index: 999999;
 }
 
 .box .title {
