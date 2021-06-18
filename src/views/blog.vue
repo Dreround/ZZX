@@ -178,7 +178,7 @@ export default {
     title: {
       default: "新增菜谱"
     },
-    isEdit: {
+    isEditForm: {
       default: false,
       type: Boolean
     },

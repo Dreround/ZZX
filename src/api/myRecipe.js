@@ -18,8 +18,8 @@ export function deleteMyRecipe (params) {
 
 export function getRecipeById (params) {
   return request({
-    url: process.env.WEB_API + '/personalRecipeManage/getRecipeById',
-    method: 'post',
+    url: process.env.WEB_API + 'HomePage/SearchById',
+    method: 'get',
     params
   })
 }

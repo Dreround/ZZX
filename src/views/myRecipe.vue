@@ -105,7 +105,7 @@ export default {
       getRecipeById(params).then(response => {
         if (response.data.code == this.$ECode.SUCCESS) {
           let recipe = {}
-          recipe = response.data.records
+          recipe = response.data.obj
           let routeData = this.$router.resolve({
             path: '/updateRecipe',
             query: recipe

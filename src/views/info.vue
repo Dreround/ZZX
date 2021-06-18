@@ -165,7 +165,7 @@ export default {
         recipe_id: this.$route.query.recipe_id
       },
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 5,
       total: 0, // 总数量
       toInfo: {},
       userInfo: {},
@@ -232,6 +232,7 @@ export default {
         this.recipeData.recipe_ingredient = response.data.obj.ingredient
         this.recipeData.recipe_tips = response.data.obj.tip
         this.recipeData.holder = response.data.obj.holder
+        this.recipeData.recipe_name = response.data.obj.recipe_name
         this.getCommentDataList()
       }
       setTimeout(() => {
@@ -300,7 +301,7 @@ export default {
           }
         }).catch(error => {
           console.log(error)
-          this.comments = [{creatTime: '2020-12-6', user: {user_name: 'ptss'}, content: '我怀疑你在ghs'}]
+          this.comments = [{ user: {user_name: 'ptss', user_id: '2'}, content: '我怀疑你在ghs'}]
         })
       }
     })
@@ -437,10 +438,10 @@ export default {
           this.setCommentList(this.comments)
           this.currentPage = response.data.current
           this.pageSize = response.data.size
-          this.total = response.data.total
+          //this.total = response.data.total
         }
       }).catch(error => {
-        this.comments = [{creatTime: '2020-12-6', user: {user_name: 'ptss'},content: '我怀疑你在ghs'}]
+        this.comments = [{user: {user_name: 'ptss', user_id: '2'},content: '我怀疑你在ghs'}]
       })
     },
     // 跳转到文章详情
