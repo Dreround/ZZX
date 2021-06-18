@@ -182,6 +182,10 @@ export default {
             return
           }
           var params = {}
+          params.freeze = 'z'
+          params.mute = 'z'
+          params.icon = ''
+          params.credit = ''
           params.user_name = this.registerForm.user_name
           params.passWord = this.registerForm.password
           localRegister(params).then(response => {
