@@ -749,6 +749,7 @@ export default {
             } else {
               var params = {}
               params.user_name = this.userInfo.user_name
+              params.user_id = this.userInfo.user_id
               changeName(params).then(response => {
                 if (response.data.code === this.$ECode.SUCCESS) {
                   this.$message({
