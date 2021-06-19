@@ -10,7 +10,7 @@
       <el-form :rules="rules" :label-position="labelPosition" :model="CPForm" ref="CPForm">
 
         <el-form-item label="旧密码" prop="password">
-          <el-input type="password" v-model="CPForm.password0" :disabled="CPType.password"></el-input>
+          <el-input type="password" v-model="CPForm.password0" placeholder="密码长度在5~20之间" :disabled="CPType.password"></el-input>
         </el-form-item>
 
         <el-form-item label="新密码" prop="password">
@@ -67,8 +67,14 @@ export default {
         password: '',
         password2: '',
       },
-      // 登录类别
+      // 密码类别
       rules: {
+        password0: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 5, message: '密码长度需要大于等于 5 个字符', trigger: 'blur' },
+          { max: 20, message: '密码长度不能大于 20 个字符', trigger: 'blur' }
+        ],
+
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 5, message: '密码长度需要大于等于 5 个字符', trigger: 'blur' },
@@ -110,7 +116,7 @@ export default {
           // params.user_id = this.$store.state.user.userInfo.user_id
           // params.old_password = this.$store.state.user.userInfo.password
           // params.new_password = this.CPForm.password
-          this.$commonUtil.message.info(this.$store.state.user.userInfo.password)
+          // this.$commonUtil.message.info(this.$store.state.user.userInfo.password)
           var params = new URLSearchParams()
           params.append('old_password', this.$store.state.user.userInfo.password)
           params.append('new_password', this.CPForm.password)
@@ -121,9 +127,9 @@ export default {
                 type: 'success',
                 message: response.data.message
               })
-              this.$commonUtil.message.info('badbad')
+              this.$commonUtil.message.info('修改成功')
               this.$store.state.user.userInfo.password = this.CPForm.password
-              this.showCP = false
+              this.closeCP()
             } else {
               this.$message({
                 type: 'error',
