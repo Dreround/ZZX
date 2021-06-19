@@ -171,7 +171,7 @@ export default {
     goToInfo(recipe_id) {
       let routeData = this.$router.push({
         path: "/info",
-        query: { recipe_id: recipe_id }
+        query: {recipe_id: recipe_id }
       });
       //window.open(routeData.href, '_blank');
     },
