@@ -18,9 +18,9 @@ export function getRecipeById (params) {
 
 export function CollectRecipe (params) {
   return request({
-    url: process.env.WEB_API + '/info/CollectRecipe',
-    method: 'get',
-    params
+    url: process.env.WEB_API + 'RecipeDetail/CollectRecipe',
+    method: 'post',
+    data: params
   })
 }
 export function reportBlog (params) {
@@ -47,11 +47,11 @@ export function getSameBlogByBlogUid (params) {
   })
 }
 
-export function praiseBlogByUid (params) {
+export function getCollect (params) {
   return request({
-    url: process.env.WEB_API + '/api/praiseBlogByUid',
-    method: 'get',
-    params
+    url: process.env.WEB_API + 'RecipeDetail/isDuplicate',
+    method: 'post',
+    data: params
   })
 }
 

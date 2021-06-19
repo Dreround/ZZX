@@ -99,64 +99,64 @@ export default {
       //   }
       // })
     },
-    replyTo: function (item) {
-      if (!this.validLogin()) {
-        this.$notify.error({
-          title: '错误',
-          message: '登录后才能回复评论哦~',
-          offset: 100
-        })
-        return
-      }
-      let userUid = item.userUid
-      let commentUid = item.uid
-      var lists = document.getElementsByClassName('comment')
-      for (var i = 0; i < lists.length; i++) {
-        lists[i].style.display = 'none'
-      }
-      document.getElementById(commentUid).style.display = 'block'
-      this.toInfo.commentUid = commentUid
-      this.toInfo.uid = userUid
-    },
-    submitBox (e) {
-      console.log('添加内容', e)
-      let params = {}
-      params.userUid = e.userUid
-      params.content = e.content
-      params.blogUid = e.blogUid
-      params.toUid = e.toCommentUid
-      params.toUserUid = e.toUserUid
-      params.source = e.source
-      addComment(params).then(response => {
-        if (response.data.code == this.$ECode.SUCCESS) {
-          let commentData = response.data
-          document.getElementById(commentData.toUid).style.display = 'none'
-          let comments = this.$store.state.app.commentList
-          commentData.user = this.userInfo
-          // 设置回复为空
-          commentData.replyList = []
-          commentData.user = this.$store.state.user.userInfo
-          this.updateCommentList(comments, commentData.toUid, commentData)
-          console.log('得到的评论', comments)
-          this.$store.commit('setCommentList', comments)
-
-          this.$notify({
-            title: '成功',
-            message: '评论成功',
-            type: 'success',
-            offset: 100
-          })
-        } else {
-          this.$notify.error({
-            title: '错误',
-            message: '评论失败',
-            type: 'success',
-            offset: 100
-          })
-        }
-      }
-      )
-    },
+    // replyTo: function (item) {
+    //   if (!this.validLogin()) {
+    //     this.$notify.error({
+    //       title: '错误',
+    //       message: '登录后才能回复评论哦~',
+    //       offset: 100
+    //     })
+    //     return
+    //   }
+    //   let userUid = item.userUid
+    //   let commentUid = item.uid
+    //   var lists = document.getElementsByClassName('comment')
+    //   for (var i = 0; i < lists.length; i++) {
+    //     lists[i].style.display = 'none'
+    //   }
+    //   document.getElementById(commentUid).style.display = 'block'
+    //   this.toInfo.commentUid = commentUid
+    //   this.toInfo.uid = userUid
+    // },
+    // submitBox (e) {
+    //   console.log('添加内容', e)
+    //   let params = {}
+    //   params.userUid = e.userUid
+    //   params.content = e.content
+    //   params.blogUid = e.blogUid
+    //   params.toUid = e.toCommentUid
+    //   params.toUserUid = e.toUserUid
+    //   params.source = e.source
+    //   addComment(params).then(response => {
+    //     if (response.data.code == this.$ECode.SUCCESS) {
+    //       let commentData = response.data
+    //       //document.getElementById(commentData.toUid).style.display = 'none'
+    //       //let comments = this.$store.state.app.commentList
+    //       commentData.user = this.userInfo
+    //       // 设置回复为空
+    //       commentData.replyList = []
+    //       commentData.user = this.$store.state.user.userInfo
+    //       this.updateCommentList(comments, commentData.toUid, commentData)
+    //       console.log('得到的评论', comments)
+    //       this.$store.commit('setCommentList', comments)
+    //
+    //       this.$notify({
+    //         title: '成功',
+    //         message: '评论成功',
+    //         type: 'success',
+    //         offset: 100
+    //       })
+    //     } else {
+    //       this.$notify.error({
+    //         title: '错误',
+    //         message: '评论失败',
+    //         type: 'success',
+    //         offset: 100
+    //       })
+    //     }
+    //   }
+    //   )
+    // },
     // getCommentList: function () {
     //   let params = {}
     //   params.currentPage = 0
@@ -172,9 +172,9 @@ export default {
     //     this.comments = [{creatTime: '2020-12-6', user: {nickName: 'ptss'}, content: '我怀疑你在ghs'}]
     //   })
     // },
-    cancelBox (toCommentUid) {
-      document.getElementById(toCommentUid).style.display = 'none'
-    },
+    // cancelBox (toCommentUid) {
+    //   document.getElementById(toCommentUid).style.display = 'none'
+    // },
     taggleAll: function (item) {
       this.taggleStatue = !this.taggleStatue
       var lists = document.getElementsByClassName('commentStyle')
@@ -187,95 +187,95 @@ export default {
         document.getElementById(item.uid).style.display = 'none'
       }
     },
-    report: function (item) {
-      if (!this.validLogin()) {
-        this.$notify.error({
-          title: '错误',
-          message: '登录后才能举报评论哦~',
-          offset: 100
-        })
-        return
-      }
-
-      let userUid = this.$store.state.user.userInfo.uid
-
-      if (userUid == item.userUid) {
-        this.$notify.error({
-          title: '错误',
-          message: '不能举报自己的评论哦~',
-          offset: 100
-        })
-        return
-      }
-
-      let params = {}
-      params.uid = item.uid
-      params.userUid = userUid
-      reportComment(params).then(response => {
-        if (response.data.code == this.$ECode.SUCCESS) {
-          this.$notify({
-            title: '成功',
-            message: response.data,
-            type: 'success',
-            offset: 100
-          })
-        } else {
-          this.$notify.error({
-            title: '错误',
-            message: response.data,
-            type: 'success',
-            offset: 100
-          })
-        }
-      })
-    },
-    delComment: function (item) {
-      if (!this.validLogin()) {
-        this.$notify.error({
-          title: '错误',
-          message: '登录后才能删除评论哦~',
-          offset: 100
-        })
-        return
-      }
-
-      this.$confirm('此操作将把本评论和子评论删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          let params = {}
-          params.uid = item.uid
-          params.userUid = this.$store.state.user.userInfo.uid
-          deleteComment(params).then(response => {
-            if (response.data.code == this.$ECode.SUCCESS) {
-              this.$notify({
-                title: '成功',
-                message: '删除成功',
-                type: 'success',
-                offset: 100
-              })
-            } else {
-              this.$notify.error({
-                title: '错误',
-                message: '删除失败',
-                offset: 100
-              })
-            }
-            let comments = this.$store.state.app.commentList
-            this.deleteCommentList(comments, params.uid, null)
-            this.$store.commit('setCommentList', comments)
-            this.$emit('deleteComment', '')
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
-    },
+    // report: function (item) {
+    //   if (!this.validLogin()) {
+    //     this.$notify.error({
+    //       title: '错误',
+    //       message: '登录后才能举报评论哦~',
+    //       offset: 100
+    //     })
+    //     return
+    //   }
+    //
+    //   let userUid = this.$store.state.user.userInfo.uid
+    //
+    //   if (userUid == item.userUid) {
+    //     this.$notify.error({
+    //       title: '错误',
+    //       message: '不能举报自己的评论哦~',
+    //       offset: 100
+    //     })
+    //     return
+    //   }
+    //
+    //   let params = {}
+    //   params.uid = item.uid
+    //   params.userUid = userUid
+    //   reportComment(params).then(response => {
+    //     if (response.data.code == this.$ECode.SUCCESS) {
+    //       this.$notify({
+    //         title: '成功',
+    //         message: response.data,
+    //         type: 'success',
+    //         offset: 100
+    //       })
+    //     } else {
+    //       this.$notify.error({
+    //         title: '错误',
+    //         message: response.data,
+    //         type: 'success',
+    //         offset: 100
+    //       })
+    //     }
+    //   })
+    // },
+    // delComment: function (item) {
+    //   if (!this.validLogin()) {
+    //     this.$notify.error({
+    //       title: '错误',
+    //       message: '登录后才能删除评论哦~',
+    //       offset: 100
+    //     })
+    //     return
+    //   }
+    //
+    //   this.$confirm('此操作将把本评论和子评论删除, 是否继续?', '提示', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     type: 'warning'
+    //   })
+    //     .then(() => {
+    //       let params = {}
+    //       params.uid = item.uid
+    //       params.userUid = this.$store.state.user.userInfo.uid
+    //       deleteComment(params).then(response => {
+    //         if (response.data.code == this.$ECode.SUCCESS) {
+    //           this.$notify({
+    //             title: '成功',
+    //             message: '删除成功',
+    //             type: 'success',
+    //             offset: 100
+    //           })
+    //         } else {
+    //           this.$notify.error({
+    //             title: '错误',
+    //             message: '删除失败',
+    //             offset: 100
+    //           })
+    //         }
+    //         let comments = this.$store.state.app.commentList
+    //         this.deleteCommentList(comments, params.uid, null)
+    //         this.$store.commit('setCommentList', comments)
+    //         this.$emit('deleteComment', '')
+    //       })
+    //     })
+    //     .catch(() => {
+    //       this.$message({
+    //         type: 'info',
+    //         message: '已取消删除'
+    //       })
+    //     })
+    // },
     // 校验是否登录
     validLogin () {
       let userInfo = this.$store.state.user.userInfo

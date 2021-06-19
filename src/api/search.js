@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function searchRecipe (params) {
   return request({
-    url: process.env.WEB_API + '/search/SearchRecipe',
+    url: process.env.WEB_API + 'HomePage/SearchByName',
     method: 'get',
     params
   })

@@ -133,7 +133,7 @@ export default {
   data () {
     return {
       loadingInstance: null, // loading对象
-      VUE_MOGU_WEB: process.env.VUE_MOGU_WEB,
+      //VUE_MOGU_WEB: process.env.VUE_MOGU_WEB,
       firstData: [], // ；一级推荐数据
       secondData: [], // ；二级级推荐数据
       newRecipeData: [], // 最新文章
