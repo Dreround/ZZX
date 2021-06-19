@@ -128,11 +128,11 @@ export default {
         if (response.data.code == this.$ECode.SUCCESS) {
           let recipe = {}
           recipe = response.data.obj
-          let routeData = this.$router.resolve({
+          let routeData = this.$router.push({
             path: '/updateRecipe',
             query: recipe
-          })
-          window.open(routeData.href, '_blank')
+          });
+          //window.open(routeData.href, '_blank')
         }
       }).catch(error => {
         this.$commonUtil.message.info('编辑失败')
@@ -143,11 +143,11 @@ export default {
           'ingredient': "this is ingredient",
           'steps': "this is steps"
         }
-        let routeData = this.$router.resolve({
+        let routeData = this.$router.push({
           path: '/updateRecipe',
           query: recipe
-        })
-        window.open(routeData.href, '_blank')
+        });
+        //window.open(routeData.href, '_blank')
       })
     },
     // 跳转到搜索详情页
@@ -174,22 +174,22 @@ export default {
         //   break
         case 'holder':
         {
-          let routeData = this.$router.resolve({
+          let routeData = this.$router.push({
             path: '/list',
             query: { keyword: entity.holder }
-          })
-          window.open(routeData.href, '_blank')
+          });
+          //window.open(routeData.href, '_blank')
         }
           break
 
         case 'recipeContent':
         {
           //if (entity.type == '0') {
-            let routeData = this.$router.resolve({
+            let routeData = this.$router.push({
               path: '/info',
               query: { recipe_id: entity.recipe_id }
-            })
-            window.open(routeData.href, '_blank')
+            });
+            //window.open(routeData.href, '_blank')
           //} else if (entity.type == '1') {
             //window.open(entity.outsideLink, '_blank')
           //}

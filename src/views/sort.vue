@@ -114,11 +114,11 @@ export default {
         case 'tag':
           {
           // 标签uid
-            let routeData = this.$router.resolve({
+            let routeData = this.$router.push({
               path: '/list',
               query: { tagUid: entity.uid }
-            })
-            window.open(routeData.href, '_blank')
+            });
+            //window.open(routeData.href, '_blank')
           }
           break
         case 'blogSort':

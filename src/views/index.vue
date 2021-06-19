@@ -177,12 +177,10 @@ export default {
   methods: {
     // 跳转到文章详情【或推广链接】
     goToInfo (recipe) {
-      let routeData = this.$router.resolve({
-        path: '/info',
+      let routeData = this.$router.push({
+        path: "/info",
         query: {recipe_id: recipe.recipe_id}
-      })
-      console.log(recipe.id)
-      window.open(routeData.href, '_blank')
+      });
       // if (blog.type === '0') {
       //   let routeData = this.$router.resolve({
       //     path: '/info',

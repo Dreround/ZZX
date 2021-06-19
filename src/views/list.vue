@@ -169,19 +169,19 @@ export default {
   methods: {
     //跳转到文章详情
     goToInfo(recipe_id) {
-      let routeData = this.$router.resolve({
+      let routeData = this.$router.push({
         path: "/info",
         query: { recipe_id: recipe_id }
       });
-      window.open(routeData.href, '_blank');
+      //window.open(routeData.href, '_blank');
     },
     //点击了作者
     goToList(holder) {
-      let routeData = this.$router.resolve({
+      let routeData = this.$router.push({
         path: "/list",
         query: { keyword: holder }
       });
-      window.open(routeData.href, '_blank');
+      //window.open(routeData.href, '_blank');
     },
     // goToAuthor(author) {
     //   let routeData = this.$router.resolve({
