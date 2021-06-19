@@ -548,7 +548,7 @@ export default {
       getCommentListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.commentList = response.data.obj
-          this.$commonUtil.message.info(this.commentList)
+          // this.$commonUtil.message.info(this.commentList)
         }
       }).catch(error => {
         this.$commonUtil.message.info('评论失败')
@@ -591,7 +591,7 @@ export default {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.historyList = response.data.obj
           //this.$store.state.user.userInfo
-          this.$commonUtil.message.info(this.historyList)
+          // this.$commonUtil.message.info(this.historyList)
         }
       }).catch(error => {
         this.$commonUtil.message.info('历史记录失败')
@@ -622,7 +622,7 @@ export default {
       getCollectListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.collectList = response.data.obj
-          this.$commonUtil.message.info(this.collectList)
+          // this.$commonUtil.message.info(this.collectList)
         }
       }).catch(error => {
         this.$commonUtil.message.info('收藏失败')

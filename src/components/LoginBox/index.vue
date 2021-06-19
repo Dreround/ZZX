@@ -199,7 +199,7 @@ export default {
             })
             return
           }
-          this.$commonUtil.message.info('badbad')
+          // this.$commonUtil.message.info('badbad')
           var params = {}
           params.freeze = 'z'
           params.mute = 'z'
