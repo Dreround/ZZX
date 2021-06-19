@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import {delCookie, getCookie, setCookie} from '@/utils/cookieUtils'
 import {getWebConfig} from '../api/index'
 import {getRecipeById, payCreditByUid} from '../api/blogContent'
 import CommentList from '../components/CommentList'
@@ -135,6 +136,7 @@ import {Loading} from 'element-ui'
 import Sticky from '@/components/Sticky'
 import SideCatalog from '@/components/VueSideCatalog'
 import Collect from '../components/Collect/index'
+import {authVerify} from '../api/user'
 
 export default {
   name: 'info',
@@ -214,6 +216,7 @@ export default {
     Sticky
   },
   mounted () {
+    this.getToken()
     this.openComment = this.$store.state.user.userInfo.mute
     //this.openComment = '1'
     var that = this
@@ -317,11 +320,13 @@ export default {
       fullscreen: true,
       text: '正在努力加载中~'
     })
+    //this.getToken()
     //this.$store.state.user.userInfo.user_id = '1'
     this.userInfo = this.$store.state.user.userInfo
+    //this.$commonUtil.message.info(this.$store.state.user.userInfo)
     this.recipe_id = this.$route.query.recipe_id
-    this.commentInfo.recipe_id = this.recipe_id
-    this.$commonUtil.message.info(this.recipe_id)
+    //this.commentInfo.recipe_id = this.recipe_id
+    //this.$commonUtil.message.info(this.recipe_id)
     var history = {}
     history.user_id = this.userInfo.user_id
     history.recipe_id = this.recipe_id
@@ -345,6 +350,53 @@ export default {
     handleCurrentChange: function (val) {
       this.currentPage = val
       this.getCommentDataList()
+    },
+    getUrlVars: function () {
+      var vars = {}
+      // eslint-disable-next-line no-unused-vars
+      var parts = window.location.href.replace(
+        /[?&]+([^=&]+)=([^&#]*)/gi,
+        function (m, key, value) {
+          vars[key] = value
+        }
+      )
+      return vars
+    },
+    getToken: function () {
+      let token = this.getUrlVars()['token']
+      let pwd = this.getUrlVars()['pwd']
+      // 判断url中是否含有token
+      if (token != undefined) {
+        // 设置token七天过期
+        setCookie('token', token, 7)
+        setCookie('pwd', pwd, 7)
+      } else {
+        // 从cookie中获取token
+        token = getCookie('token')
+        pwd = getCookie('pwd')
+      }
+      console.log('token:------------' + token)
+      if (token != undefined && token != null) {
+        console.log('this issssssssssssssssssssssssss')
+        console.log(token)
+        var params = new URLSearchParams()
+        params.append('user_name', token)
+        params.append('password',pwd)
+        authVerify(params).then(response => {
+          if (response.data.code == this.$ECode.SUCCESS) {
+            this.isLogin = true
+            this.userInfo = response.data.obj
+            console.log(this.userInfo)
+            this.setUserInfo(this.userInfo)
+            this.setLoginState(this.isLogin)
+          } else {
+            delCookie('token')
+          }
+        }).catch(error => {
+          this.userInfo.role = 1
+          this.userInfo.reputation = 5
+        })
+      }
     },
     // 设置是否开启评论和赞赏
     // setCommentAndAdmiration () {
@@ -433,11 +485,11 @@ export default {
     },
     // 跳转到搜索详情页
     goToList (holder) {
-      let routeData = this.$router.resolve({
+      let routeData = this.$router.push({
         path: '/list',
         query: {keyword: holder}
-      })
-      window.open(routeData.href, '_blank')
+      });
+      //window.open(routeData.href, '_blank')
     },
     // 跳转到搜索详情页
     // goToSortList (uid) {

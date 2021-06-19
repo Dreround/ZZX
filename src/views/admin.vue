@@ -5,13 +5,19 @@
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="changeFreezeState">冻结（解冻）用户管理</el-button>
       <el-button class="filter-item" type="warning" icon="el-icon-star-on" @click="changeMuteState">禁言（解禁）用户管理</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="changeRecipeState">推荐菜谱管理</el-button>
-      <el-input style="width: 15%"
-                type="warning"
-                placeholder="想搜点什么呢.."
-                prefix-icon="el-icon-search"
-                v-model="keyword"
-                v-on:keyup.enter="search"
-      ></el-input>
+
+<!--      <el-input placeholder=" "  icon="search" v-model="keyword" :on-icon-click="handleIconClick" @keyup.enter.native="searchEnterFun"> </el-input>-->
+
+<!--      <input style="left: auto" placeholder="搜索" type="text" @keyup.enter="searchEnterFun">-->
+
+<!--      <el-input style="width: 15%"-->
+<!--                type="warning"-->
+<!--                placeholder="想搜点什么呢.."-->
+<!--                prefix-icon="el-icon-search"-->
+<!--                v-model="keyword"-->
+<!--                v-on:keyup.enter="search"-->
+<!--      ></el-input>-->
+
     </div>
     <el-table v-if="freeze_visible" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection"/>
@@ -29,10 +35,10 @@
 
       <el-table-column label="冻结状态" width="150" align="center">
         <template slot-scope="scope">
-          <template v-if="scope.row.status == 0">
+          <template v-if="scope.row.status == 'z'">
             <span>正常</span>
           </template>
-          <template v-if="scope.row.status == 1">
+          <template v-if="scope.row.status == 'f'">
             <span>冻结</span>
           </template>
           <template v-if="scope.row.status == 2">
@@ -43,7 +49,7 @@
 
       <el-table-column label="操作" fixed="right" min-width="230">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handlePass(scope.row)">冻结
+          <el-button type="primary" size="small" @click="handlePass1(scope.row)">冻结
           </el-button>
           <el-button type="error" size="small" @click="handleFail(scope.row)">解冻
           </el-button>
@@ -67,10 +73,10 @@
 
       <el-table-column label="禁言状态" width="150" align="center">
         <template slot-scope="scope">
-          <template v-if="scope.row.status == 0">
+          <template v-if="scope.row.status == 'z'">
             <span>正常</span>
           </template>
-          <template v-if="scope.row.status == 1">
+          <template v-if="scope.row.status == 'm'">
             <span>禁言</span>
           </template>
           <template v-if="scope.row.status == 2">
@@ -81,7 +87,7 @@
 
       <el-table-column label="操作" fixed="right" min-width="230">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handlePass(scope.row)">禁言
+          <el-button type="primary" size="small" @click="handlePass2(scope.row)">禁言
           </el-button>
           <el-button type="error" size="small" @click="handleFail(scope.row)">解禁
           </el-button>
@@ -125,7 +131,7 @@
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handlePass(scope.row)">推荐
           </el-button>
-          <el-button type="error" size="small" @click="handleFail(scope.row)">取消推荐
+          <el-button type="error" size="small" @click="handleFail1(scope.row)">取消推荐
           </el-button>
         </template>
       </el-table-column>
@@ -223,7 +229,7 @@
       }
     },
     created () {
-      this.reportList()
+      this.freezeList()
     },
     methods: {
       // 搜索
@@ -245,13 +251,21 @@
         }).catch(error => {
           console.log(error)
           this.tableData = [{
-            uid: '1',
-            status: '0'
+            uid: '1111',
+            status: 'z'
           }, {
-            uid: '1',
-            status: '0'
+            uid: '222',
+            status: 'z'
           }]
         })
+      },
+      searchEnterFun:function(e){
+        var keyCode = window.event? e.keyCode:e.which;
+        // console.log('回车搜索',keyCode,e);
+        if(keyCode == 13 && this.input){
+          this.$router.push({path:'/list', query: {keyword: this.keyword}});
+        }
+
       },
       muteList: function () {
         getMuteList().then(response => {
@@ -259,10 +273,10 @@
         }).catch(error => {
           console.log(error)
           this.tableData = [{
-            uid: '1',
-            status: '0'
-          }, { uid: '1',
-            status: '0'}
+            uid: '10085',
+            status: 'z'
+          }, { uid: '10086',
+            status: 'z'}
           ]
         })
       },
@@ -298,7 +312,33 @@
         this.recipeList()
       },
       handlePass: function (row) {
-        row.status=1
+        row.status='1'
+        let params = row
+        workReport(params).then(response => {
+          if (response.data.code == this.$ECode.SUCCESS) {
+            this.$message({
+              type: 'success',
+              message: response.data.message
+            })
+            window.location.reload()
+          }
+        })
+      },
+      handlePass1: function (row) {
+        row.status='f'
+        let params = row
+        workReport(params).then(response => {
+          if (response.data.code == this.$ECode.SUCCESS) {
+            this.$message({
+              type: 'success',
+              message: response.data.message
+            })
+            window.location.reload()
+          }
+        })
+      },
+      handlePass2: function (row) {
+        row.status='m'
         let params = row
         workReport(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
@@ -311,6 +351,19 @@
         })
       },
       handleFail: function (row) {
+        row.status='z'
+        let params = row
+        workReport(params).then(response => {
+          if (response.data.code == this.$ECode.SUCCESS) {
+            this.$message({
+              type: 'success',
+              message: response.data.message
+            })
+            window.location.reload()
+          }
+        })
+      },
+      handleFail1: function (row) {
         row.status=0
         let params = row
         workReport(params).then(response => {

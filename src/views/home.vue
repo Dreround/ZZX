@@ -439,7 +439,7 @@ export default {
     var that = this
     var offset = 300
     var after = 0
-
+    this.getToken()
     this.isLogin = this.$store.state.user.isLogin
     this.userInfo = this.$store.state.user.userInfo
     //this.$commonUtil.message.info("wmyyyds")
@@ -500,13 +500,13 @@ export default {
     },
 
     // 跳转到文章详情
-    goToInfo (uid) {
-      let routeData = this.$router.resolve({
-        path: '/info',
-        query: {blogUid: uid}
-      })
-      window.open(routeData.href, '_blank')
-    },
+    // goToInfo (uid) {
+    //   let routeData = this.$router.resolve({
+    //     path: '/info',
+    //     query: {blogUid: uid}
+    //   })
+    //   window.open(routeData.href, '_blank')
+    // },
 
     // 跳转到资源详情
     goSource: function (comment) {
@@ -860,9 +860,11 @@ export default {
       if (token != undefined) {
         // 设置token七天过期
         setCookie('token', token, 7)
+        setCookie('pwd', pwd, 7)
       } else {
         // 从cookie中获取token
         token = getCookie('token')
+        pwd = getCookie('pwd')
       }
       console.log('token:------------' + token)
       if (token != undefined && token != null) {
@@ -879,7 +881,6 @@ export default {
             this.setUserInfo(this.userInfo)
             this.setLoginState(this.isLogin)
           } else {
-
             delCookie('token')
           }
         }).catch(error => {

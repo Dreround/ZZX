@@ -54,11 +54,15 @@ export default {
   methods: {
     goToInfo (recipe) {
       //if (recipe.type === '0') {
-        let routeData = this.$router.resolve({
-          path: '/info',
-          query: {recipe_id: recipe.recipe_id}
-        })
-        window.open(routeData.href, '_blank')
+      //   let routeData = this.$router.resolve({
+      //     path: '/info',
+      //     query: {recipe_id: recipe.recipe_id}
+      //   })
+      //   window.open(routeData.href, '_blank')
+      let routeData = this.$router.push({
+        path: "/info",
+        query: {recipe_id: recipe.recipe_id}
+      });
       // } else if (blog.type === '1') {
       //   var params = new URLSearchParams()
       //   params.append('uid', blog.uid)
