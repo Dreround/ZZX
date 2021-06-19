@@ -323,9 +323,9 @@ export default {
     //this.getToken()
     //this.$store.state.user.userInfo.user_id = '1'
     this.userInfo = this.$store.state.user.userInfo
-    this.$commonUtil.message.info(this.$store.state.user.userInfo)
+    //this.$commonUtil.message.info(this.$store.state.user.userInfo)
     this.recipe_id = this.$route.query.recipe_id
-    this.commentInfo.recipe_id = this.recipe_id
+    //this.commentInfo.recipe_id = this.recipe_id
     //this.$commonUtil.message.info(this.recipe_id)
     var history = {}
     history.user_id = this.userInfo.user_id
