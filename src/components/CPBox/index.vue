@@ -48,7 +48,7 @@ export default {
         fullscreen: true,
         lock: true
       },
-      vueMoguWebUrl: process.env.VUE_MOGU_WEB,
+      //vueMoguWebUrl: process.env.VUE_MOGU_WEB,
       // 显示登录页面
       showCP: true,
       table: false,

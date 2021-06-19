@@ -73,7 +73,7 @@ export default {
         fullscreen: true,
         lock: true
       },
-      vueMoguWebUrl: process.env.VUE_MOGU_WEB,
+      //vueMoguWebUrl: process.env.VUE_MOGU_WEB,
       // 显示登录页面
       showLogin: true,
       isLogin: false,
@@ -151,7 +151,7 @@ export default {
             if (response.data.code === this.$ECode.SUCCESS) {
               // 跳转到首页
 
-              location.replace(this.vueMoguWebUrl + '/#/?token=' + response.data.obj.user_name+'&pwd='+response.data.obj.password)
+              location.replace(this.WEB_API + '/#/?token=' + response.data.obj.user_name+'&pwd='+response.data.obj.password)
 
               this.isLogin = true
               this.$store.state.user.isLogin = true

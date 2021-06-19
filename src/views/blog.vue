@@ -137,7 +137,7 @@
         </el-form-item>
 
         <el-form-item style="float: right; margin-right: 20px;">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button @click="close">取 消</el-button>
           <el-button type="primary" @click="submitForm">确 定</el-button>
         </el-form-item>
       </el-form>
@@ -234,19 +234,9 @@ export default {
       localUploadVisible: false,
       systemConfig: {editorModel: 0}, // 系统配置
       form: {
-        //title: '',
-        //summary: '',
-        //content: '',
         recipe_id: '',
         recipe_name: '',
         holder: '',
-        //blogSortUid: '',
-        //isOriginal: '', // 是否原创
-        //isPublish: '',
-        //author: '', // 作者
-        //clickCount: 0,
-        //articlesPart: '', // 文章出处
-        //need_credit:'',
         steps: '',
         ingredient: '',
         tip: '',
@@ -258,25 +248,6 @@ export default {
         recipe_name: [
           { required: true, message: '标题不能为空', trigger: 'blur' }
         ],
-        // blogSortUid: [
-        //   { required: true, message: '分类不能为空', trigger: 'blur' }
-        // ],
-        // level: [
-        //   { required: true, message: '推荐等级不能为空', trigger: 'blur' },
-        //   { pattern: /^[0-9]\d*$/, message: '推荐等级只能为自然数' }
-        // ],
-        // isPublish: [
-        //   { required: true, message: '发布字段不能为空', trigger: 'blur' },
-        //   { pattern: /^[0-9]\d*$/, message: '发布字段只能为自然数' }
-        // ],
-        // isOriginal: [
-        //   { required: true, message: '原创字段不能为空', trigger: 'blur' },
-        //   { pattern: /^[0-9]\d*$/, message: '原创字段只能为自然数' }
-        // ],
-        // openComment: [
-        //   { required: true, message: '网站评论不能为空', trigger: 'blur' },
-        //   { pattern: /^[0-9]\d*$/, message: '网站评论只能为自然数' }
-        // ],
         steps: [
           { required: true, message: '步骤不能为空', trigger: 'blur' }
         ],
@@ -296,8 +267,8 @@ export default {
     this.form.ingredient = this.ingredient
     this.form.recipe_name = this.recipe_name
     this.form.tip = this.tip
-    //this.form.holder = this.$store.state.user.userInfo.user_name
-    this.form.holder = "yrk"
+    this.form.holder = this.$store.state.user.userInfo.user_name
+    //this.form.holder = "yrk"
     console.log('-----------------------------------------')
     //  const that = this
     // // const tempForm = JSON.parse(getCookie('form'))
@@ -387,6 +358,10 @@ export default {
         lock: true,
         text: '正在努力上传中……'
       })
+    },
+    close (){
+      this.dialogFormVisible = false
+      location.href=this.WEB_API + '/#/'
     },
     closeLoading () {
       this.uploadLoading.close()
@@ -499,14 +474,9 @@ export default {
       this.blogList()
     },
     submitForm: function () {
-      // if (this.tagValue.length <= 0) {
-      //   this.$commonUtil.message.error('标签不能为空!')
-      //   return
-      // }
       this.$refs.form.validate((valid) => {
         if (!valid) {
         } else {
-          //this.form.tagUid = this.tagValue.join(',')
           if (this.isEditForm) {
             this.$commonUtil.message.success('编辑提交')
             editRecipe(this.form).then(response => {

@@ -203,18 +203,18 @@ export default {
 
       if (this.keywords != undefined) {
         var params = new URLSearchParams();
-        params.append("currentPage", that.currentPage);
-        params.append("pageSize", that.pageSize);
-        params.append("keywords", that.keywords);
+        //params.append("currentPage", that.currentPage);
+        //params.append("pageSize", that.pageSize);
+        params.append("name", that.keywords);
         searchRecipe(params).then(response => {
-          if (response.code == this.$ECode.SUCCESS) {
-            that.isEnd = false;
+          if (response.data.code == this.$ECode.SUCCESS) {
+            //that.isEnd = false;
             //获取总页数
-            that.totalPages = response.data.length;
-            that.total = response.data.total;
-            that.pageSize = response.data.pageSize;
-            that.currentPage = response.data.currentPage;
-            var RecipeData = response.data.RecipeList;
+            //that.totalPages = response.data.length;
+            //that.total = response.data.total;
+            //that.pageSize = response.data.pageSize;
+            //that.currentPage = response.data.currentPage;
+            var RecipeData = response.data.obj;
 
             // 判断搜索的博客是否有内容
             if(response.data.total <= 0) {
@@ -241,9 +241,9 @@ export default {
               for (let i = 0; i < 5; ++i) {
                 this.RecipeData.push({recipe_name: this.keywords, recipe_id:'1', holder: 'ptss', tips: '略略略', time: '2020-12-2'})
               }
-              this.totalPages = this.RecipeData.length;
-              this.loading = false;
-              this.isEnd = false;
+              //this.totalPages = this.RecipeData.length;
+              //this.loading = false;
+              //this.isEnd = false;
             });
       // } else if (this.tagUid != undefined) {
       //   var params = new URLSearchParams();

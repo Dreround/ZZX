@@ -442,7 +442,7 @@ export default {
 
     this.isLogin = this.$store.state.user.isLogin
     this.userInfo = this.$store.state.user.userInfo
-    this.$commonUtil.message.info("wmyyyds")
+    //this.$commonUtil.message.info("wmyyyds")
     window.addEventListener('scroll', function () {
       let scrollTop = document.documentElement.scrollTop // 当前的的位置
       // eslint-disable-next-line no-unused-vars

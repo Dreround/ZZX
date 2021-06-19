@@ -88,8 +88,8 @@
       </div>
 
       <!--点赞和收藏和举报-->
-      <LikeAndCollect v-if="openAdmiration === '1'" :recipe_id="recipe_id"
-                       ></LikeAndCollect>
+      <Collect v-if="openAdmiration === '1'" :recipe_id="recipe_id"
+                       ></Collect>
       <div class="news_pl" :style="openCommentCss">
         <h2>文章评论</h2>
         <ul>
@@ -98,7 +98,7 @@
             :commentInfo="commentInfo"
             @submit-box="submitBox"
             :showCancel="showCancel"
-            v-if="openComment === '1'"
+            v-if="openComment === 'z'"
           ></CommentBox>
           <div class="message_infos">
             <CommentList :comments="comments" :commentInfo="commentInfo"></CommentList>
@@ -134,7 +134,7 @@ import {addComment, addHistory, getCommentList} from '../api/comment'
 import {Loading} from 'element-ui'
 import Sticky from '@/components/Sticky'
 import SideCatalog from '@/components/VueSideCatalog'
-import LikeAndCollect from '../components/LikeAndCollect/index'
+import Collect from '../components/Collect/index'
 
 export default {
   name: 'info',
@@ -172,7 +172,7 @@ export default {
       canShow: '',
       dialogPictureVisible: false,
       dialogImageUrl: '',
-      openComment: '1', // 开启评论
+      openComment: 'z', // 开启评论
       openAdmiration: '1' // 开启赞赏
     }
   },
@@ -192,7 +192,7 @@ export default {
       }
     },
     openCommentCss: function () {
-      if (this.openComment === 0) {
+      if (this.openComment === 'z') {
         return {
           'min-height': '10px'
         }
@@ -201,7 +201,7 @@ export default {
   },
   components: {
     // 注册组件
-    LikeAndCollect,
+    Collect,
     FourthRecommend,
     ThirdRecommend,
     TagCloud,
@@ -214,8 +214,8 @@ export default {
     Sticky
   },
   mounted () {
-    this.openComment = this.$store.state.user.userInfo.openComment
-    this.openComment = '1'
+    this.openComment = this.$store.state.user.userInfo.mute
+    //this.openComment = '1'
     var that = this
     var params = new URLSearchParams()
     params.append('recipe_id', this.recipe_id)
@@ -317,7 +317,7 @@ export default {
       fullscreen: true,
       text: '正在努力加载中~'
     })
-    this.$store.state.user.userInfo.user_id = '1'
+    //this.$store.state.user.userInfo.user_id = '1'
     this.userInfo = this.$store.state.user.userInfo
     this.recipe_id = this.$route.query.recipe_id
     this.commentInfo.recipe_id = this.recipe_id
