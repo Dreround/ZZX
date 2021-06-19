@@ -293,7 +293,6 @@ export default {
         getCommentList(params).then(response => {
           if (response.data.code === that.$ECode.SUCCESS) {
             that.comments = that.comments.concat(response.data.obj.comments)
-            //that.setCommentList(that.comments)
             that.currentPage = response.data.obj.page_num
             //that.pageSize = response.data.size
             if(response.data.message === 'end'){
