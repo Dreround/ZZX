@@ -128,6 +128,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="菜谱名" width="100" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.recipe_name }}</span>
+        </template>
+      </el-table-column>
+
 
       <el-table-column label="操作" fixed="right" min-width="230">
         <template slot-scope="scope">
