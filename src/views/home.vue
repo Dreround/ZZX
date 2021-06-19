@@ -258,7 +258,7 @@
 
                   <span class="right p1">
                     <div class="rightTop">
-                      <el-link class="userName" :underline="false">{{ comment.recipe_id }}</el-link>
+                      <el-link class="userName" :underline="false">{{ comment.recipe_name }}</el-link>
                       <el-tag style="cursor: pointer;"
                               @click="deleteCommentById(comment)">删除</el-tag>
                     </div>
