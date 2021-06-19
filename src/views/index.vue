@@ -2,7 +2,7 @@
   <article>
     <!--banner begin-->
     <div class="picsbox">
-<!--      <FirstRecommend></FirstRecommend>-->
+      <FirstRecommend></FirstRecommend>
       <!--banner end-->
       <!-- 二级推荐 -->
 <!--      <div class="toppic">-->
