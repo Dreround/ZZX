@@ -61,3 +61,10 @@ export function RecommendRecipe (params) {
     params
   })
 }
+export function DeleteRecipe (params) {
+  return request({
+    url: process.env.WEB_API + 'Administrator/RecipeManage/DeleteRecipe',
+    method: 'get',
+    params
+  })
+}

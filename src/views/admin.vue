@@ -4,7 +4,7 @@
     <div class="filter-container" style="margin: 65px 0 10px 0;">
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="changeFreezeState">冻结（解冻）用户管理</el-button>
       <el-button class="filter-item" type="warning" icon="el-icon-star-on" @click="changeMuteState">禁言（解禁）用户管理</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="changeRecipeState">推荐菜谱管理</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="changeRecipeState">菜谱管理</el-button>
 
 <!--      <el-input placeholder=" "  icon="search" v-model="keyword" :on-icon-click="handleIconClick" @keyup.enter.native="searchEnterFun"> </el-input>-->
 
@@ -139,6 +139,8 @@
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handlePass(scope.row)">推荐
           </el-button>
+          <el-button type="primary" size="small" @click="handleFail1(scope.row)">删除
+          </el-button>
         </template>
       </el-table-column>
 
@@ -194,6 +196,7 @@
 <script>
   import {deleteBatchBlogSort} from '@/api/blogSort'
   import {
+    DeleteRecipe,
     FreezeUser,
     getFreezeList,
     getMuteList,
@@ -400,6 +403,22 @@
       //     }
       //   })
       // },
+
+      handleFail1: function (row) {
+        var params = new URLSearchParams()
+        params.append('recipe_id', row.recipe_id)
+        DeleteRecipe(params).then(response => {
+          if (response.data.code == this.$ECode.SUCCESS) {
+            this.$message({
+              type: 'success',
+              message: response.data.message
+            })
+            // window.location.reload()
+            this.recipeList()
+          }
+        })
+      },
+
       handleFail2: function (row) {
         row.status='z'
         var params = new URLSearchParams()
