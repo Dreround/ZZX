@@ -151,7 +151,7 @@ export default {
             if (response.data.code === this.$ECode.SUCCESS) {
               // 跳转到首页
 
-              location.replace(this.WEB_API + '/#/?token=' + response.data.obj.user_name+'&pwd='+response.data.obj.password)
+              location.replace(this.VUE_MOGU_WEB + '/#/?token=' + response.data.obj.user_name+'&pwd='+response.data.obj.password)
 
               this.isLogin = true
               this.$store.state.user.isLogin = true
@@ -160,7 +160,7 @@ export default {
               this.setUserInfo(userInfo)
               console.log(userInfo)
               this.closeLogin()
-              window.location.reload()
+              // window.location.reload()
               // this.goTo()
               // this.$notify({
               //   title: '成功',

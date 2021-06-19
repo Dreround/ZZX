@@ -361,7 +361,7 @@ export default {
     },
     close (){
       this.dialogFormVisible = false
-      location.href=this.WEB_API + '/#/'
+      location.href=this.VUE_MOGU_WEB + '/#/'
     },
     closeLoading () {
       this.uploadLoading.close()
