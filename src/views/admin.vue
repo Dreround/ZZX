@@ -89,7 +89,7 @@
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handlePass2(scope.row)">禁言
           </el-button>
-          <el-button type="error" size="small" @click="handleFail(scope.row)">解禁
+          <el-button type="error" size="small" @click="handleFail2(scope.row)">解禁
           </el-button>
         </template>
       </el-table-column>
@@ -187,7 +187,15 @@
 
 <script>
   import {deleteBatchBlogSort} from '@/api/blogSort'
-  import {getFreezeList, getMuteList, getRecipeList,workReport} from '../api/report'
+  import {
+    FreezeUser,
+    getFreezeList,
+    getMuteList,
+    getRecipeList, MuteUser,
+    RecommendRecipe,
+    UnfreezeUser, UnmuteUser,
+    workReport
+  } from '../api/report'
   import {addBlogSort} from '../api/blogSort'
   export default {
     data () {
@@ -314,7 +322,7 @@
       handlePass: function (row) {
         row.status='1'
         let params = row
-        workReport(params).then(response => {
+        RecommendRecipe(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
@@ -327,7 +335,8 @@
       handlePass1: function (row) {
         row.status='f'
         let params = row
-        workReport(params).then(response => {
+        params.append('user_id', this.row.uid)
+        FreezeUser(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
@@ -340,7 +349,7 @@
       handlePass2: function (row) {
         row.status='m'
         let params = row
-        workReport(params).then(response => {
+        MuteUser(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
@@ -353,7 +362,7 @@
       handleFail: function (row) {
         row.status='z'
         let params = row
-        workReport(params).then(response => {
+        UnfreezeUser(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
@@ -367,6 +376,19 @@
         row.status=0
         let params = row
         workReport(params).then(response => {
+          if (response.data.code == this.$ECode.SUCCESS) {
+            this.$message({
+              type: 'success',
+              message: response.data.message
+            })
+            window.location.reload()
+          }
+        })
+      },
+      handleFail2: function (row) {
+        row.status='z'
+        let params = row
+        UnmuteUser(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
