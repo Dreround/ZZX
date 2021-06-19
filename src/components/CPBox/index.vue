@@ -9,7 +9,7 @@
       <el-divider></el-divider>
       <el-form :rules="rules" :label-position="labelPosition" :model="CPForm" ref="CPForm">
 
-        <el-form-item label="旧密码" prop="password">
+        <el-form-item label="旧密码" prop="password0">
           <el-input type="password" v-model="CPForm.password0" placeholder="密码长度在5~20之间" :disabled="CPType.password"></el-input>
         </el-form-item>
 

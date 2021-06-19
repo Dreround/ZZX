@@ -137,10 +137,10 @@
         <span slot="label"><i class="el-icon-user-solid"></i> 个人中心</span>
         <el-form label-position="left" :model="userInfo" label-width="100px" :rules="rules" ref="userInfo">
           <el-form-item label="用户头像" :label-width="labelWidth">
-            <div class="imgBody" v-if="userInfo.photoUrl">
+            <div class="imgBody" v-if="!userInfo.photoUrl">
               <i class="el-icon-error inputClass" v-show="icon" @click="deletePhoto('user')"
                  @mouseover="icon = true"></i>
-              <img @mouseover="icon = true" @mouseout="icon = false" v-bind:src="userInfo.photoUrl"/>
+              <img @mouseover="icon = true" @mouseout="icon = false" :src="'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"/>
             </div>
 
             <div v-else class="uploadImgBody" @click="checkPhoto">
