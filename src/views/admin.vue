@@ -27,21 +27,27 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="冻结用户用户名" width="180" align="center">
+      <el-table-column label="用户id" width="180" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.uid }}</span>
+          <span>{{ scope.row.user_id }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="用户名" width="180" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.user_name }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="冻结状态" width="150" align="center">
         <template slot-scope="scope">
-          <template v-if="scope.row.status == 'z'">
+          <template v-if="scope.row.freeze == 'z'">
             <span>正常</span>
           </template>
-          <template v-if="scope.row.status == 'f'">
+          <template v-if="scope.row.freeze == 'd'">
             <span>冻结</span>
           </template>
-          <template v-if="scope.row.status == 2">
+          <template v-if="scope.row.freeze == 2">
             <span>解冻</span>
           </template>
         </template>
@@ -65,21 +71,27 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="禁言用户用户名" width="180" align="center">
+      <el-table-column label="用户id" width="180" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.uid }}</span>
+          <span>{{ scope.row.user_id}}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="用户名" width="180" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.user_name}}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="禁言状态" width="150" align="center">
         <template slot-scope="scope">
-          <template v-if="scope.row.status == 'z'">
+          <template v-if="scope.row.mute == 'z'">
             <span>正常</span>
           </template>
-          <template v-if="scope.row.status == 'm'">
+          <template v-if="scope.row.mute == 'j'">
             <span>禁言</span>
           </template>
-          <template v-if="scope.row.status == 2">
+          <template v-if="scope.row.mute == 2">
             <span>解禁</span>
           </template>
         </template>
@@ -110,28 +122,16 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="推荐菜谱ID" width="100" align="center">
+      <el-table-column label="菜谱ID" width="100" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.uid }}</span>
+          <span>{{ scope.row.recipe_id }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="推荐状态" width="150" align="center">
-        <template slot-scope="scope">
-          <template v-if="scope.row.status == 0">
-            <span>正常</span>
-          </template>
-          <template v-if="scope.row.status == 1">
-            <span>推荐</span>
-          </template>
-        </template>
-      </el-table-column>
 
       <el-table-column label="操作" fixed="right" min-width="230">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handlePass(scope.row)">推荐
-          </el-button>
-          <el-button type="error" size="small" @click="handleFail1(scope.row)">取消推荐
           </el-button>
         </template>
       </el-table-column>
@@ -255,7 +255,8 @@
       },
       freezeList: function () {
         getFreezeList().then(response => {
-          this.tableData = response.data.records
+          //console.log(response.data.obj)
+          this.tableData = response.data.obj
         }).catch(error => {
           console.log(error)
           this.tableData = [{
@@ -277,7 +278,7 @@
       },
       muteList: function () {
         getMuteList().then(response => {
-          this.tableData = response.data.records
+          this.tableData = response.data.obj
         }).catch(error => {
           console.log(error)
           this.tableData = [{
@@ -290,7 +291,7 @@
       },
       recipeList: function () {
         getRecipeList().then(response => {
-          this.tableData = response.data.records
+          this.tableData = response.data.obj
         }).catch(error => {
           console.log(error)
           this.tableData = [{
@@ -320,81 +321,91 @@
         this.recipeList()
       },
       handlePass: function (row) {
-        row.status='1'
-        let params = row
+        var params = new URLSearchParams()
+        params.append('recipe_id', row.recipe_id)
         RecommendRecipe(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
               message: response.data.message
             })
-            window.location.reload()
+            // window.location.reload()
+            this.recipeList()
           }
         })
       },
       handlePass1: function (row) {
-        row.status='f'
-        let params = row
-        params.append('user_id', this.row.uid)
+        row.status='d'
+        var params = new URLSearchParams()
+        var that = this
+        params.append('user_id', row.user_id)
+        this.$commonUtil.message.info(row.user_id)
         FreezeUser(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
               message: response.data.message
             })
-            window.location.reload()
+            //window.location.reload()
+            that.freezeList()
           }
         })
       },
       handlePass2: function (row) {
-        row.status='m'
-        let params = row
+        row.status='j'
+        var params = new URLSearchParams()
+        params.append('user_id', row.user_id)
         MuteUser(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
               message: response.data.message
             })
-            window.location.reload()
+            // window.location.reload()
+            this.muteList()
           }
         })
       },
       handleFail: function (row) {
         row.status='z'
-        let params = row
+        var params = new URLSearchParams()
+        params.append('user_id',row.user_id)
         UnfreezeUser(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
               message: response.data.message
             })
-            window.location.reload()
+            // window.location.reload()
+            this.freezeList()
           }
         })
       },
-      handleFail1: function (row) {
-        row.status=0
-        let params = row
-        workReport(params).then(response => {
-          if (response.data.code == this.$ECode.SUCCESS) {
-            this.$message({
-              type: 'success',
-              message: response.data.message
-            })
-            window.location.reload()
-          }
-        })
-      },
+      // handleFail1: function (row) {
+      //   row.status=0
+      //   let params = row
+      //   workReport(params).then(response => {
+      //     if (response.data.code == this.$ECode.SUCCESS) {
+      //       this.$message({
+      //         type: 'success',
+      //         message: response.data.message
+      //       })
+      //       window.location.reload()
+      //     }
+      //   })
+      // },
       handleFail2: function (row) {
         row.status='z'
-        let params = row
+        var params = new URLSearchParams()
+        params.append('user_id', row.user_id)
         UnmuteUser(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.$message({
               type: 'success',
               message: response.data.message
             })
-            window.location.reload()
+            // window.location.reload()
+            this.muteList()
           }
         })
       },

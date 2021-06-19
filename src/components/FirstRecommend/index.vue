@@ -5,12 +5,12 @@
       <el-carousel-item v-for="(list,index) in slideList" :key="index">
                 <img
                   style="width:100%; height:100%; display:block;cursor:pointer;"
-                  v-if="list.photoList"
-                  :src="list.photoList[0]"
-                  :alt="list.title"
+                  v-if="list.image"
+                  :src="list.image"
+                  :alt="加载失败"
                   @click="goToInfo(list)" >
         <div class="carousel-title" @click="goToInfo(list)">
-          <span>{{ list.title }}</span>
+          <span>{{ list.recipe_name }}</span>
         </div>
       </el-carousel-item>
     </el-carousel>
@@ -34,11 +34,13 @@ export default {
   },
   created () {
     // var params = new URLSearchParams()
-    // params.append('level', 1)
-    // params.append('useSort', 1)
     getRecipeByLevel().then(response => {
       if (response.data.code === this.$ECode.SUCCESS) {
-        this.slideList = response.data.obj
+        console.log(response.data.obj)
+        for (let i = 0; i < 5; i++) {
+          this.slideList.push(response.data.obj[i])
+        }
+        //this.slideList = response.data.obj
       }
     }).catch(err => {
       console.log(err)

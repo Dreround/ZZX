@@ -86,9 +86,12 @@
           </el-tab-pane>
         </el-tabs>
       </div>
-
+      <el-popover placement="right" trigger="hover" v-if="recipeData.image">
+        <img :src="recipeData.image" style="width: 500px;height: 300px">
+        <img slot="reference" :src="recipeData.image" style="width: 600px;height: 400px">
+      </el-popover>
       <!--点赞和收藏和举报-->
-      <Collect v-if="openAdmiration === '1'" :recipe_id="recipe_id"
+      <Collect v-if="openAdmiration === '1' & this.$store.state.user.isLogin" :recipe_id="recipe_id"
                        ></Collect>
       <div class="news_pl" :style="openCommentCss">
         <h2>文章评论</h2>
@@ -233,6 +236,7 @@ export default {
         this.recipeData.recipe_tips = response.data.obj.tip
         this.recipeData.holder = response.data.obj.holder
         this.recipeData.recipe_name = response.data.obj.recipe_name
+        this.recipeData.image = response.data.obj.image
         //this.getCommentDataList()
       }
       setTimeout(() => {

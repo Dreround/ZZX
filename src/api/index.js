@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getRecipeByLevel () {
   return request({
-    url: process.env.WEB_API + 'HomePage/getRecipeByLevel',
+    url: process.env.WEB_API + 'HomePage/HotRecipe',
     method: 'get'
   })
 }
