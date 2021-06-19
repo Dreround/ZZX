@@ -227,6 +227,7 @@
                     </div>
 
                   <div class="rightCenter" v-html="$xss(history.recipe_name, options)"></div>
+                    <div class="rightCenter" v-html="$xss(history.dates, options)"></div>
                 </span>
                 </div>
               </el-card>
