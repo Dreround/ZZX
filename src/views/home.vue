@@ -171,7 +171,7 @@
         <span slot="label"><i class="el-icon-message-solid"></i> 我的收藏</span>
         <div style="width: 100%; height: 840px;overflow:auto;">
           <el-timeline>
-            <el-timeline-item v-for="collect in collectList" :key="collect.uid" :timestamp="timeAgo(collect.createTime)"
+            <el-timeline-item v-for="collect in collectList" :key="collect.recipe_id"
                               placement="top">
               <el-card>
                 <div class="commentList">
@@ -184,12 +184,12 @@
 
                   <span class="right p1">
                     <div class="rightTop">
-                      <el-link class="userName" :underline="false">{{ collect.user_name }}</el-link>
+                      <el-link class="userName" :underline="false">{{ collect.recipe_id }}</el-link>
                       <el-tag style="cursor: pointer;"
-                              @click="deleteCollectById(collect.uid)">取消</el-tag>
+                              @click="deleteCollectById(collect)">取消</el-tag>
                     </div>
 
-                  <div class="rightCenter" v-html="$xss(collect.content, options)"></div>
+                  <div class="rightCenter" v-html="$xss(collect.recipe_name, options)"></div>
                 </span>
                 </div>
               </el-card>
@@ -208,7 +208,7 @@
         <span slot="label"><i class="el-icon-message-solid"></i> 浏览记录</span>
         <div style="width: 100%; height: 840px;overflow:auto;">
           <el-timeline>
-            <el-timeline-item v-for="history in historyList" :key="history.dates" :timestamp="timeAgo(history.createTime)"
+            <el-timeline-item v-for="history in historyList" :key="history.dates"
                               placement="top">
               <el-card>
                 <div class="commentList">
@@ -221,12 +221,12 @@
 
                   <span class="right p1">
                     <div class="rightTop">
-                      <el-link class="userName" :underline="false">{{ history.user_name }}</el-link>
+                      <el-link class="userName" :underline="false">{{ history.recipe_id }}</el-link>
                       <el-tag style="cursor: pointer;"
                               @click="deleteHistoryById(history)">删除</el-tag>
                     </div>
 
-                  <div class="rightCenter" v-html="$xss(history.content, options)"></div>
+                  <div class="rightCenter" v-html="$xss(history.recipe_name, options)"></div>
                 </span>
                 </div>
               </el-card>
@@ -245,7 +245,7 @@
         <span slot="label"><i class="el-icon-message-solid"></i> 我的评论</span>
         <div style="width: 100%; height: 840px;overflow:auto;">
           <el-timeline>
-            <el-timeline-item v-for="comment in commentList" :key="comment.uid" :timestamp="timeAgo(comment.createTime)"
+            <el-timeline-item v-for="comment in commentList" :key="comment.comment_id"
                               placement="top">
               <el-card>
                 <div class="commentList">
@@ -258,9 +258,9 @@
 
                   <span class="right p1">
                     <div class="rightTop">
-                      <el-link class="userName" :underline="false">{{ comment.user_name }}</el-link>
+                      <el-link class="userName" :underline="false">{{ comment.recipe_id }}</el-link>
                       <el-tag style="cursor: pointer;"
-                              @click="deleteCommentById(comment.uid)">删除</el-tag>
+                              @click="deleteCommentById(comment)">删除</el-tag>
                     </div>
 
                   <div class="rightCenter" v-html="$xss(comment.content, options)"></div>
@@ -472,9 +472,6 @@ export default {
     }
   },
   created () {
-    this.commentList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
-    this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
-    this.collectList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
     this.isLogin = this.$store.state.user.isLogin
     this.userInfo = this.$store.state.user.userInfo
     this.$commonUtil.message.info(this.isLogin)
@@ -545,13 +542,13 @@ export default {
 
     // 获取评论列表
     getCommentList: function () {
-      let params = {}
-      params.pageSize = 10
-      params.currentPage = 1
+      var params = new URLSearchParams()
+      // this.$commonUtil.message.info(this.userInfo.user_id)
+      params.append('user_id', this.userInfo.user_id)
       getCommentListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
-          this.commentList = response.data.commentList
-          this.replyList = response.data.replyList
+          this.commentList = response.data.obj
+          this.$commonUtil.message.info(this.commentList)
         }
       }).catch(error => {
         this.$commonUtil.message.info('评论失败')
@@ -561,11 +558,13 @@ export default {
 
     //删除评论
     deleteCommentById: function(comment) {
-      let params = {}
-      params.CommentId = comment.uid
+      var params = new URLSearchParams()
+      // this.$commonUtil.message.info(this.userInfo.user_id)
+      params.append('comment_id', comment.comment_id)
       deleteComment(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('已删除')
+          this.getCommentList()
           // this.commentList = response.data.commentList
           // this.replyList = response.data.replyList
         }
@@ -586,12 +585,13 @@ export default {
     // 获取历史列表
     getHistory: function () {
       var params = new URLSearchParams()
-      this.$commonUtil.message.info(this.userInfo.user_id)
+      // this.$commonUtil.message.info(this.userInfo.user_id)
       params.append('user_id', this.userInfo.user_id)
       getHistoryListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.historyList = response.data.obj
           //this.$store.state.user.userInfo
+          this.$commonUtil.message.info(this.historyList)
         }
       }).catch(error => {
         this.$commonUtil.message.info('历史记录失败')
@@ -606,6 +606,7 @@ export default {
       deleteHistory(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('已删除')
+          this.getHistory()
           // this.commentList = response.data.commentList
           // this.replyList = response.data.replyList
         }
@@ -621,19 +622,21 @@ export default {
       getCollectListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.collectList = response.data.obj
+          this.$commonUtil.message.info(this.collectList)
         }
       }).catch(error => {
         this.$commonUtil.message.info('收藏失败')
-        this.collectList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
       })
     },
 
     deleteCollectById: function(comment) {
       let params = {}
-      params.CollectId = comment.uid
+      params.recipe_id = comment.recipe_id
+      params.user_id = comment.user_id
       deleteCollect(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('已删除')
+          this.getCollect()
           // this.commentList = response.data.commentList
           // this.replyList = response.data.replyList
         }

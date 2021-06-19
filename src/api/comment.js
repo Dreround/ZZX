@@ -26,7 +26,7 @@ export function getCollectList (params) {
 
 export function getCommentListByUser (params) {
   return request({
-    url: process.env.WEB_API + '/web/comment/getListByUser',
+    url: process.env.WEB_API + 'PersonalCenter/ViewComment',
     method: 'get',
     params
   })
@@ -80,7 +80,7 @@ export function addComment (params) {
 }
 export function deleteCollect (params) {
   return request({
-    url: process.env.WEB_API + '/web/collect/delete',
+    url: process.env.WEB_API + 'RecipeDetail/CancelCollection',
     method: 'post',
     data: params
   })
@@ -88,7 +88,7 @@ export function deleteCollect (params) {
 
 export function deleteHistory (params) {
   return request({
-    url: process.env.WEB_API + '/web/history/delete',
+    url: process.env.WEB_API + 'PersonalCenter/DeleteHistory',
     method: 'post',
     data: params
   })
@@ -96,9 +96,9 @@ export function deleteHistory (params) {
 
 export function deleteComment (params) {
   return request({
-    url: process.env.WEB_API + '/web/comment/delete',
-    method: 'post',
-    data: params
+    url: process.env.WEB_API + 'PersonalCenter/DeleteComment',
+    method: 'get',
+    params
   })
 }
 export function reportComment (params) {
