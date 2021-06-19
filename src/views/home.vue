@@ -586,6 +586,7 @@ export default {
     // 获取历史列表
     getHistory: function () {
       var params = new URLSearchParams()
+      this.$commonUtil.message.info(this.userInfo.user_id)
       params.append('user_id', this.userInfo.user_id)
       getHistoryListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {

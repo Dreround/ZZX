@@ -160,7 +160,7 @@ export default {
               this.setUserInfo(userInfo)
               console.log(userInfo)
               this.closeLogin()
-              //window.location.reload()
+              // window.location.reload()
               // this.goTo()
               // this.$notify({
               //   title: '成功',
