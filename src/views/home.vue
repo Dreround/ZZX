@@ -186,7 +186,7 @@
                     <div class="rightTop">
                       <el-link class="userName" :underline="false">{{ collect.user_name }}</el-link>
                       <el-tag style="cursor: pointer;"
-                              @click="deleteCollectById(collect.uid)">删除</el-tag>
+                              @click="deleteCollectById(collect.uid)">取消</el-tag>
                     </div>
 
                   <div class="rightCenter" v-html="$xss(collect.content, options)"></div>
@@ -208,7 +208,7 @@
         <span slot="label"><i class="el-icon-message-solid"></i> 浏览记录</span>
         <div style="width: 100%; height: 840px;overflow:auto;">
           <el-timeline>
-            <el-timeline-item v-for="history in historyList" :key="history.uid" :timestamp="timeAgo(history.createTime)"
+            <el-timeline-item v-for="history in historyList" :key="history.dates" :timestamp="timeAgo(history.createTime)"
                               placement="top">
               <el-card>
                 <div class="commentList">
@@ -223,7 +223,7 @@
                     <div class="rightTop">
                       <el-link class="userName" :underline="false">{{ history.user_name }}</el-link>
                       <el-tag style="cursor: pointer;"
-                              @click="deleteHistoryById(history.uid)">删除</el-tag>
+                              @click="deleteHistoryById(history)">删除</el-tag>
                     </div>
 
                   <div class="rightCenter" v-html="$xss(history.content, options)"></div>
@@ -585,23 +585,23 @@ export default {
 
     // 获取历史列表
     getHistory: function () {
-      let params = {}
-      params.pageSize = 10
-      params.currentPage = 1
+      var params = new URLSearchParams()
+      params.append('user_id', this.userInfo.user_id)
       getHistoryListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
-          this.historyList = response.data.historyList
+          this.historyList = response.data.obj
           //this.$store.state.user.userInfo
         }
       }).catch(error => {
         this.$commonUtil.message.info('历史记录失败')
-        this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
       })
     },
 
     deleteHistoryById: function(comment) {
       let params = {}
-      params.HistoryId = comment.uid
+      params.recipe_id = comment.recipe_id
+      params.user_id = comment.user_id
+      params.dates = comment.dates
       deleteHistory(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('已删除')
@@ -616,10 +616,10 @@ export default {
     getCollect: function () {
       // 接口：获取用户收藏信息
       var params = new URLSearchParams()
-      params.append('uid', this.userInfo.uid)
+      params.append('user_id', this.userInfo.user_id)
       getCollectListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
-          this.collectList = response.data.collectList
+          this.collectList = response.data.obj
         }
       }).catch(error => {
         this.$commonUtil.message.info('收藏失败')
