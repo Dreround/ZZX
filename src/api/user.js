@@ -55,17 +55,17 @@ export function logout (params) {
 // 修改密码
 export function pwdUpd (params) {
   return request({
-    url: 'user/pwdupd',
-    method: 'post',
-    data: params
+    url: process.env.WEB_API + 'PersonalCenter/UpdatePassword',
+    method: 'get',
+    params
   })
 }
 
 // 修改用户名
 export function changeName (params) {
   return request({
-    url: 'user/changename',
-    method: 'post',
-    data: params
+    url: process.env.WEB_API + 'PersonalCenter/UpdateName',
+    method: 'get',
+    params
   })
 }

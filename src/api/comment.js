@@ -8,6 +8,22 @@ export function getCommentList (params) {
   })
 }
 
+export function getHistoryList (params) {
+  return request({
+    url: process.env.WEB_API + 'RecipeDetail/ViewComment',
+    method: 'get',
+    params
+  })
+}
+
+export function getCollectList (params) {
+  return request({
+    url: process.env.WEB_API + 'RecipeDetail/ViewComment',
+    method: 'get',
+    params
+  })
+}
+
 export function getCommentListByUser (params) {
   return request({
     url: process.env.WEB_API + '/web/comment/getListByUser',

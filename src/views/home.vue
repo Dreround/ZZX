@@ -150,7 +150,7 @@
           </el-form-item>
 
           <el-form-item label="ID" :label-width="labelWidth">
-            <el-input v-model="userInfo.user_id" style="width: 100%" :disabled="!isLogin"></el-input>
+            <el-input v-model="userInfo.user_id" style="width: 100%" :disabled="true"></el-input>
           </el-form-item>
 
           <el-form-item label="用户名" :label-width="labelWidth">
@@ -754,9 +754,9 @@ export default {
             if (!valid) {
               console.log('校验失败')
             } else {
-              var params = {}
-              params.user_name = this.userInfo.user_name
-              params.user_id = this.userInfo.user_id
+              var params = new URLSearchParams()
+              params.append('user_id', this.$store.state.user.userInfo.user_id)
+              params.append('user_name', this.userInfo.user_name)
               changeName(params).then(response => {
                 if (response.data.code === this.$ECode.SUCCESS) {
                   this.$message({
