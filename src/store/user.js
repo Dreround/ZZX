@@ -1,14 +1,6 @@
 import {SET_USER_INFO, SET_LOGIN_STATE} from './mutation-types'
-// import VuexPersistence from 'vuex-persist'
-// const userInfo = new VuexPersistence({
-//   storage : window.localStorage
-// })
-// const store = new Vuex.Store({
-//   state: { ... },
-//   mutations: { ... },
-//   actions: { ... },
-//   plugins: [vuexLocal.plugin]
-// })
+
+
 const app = {
   // 全局状态
 

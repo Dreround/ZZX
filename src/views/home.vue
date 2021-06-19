@@ -480,7 +480,7 @@ export default {
     this.$commonUtil.message.info(this.isLogin)
     // 字典查询
     //this.getDictList()
-    //this.getToken()
+    this.getToken()
     //this.getKeyword()
     //this.getCurrentPageTitle()
     //this.getWebConfigInfo()
@@ -851,6 +851,7 @@ export default {
 
     getToken: function () {
       let token = this.getUrlVars()['token']
+      let pwd = this.getUrlVars()['pwd']
       // 判断url中是否含有token
       if (token != undefined) {
         // 设置token七天过期
@@ -863,10 +864,13 @@ export default {
       if (token != undefined && token != null) {
         console.log('this issssssssssssssssssssssssss')
         console.log(token)
-        authVerify(token).then(response => {
+        var params = new URLSearchParams()
+        params.append('user_name', token)
+        params.append('password',pwd)
+        authVerify(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.isLogin = true
-            this.userInfo = response.data
+            this.userInfo = response.data.obj
             console.log(this.userInfo)
             this.setUserInfo(this.userInfo)
             this.setLoginState(this.isLogin)

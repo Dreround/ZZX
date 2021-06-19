@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 export function authVerify (params) {
   return request({
-    url: process.env.WEB_API + '/oauth/verify/' + params,
-    method: 'get'
+    url: process.env.WEB_API + 'HomePage/Login',
+    method: 'get',
+    params
   })
 }
 export function getFeedbackList(params) {
