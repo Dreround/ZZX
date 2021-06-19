@@ -219,6 +219,7 @@ export default {
     this.getToken()
     this.openComment = this.$store.state.user.userInfo.mute
     //this.openComment = '1'
+    this.recipe_id = this.$route.query.recipe_id
     var that = this
     var params = new URLSearchParams()
     params.append('recipe_id', this.recipe_id)
@@ -286,13 +287,13 @@ export default {
           return
         }
         let params = {}
-        params.recipe_id = that.commentInfo.recipe_id
+        params.recipe_id = that.recipe_id
         params.page_num = that.currentPage
         params.page_size = that.pageSize
         getCommentList(params).then(response => {
           if (response.data.code === that.$ECode.SUCCESS) {
             that.comments = that.comments.concat(response.data.obj.comments)
-            that.setCommentList(that.comments)
+            //that.setCommentList(that.comments)
             that.currentPage = response.data.obj.page_num
             //that.pageSize = response.data.size
             if(response.data.message === 'end'){
@@ -325,7 +326,7 @@ export default {
     this.userInfo = this.$store.state.user.userInfo
     //this.$commonUtil.message.info(this.$store.state.user.userInfo)
     this.recipe_id = this.$route.query.recipe_id
-    //this.commentInfo.recipe_id = this.recipe_id
+    this.commentInfo.recipe_id = this.recipe_id
     //this.$commonUtil.message.info(this.recipe_id)
     var history = {}
     history.user_id = this.userInfo.user_id
