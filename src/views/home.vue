@@ -119,7 +119,7 @@
 
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="login" v-show="!isLogin">登录</el-dropdown-item>
-          <el-dropdown-item command="goUserInfo" v-show="!isLogin">个人中心</el-dropdown-item>
+          <el-dropdown-item command="goUserInfo" v-show="isLogin">个人中心</el-dropdown-item>
           <el-dropdown-item command="logout" v-show="isLogin">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -150,7 +150,7 @@
           </el-form-item>
 
           <el-form-item label="ID" :label-width="labelWidth">
-            <el-input v-model="userInfo.user_id" style="width: 100%" :disabled="!isLogin"></el-input>
+            <el-input v-model="userInfo.user_id" style="width: 100%" :disabled="true"></el-input>
           </el-form-item>
 
           <el-form-item label="用户名" :label-width="labelWidth">
@@ -186,7 +186,7 @@
                     <div class="rightTop">
                       <el-link class="userName" :underline="false">{{ collect.user_name }}</el-link>
                       <el-tag style="cursor: pointer;"
-                              @click="deleteCollectById(collect.uid)">删除</el-tag>
+                              @click="deleteCollectById(collect.uid)">取消</el-tag>
                     </div>
 
                   <div class="rightCenter" v-html="$xss(collect.content, options)"></div>
@@ -208,7 +208,7 @@
         <span slot="label"><i class="el-icon-message-solid"></i> 浏览记录</span>
         <div style="width: 100%; height: 840px;overflow:auto;">
           <el-timeline>
-            <el-timeline-item v-for="history in historyList" :key="history.uid" :timestamp="timeAgo(history.createTime)"
+            <el-timeline-item v-for="history in historyList" :key="history.dates" :timestamp="timeAgo(history.createTime)"
                               placement="top">
               <el-card>
                 <div class="commentList">
@@ -223,7 +223,7 @@
                     <div class="rightTop">
                       <el-link class="userName" :underline="false">{{ history.user_name }}</el-link>
                       <el-tag style="cursor: pointer;"
-                              @click="deleteHistoryById(history.uid)">删除</el-tag>
+                              @click="deleteHistoryById(history)">删除</el-tag>
                     </div>
 
                   <div class="rightCenter" v-html="$xss(history.content, options)"></div>
@@ -301,7 +301,7 @@
 
   <footer>
     <p>
-      <a href="http://localhost:9527/" target="_blank">&nbsp;&nbsp;</a>
+      <a href="http://localhost:7878/" target="_blank">&nbsp;&nbsp;</a>
       <a href="javasrcipt:void(0);" @click="goIndex()">Copyright 2020-2021&nbsp;{{ info.name }}&nbsp;</a>
       <a href="http://www.beian.miit.gov.cn">{{ info.recordNum }}</a>
     </p>
@@ -439,6 +439,10 @@ export default {
     var that = this
     var offset = 300
     var after = 0
+
+    this.isLogin = this.$store.state.user.isLogin
+    this.userInfo = this.$store.state.user.userInfo
+    //this.$commonUtil.message.info("wmyyyds")
     window.addEventListener('scroll', function () {
       let scrollTop = document.documentElement.scrollTop // 当前的的位置
       // eslint-disable-next-line no-unused-vars
@@ -471,9 +475,12 @@ export default {
     this.commentList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
     this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
     this.collectList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
+    this.isLogin = this.$store.state.user.isLogin
+    this.userInfo = this.$store.state.user.userInfo
+    this.$commonUtil.message.info(this.isLogin)
     // 字典查询
     //this.getDictList()
-    //this.getToken()
+    this.getToken()
     //this.getKeyword()
     //this.getCurrentPageTitle()
     //this.getWebConfigInfo()
@@ -578,23 +585,24 @@ export default {
 
     // 获取历史列表
     getHistory: function () {
-      let params = {}
-      params.pageSize = 10
-      params.currentPage = 1
+      var params = new URLSearchParams()
+      this.$commonUtil.message.info(this.userInfo.user_id)
+      params.append('user_id', this.userInfo.user_id)
       getHistoryListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
-          this.historyList = response.data.historyList
+          this.historyList = response.data.obj
           //this.$store.state.user.userInfo
         }
       }).catch(error => {
         this.$commonUtil.message.info('历史记录失败')
-        this.historyList.push({uid:'111', user_name:'ptss', content:'xxxx', createTime:'2021-12-12'})
       })
     },
 
     deleteHistoryById: function(comment) {
       let params = {}
-      params.HistoryId = comment.uid
+      params.recipe_id = comment.recipe_id
+      params.user_id = comment.user_id
+      params.dates = comment.dates
       deleteHistory(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('已删除')
@@ -609,10 +617,10 @@ export default {
     getCollect: function () {
       // 接口：获取用户收藏信息
       var params = new URLSearchParams()
-      params.append('uid', this.userInfo.uid)
+      params.append('user_id', this.userInfo.user_id)
       getCollectListByUser(params).then(response => {
         if (response.data.code === this.$ECode.SUCCESS) {
-          this.collectList = response.data.collectList
+          this.collectList = response.data.obj
         }
       }).catch(error => {
         this.$commonUtil.message.info('收藏失败')
@@ -747,9 +755,9 @@ export default {
             if (!valid) {
               console.log('校验失败')
             } else {
-              var params = {}
-              params.user_name = this.userInfo.user_name
-              params.user_id = this.userInfo.user_id
+              var params = new URLSearchParams()
+              params.append('user_id', this.$store.state.user.userInfo.user_id)
+              params.append('user_name', this.userInfo.user_name)
               changeName(params).then(response => {
                 if (response.data.code === this.$ECode.SUCCESS) {
                   this.$message({
@@ -844,6 +852,7 @@ export default {
 
     getToken: function () {
       let token = this.getUrlVars()['token']
+      let pwd = this.getUrlVars()['pwd']
       // 判断url中是否含有token
       if (token != undefined) {
         // 设置token七天过期
@@ -856,10 +865,13 @@ export default {
       if (token != undefined && token != null) {
         console.log('this issssssssssssssssssssssssss')
         console.log(token)
-        authVerify(token).then(response => {
+        var params = new URLSearchParams()
+        params.append('user_name', token)
+        params.append('password',pwd)
+        authVerify(params).then(response => {
           if (response.data.code == this.$ECode.SUCCESS) {
             this.isLogin = true
-            this.userInfo = response.data
+            this.userInfo = response.data.obj
             console.log(this.userInfo)
             this.setUserInfo(this.userInfo)
             this.setLoginState(this.isLogin)

@@ -48,7 +48,7 @@ export default {
         fullscreen: true,
         lock: true
       },
-      vueMoguWebUrl: process.env.VUE_MOGU_WEB,
+      //vueMoguWebUrl: process.env.VUE_MOGU_WEB,
       // 显示登录页面
       showCP: true,
       table: false,
@@ -98,23 +98,32 @@ export default {
             })
             return
           }
-          if (this.CPForm.password0 != this.$store.state.user.userInfo) {
+          if (this.CPForm.password0 != this.$store.state.user.userInfo.password) {
             this.$message({
               type: 'error',
               message: '密码错误'
             })
             return
           }
-          var params = {}
-          params.user_id = this.$store.state.user.userInfo.user_id
-          params.old_password = this.$store.state.user.userInfo.password
-          params.new_password = this.CPForm.password
+
+          // var params = {}
+          // params.user_id = this.$store.state.user.userInfo.user_id
+          // params.old_password = this.$store.state.user.userInfo.password
+          // params.new_password = this.CPForm.password
+          this.$commonUtil.message.info(this.$store.state.user.userInfo.password)
+          var params = new URLSearchParams()
+          params.append('old_password', this.$store.state.user.userInfo.password)
+          params.append('new_password', this.CPForm.password)
+          params.append('user_id', this.$store.state.user.userInfo.user_id)
           pwdUpd(params).then(response => {
             if (response.data.code == this.$ECode.SUCCESS) {
               this.$message({
                 type: 'success',
                 message: response.data.message
               })
+              this.$commonUtil.message.info('badbad')
+              this.$store.state.user.userInfo.password = this.CPForm.password
+              this.showCP = false
             } else {
               this.$message({
                 type: 'error',

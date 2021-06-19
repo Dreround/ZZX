@@ -67,8 +67,8 @@ export default {
   created () {
     //this.$commonUtil.message.info('xxx')
     let info = {}
-    info.user_name = "yrk"
-    this.setUserInfo(info)
+    //info.user_name = "yrk"
+    //this.setUserInfo(info)
     info = this.$store.state.user.userInfo
     console.log(info.user_name)
     var params = new URLSearchParams()
@@ -87,13 +87,35 @@ export default {
   },
   methods: {
     ...mapMutations(['setUserInfo']),
+    getRecipe (){
+      let info = {}
+      //info.user_name = "yrk"
+      //this.setUserInfo(info)
+      info = this.$store.state.user.userInfo
+      console.log(info.user_name)
+      var params = new URLSearchParams()
+      params.append('user_name', info.user_name)
+      getMyRecipe(params).then(response => {
+        if (response.data.code == this.$ECode.SUCCESS) {
+          this.$commonUtil.message.info(response.data.message)
+          this.itemBySort = response.data.obj
+        }
+      }).catch(error => {
+        this.$commonUtil.message.info('后端数据获取失败')
+        for (let i = 0; i < 5; ++i) {
+          this.itemBySort.push({recipe_name: 'test', recipe_id:'1', holder: 'ptss', tips: '略略略', time: '2020-12-2'})
+        }
+      })
+    },
     deleteMyRecipe (id) {
+      var that = this
       var params = new URLSearchParams()
       params.append('recipe_id', id)
       deleteMyRecipe(params).then(response => {
         if (response.data.code == this.$ECode.SUCCESS) {
           this.$commonUtil.message.info('删除成功')
-          location.reload()
+          that.getRecipe()
+          //location.reload()
         }
       }).catch(error => {
         this.$commonUtil.message.info('删除失败')

@@ -8,24 +8,40 @@ export function getCommentList (params) {
   })
 }
 
+export function getHistoryList (params) {
+  return request({
+    url: process.env.WEB_API + 'PersonalCenter/ViewBrowsingHistory',
+    method: 'get',
+    params
+  })
+}
+
+export function getCollectList (params) {
+  return request({
+    url: process.env.WEB_API + 'PersonalCenter/ViewRecipeCollection',
+    method: 'get',
+    params
+  })
+}
+
 export function getCommentListByUser (params) {
   return request({
     url: process.env.WEB_API + '/web/comment/getListByUser',
-    method: 'post',
-    data: params
+    method: 'get',
+    params
   })
 }
 
 export function getHistoryListByUser (params) {
   return request({
-    url: process.env.WEB_API + '/web/comment/getHistoryListByUser',
-    method: 'post',
-    data: params
+    url: process.env.WEB_API + 'PersonalCenter/ViewBrowsingHistory',
+    method: 'get',
+    params
   })
 }
 export function getCollectListByUser (params) {
   return request({
-    url: process.env.WEB_API + '/web/comment/getCollectListByUser',
+    url: process.env.WEB_API + 'PersonalCenter/ViewRecipeCollection',
     method: 'get',
     params
   })

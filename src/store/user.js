@@ -1,12 +1,16 @@
 import {SET_USER_INFO, SET_LOGIN_STATE} from './mutation-types'
 
+
 const app = {
   // 全局状态
+
   state: {
     // 用户信息
     userInfo: {},
+
     isLogin: false
   },
+
   // getters是对数据的包装，例如对数据进行拼接，或者过滤
   getters: {
     // 类似于计算属性
@@ -39,4 +43,5 @@ const app = {
 
   }
 }
+
 export default app

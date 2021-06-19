@@ -78,8 +78,8 @@ export default {
       }
     },
     handleSubmit () {
-      this.$store.state.user.userInfo.user_id = '1'
-      this.$store.state.user.userInfo.user_name = 'yrk'
+      //this.$store.state.user.userInfo.user_id = '1'
+      //this.$store.state.user.userInfo.user_name = 'yrk'
       let info = this.$store.state.user.userInfo
       let isLogin = this.$store.state.user.isLogin
       isLogin = true

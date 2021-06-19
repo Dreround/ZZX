@@ -63,6 +63,7 @@
 <script>
 import {localLogin, localRegister} from '../../api/user'
 import { Loading } from 'element-ui'
+import {mapMutations} from 'vuex'
 export default {
   name: 'share',
   data () {
@@ -72,7 +73,7 @@ export default {
         fullscreen: true,
         lock: true
       },
-      vueMoguWebUrl: process.env.VUE_MOGU_WEB,
+      //vueMoguWebUrl: process.env.VUE_MOGU_WEB,
       // 显示登录页面
       showLogin: true,
       isLogin: false,
@@ -129,6 +130,7 @@ export default {
   },
   components: {},
   methods: {
+    ...mapMutations(['setUserInfo', 'setLoginState', 'setWebConfigData']),
     startLogin: function () {
       console.log('---------------!!!!!!!!!!!')
       this.$refs.loginForm.validate((valid) => {
@@ -136,25 +138,36 @@ export default {
         if (!valid) {
           console.log('校验失败')
         } else {
-          var params = {}
-          params.user_name = this.loginForm.user_name
-          params.passWord = this.loginForm.password
+          var params = new URLSearchParams()
+          // params.user_name = this.loginForm.user_name
+          // params.password = this.loginForm.password
+          params.append('user_name', this.loginForm.user_name)
+          params.append('password', this.loginForm.password)
           // params.isRememberMe = 1
           console.log(params)
+          // var that = this
           localLogin(params).then(response => {
 
             if (response.data.code === this.$ECode.SUCCESS) {
               // 跳转到首页
-              console.log(response)
-              console.log(response)
-              console.log(response)
-              console.log(response)
-              console.log(response)
-              location.replace(this.vueMoguWebUrl + '/#/?token=' + response.data.id)
-              // this.isLogin = true
-              // let userInfo = response.data.records
-              // this.setUserInfo(userInfo)
-              window.location.reload()
+
+              location.replace(this.VUE_MOGU_WEB + '/#/?token=' + response.data.obj.user_name+'&pwd='+response.data.obj.password)
+
+              this.isLogin = true
+              this.$store.state.user.isLogin = true
+              console.log(this.$store.state.user.isLogin)
+              let userInfo = response.data.obj
+              this.setUserInfo(userInfo)
+              console.log(userInfo)
+              this.closeLogin()
+              // window.location.reload()
+              // this.goTo()
+              // this.$notify({
+              //   title: '成功',
+              //   message: '发表成功~',
+              //   type: 'success',
+              //   offset: 100
+              // })
             } else {
               this.$message({
                 type: 'error',
@@ -166,6 +179,11 @@ export default {
           })
         }
       })
+    },
+    goTo(){
+      //直接跳转
+      this.$router.push('/');
+
     },
     startRegister: function () {
       this.$refs.registerForm.validate((valid) => {
@@ -181,13 +199,14 @@ export default {
             })
             return
           }
+          this.$commonUtil.message.info('badbad')
           var params = {}
           params.freeze = 'z'
           params.mute = 'z'
           params.icon = ''
           params.credit = ''
           params.user_name = this.registerForm.user_name
-          params.passWord = this.registerForm.password
+          params.password = this.registerForm.password
           localRegister(params).then(response => {
             if (response.data.code == this.$ECode.SUCCESS) {
               this.$message({
