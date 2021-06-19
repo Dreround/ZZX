@@ -8,7 +8,7 @@ export const constantRouterMap = [
     path: '/',
     component: HomeIndex,
     children: [
-      { path: '/', component: () => import('@/views/index') },
+      { name:'HomePage',path: '/', component: () => import('@/views/index') },
       { path: '/about', component: () => import('@/views/about') },
       { path: '/life', component: () => import('@/views/life') },
       { path: '/list', component: () => import('@/views/list') },

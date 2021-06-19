@@ -361,7 +361,8 @@ export default {
     },
     close (){
       this.dialogFormVisible = false
-      location.href=this.VUE_MOGU_WEB + '/#/'
+      //location.href=this.VUE_MOGU_WEB + '/#/'
+      this.$router.go(-1)
     },
     closeLoading () {
       this.uploadLoading.close()
@@ -478,7 +479,7 @@ export default {
         if (!valid) {
         } else {
           if (this.isEditForm) {
-            this.$commonUtil.message.success('编辑提交')
+            //this.$commonUtil.message.success('编辑提交')
             editRecipe(this.form).then(response => {
               if (response.data.code === this.$ECode.SUCCESS) {
                 this.$commonUtil.message.success(response.data.message)
@@ -486,17 +487,19 @@ export default {
                 // delCookie('form')
                 this.dialogFormVisible = false
                 //this.blogList()
-                location.href=this.vueMoguWebUrl + '/#/'
+                //location.href=this.vueMoguWebUrl + '/#/'
+                this.$router.go(-1)
               } else {
                 this.$commonUtil.message.error(response.message)
               }
             }).catch(error => {
               //console.log(error)
-              location.href=this.vueMoguWebUrl + '/#/'
+              //location.href=this.vueMoguWebUrl + '/#/'
+              this.$router.go(-1)
               this.$commonUtil.message.success('修改成功')
             })
           } else {
-            this.$commonUtil.message.success('上传菜谱')
+            //this.$commonUtil.message.success('上传菜谱')
             addRecipe(this.form).then(response => {
               if (response.data.code === this.$ECode.SUCCESS) {
                 this.$commonUtil.message.success(response.message)
@@ -505,7 +508,8 @@ export default {
                 // 清空触发器
                 clearInterval(this.interval)
                 this.dialogFormVisible = false
-                location.href=this.vueMoguWebUrl + '/#/'
+                //location.href=this.vueMoguWebUrl + '/#/'
+                this.$router.go(-1)
               } else {
                 this.$commonUtil.message.error(response.message)
               }
