@@ -48,9 +48,9 @@ export default {
         if(response.data.message === 'duplicate'){
           that.Message = '已收藏'
         }
-        else {
-          that.$commonUtil.message.info(response.data.message)
-        }
+        // else {
+        //   that.$commonUtil.message.info(response.data.message)
+        // }
       }).catch(function () {
         that.Message = '已收藏'
         that.$commonUtil.message.info('收藏失败')

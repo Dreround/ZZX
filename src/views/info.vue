@@ -228,7 +228,7 @@ export default {
     params.append('recipe_id', this.recipe_id)
     getRecipeById(params).then(response => {
       if (response.data.code === this.$ECode.SUCCESS) {
-        this.$commonUtil.message.info(response.data.message)
+        //this.$commonUtil.message.info(response.data.message)
         //this.recipeData = response.data.obj
         console.log(this.recipeData)
         this.recipeData.recipe_steps = response.data.obj.steps

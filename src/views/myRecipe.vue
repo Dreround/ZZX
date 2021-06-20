@@ -75,7 +75,7 @@ export default {
     params.append('user_name', info.user_name)
     getMyRecipe(params).then(response => {
       if (response.data.code == this.$ECode.SUCCESS) {
-        this.$commonUtil.message.info(response.data.message)
+        //this.$commonUtil.message.info(response.data.message)
         this.itemBySort = response.data.obj
       }
     }).catch(error => {
@@ -97,7 +97,7 @@ export default {
       params.append('user_name', info.user_name)
       getMyRecipe(params).then(response => {
         if (response.data.code == this.$ECode.SUCCESS) {
-          this.$commonUtil.message.info(response.data.message)
+          //this.$commonUtil.message.info(response.data.message)
           this.itemBySort = response.data.obj
         }
       }).catch(error => {
