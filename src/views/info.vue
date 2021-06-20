@@ -432,7 +432,7 @@ export default {
     //   })
     // },
     submitBox (e) {
-      this.$commonUtil.message.info('添加评论')
+      //this.$commonUtil.message.info('添加评论')
       let params = {}
       params.recipe_id = e.recipe_id
       params.user_id = e.user_id
